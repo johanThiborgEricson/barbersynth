@@ -8,7 +8,7 @@ describe("cMajor", function() {
     var expected = [0, 1, 2, 3, 4, 5, 6];
     var input = ["c", "d", "e", "f", "g", "a", "b"];
     expected.map(function(i) {
-      expect(readerStub.cMajor(input[i], "", "")).toBe(i);
+      expect(readerStub.cMajor(input[i], "")).toBe(i);
     });
   });
   
