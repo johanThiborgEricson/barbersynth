@@ -62,11 +62,14 @@ function LilyPondReader() {
     cMajor(toneName, octaveString) {
       var minusA = toneName.charCodeAt(0) - "a".charCodeAt(0);
       var scaleToneNumber = (minusA + 5) % 7;
-      return this.octaveChange(scaleToneNumber, octaveString);
+      return scaleToneNumber;
     },
     
     lilyPondAbsolute(toneName, octaveString) {
-      return this.cMajor.apply(this, arguments) - 12;
+      var cMajorSteps = this.cMajor(toneName);
+      var changedOctave = this.octaveChange(cMajorSteps, octaveString);
+      var aMinorSteps = changedOctave - 12;
+      return aMinorSteps;
     },
     
     addAccidentals(twelveToneScaleTone, accidentalString) {
