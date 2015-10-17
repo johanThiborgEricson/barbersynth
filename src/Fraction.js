@@ -1,4 +1,15 @@
 function Fraction(that) {
+  function gcdFunction(a, b) {
+    var small = Math.min(a, b);
+    var large = Math.max(a, b);
+    return gcdFunction.ordered(small, large);
+  }
+  
+  gcdFunction.ordered = function(small, large) {
+    var reminder = large % small;
+    return reminder === 0 ? small : gcdFunction.ordered(reminder, small);
+  };
+  
   return {
     add(term) {
       var gcd = this.greatestCommonDivisor(that[1], term[1]);
@@ -9,20 +20,7 @@ function Fraction(that) {
       return this.reduce(sum);
     },
     
-    greatestCommonDivisor(a, b) {
-      var small = Math.min(a, b);
-      var big = Math.max(a, b);
-      var reminder = big % small;
-      while(reminder > 0) {
-        big = small;
-        small = reminder;
-        reminder = big % small;
-      }
-      
-      var gcd = small;
-      return gcd;
-    },
-    
+    greatestCommonDivisor: gcdFunction,
   };
   
 }
