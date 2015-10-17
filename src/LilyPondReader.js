@@ -13,12 +13,12 @@ function LilyPondReader() {
       return moduloSeven - 3;
     },
     
-    lilyPondRelative(toneName, octaveDownString, octaveUpString) {
-      var previousScaleTone = this.lilyPondAbsolute(toneName, octaveDownString, octaveUpString);
+    lilyPondRelative() {
+      var previousScaleTone = this.lilyPondAbsolute.apply(this, arguments);
       var that = this;
-      var relativeStep = function(toneName, accidentalString, octaveDownString, octaveUpString) {
+      var relativeStep = function(toneName, accidentalString, octaveString) {
         var aMinorScaleTone = that.nearestInA440Minor(toneName, previousScaleTone);
-        changedOctav = that.octavChange(aMinorScaleTone, octaveDownString, octaveUpString);
+        changedOctav = that.octavChange(aMinorScaleTone, octaveString);
         var twelveToneScaleTone = that.as12toneScale(changedOctav);
         previousScaleTone = changedOctav;
         return that.addAccidentals(twelveToneScaleTone, accidentalString);

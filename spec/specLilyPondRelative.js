@@ -15,17 +15,16 @@ describe("lilyPondRelative", function() {
     readerStub.addAccidentals = jasmine.createSpy("addAccidentals")
     .and.returnValue("accidentals added");
     relativeStep = readerStub.lilyPondRelative("initial tone name", 
-    "initial octave down string", "initial octave up string");
+    "initial octave string");
     relativeStep("supplied tone name", "supplied accidental string", 
-    "supplied octave down string", "supplied octave up string");
+    "supplied octave string");
 
   });
   
   // TODO: absolute expects toneNumber and octav down and up string
   it("calls lilyPondAbsolute with the startRelative", function() {
     expect(readerStub.lilyPondAbsolute)
-    .toHaveBeenCalledWith("initial tone name", "initial octave down string", 
-    "initial octave up string");
+    .toHaveBeenCalledWith("initial tone name", "initial octave string");
   });
   
   it("calls nearestInA440Minor with the startRelativeNumber returned by " + 
@@ -42,10 +41,9 @@ describe("lilyPondRelative", function() {
   });
   
   it("calls octavChange with the return value of nearestInA440Minor and " + 
-  "the supplied octavDownString and octavUpString", function() {
+  "the supplied octaveString", function() {
     expect(readerStub.octavChange)
-    .toHaveBeenCalledWith("nearest in A440 minor", 
-    "supplied octave down string", "supplied octave up string");
+    .toHaveBeenCalledWith("nearest in A440 minor", "supplied octave string");
   });
   
   it("calls as12toneScale with the return value of octavChange", function() {
