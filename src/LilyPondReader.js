@@ -112,9 +112,13 @@ LilyPondReader.prototype
     }
     var numerator = 1;
     var denominator = Number(lengthString);
-    if(dots == ".") {
-      numerator *= 3;
-      denominator *= 2;
+    
+    // Technically, it is unnecessary to wrap these statments in an if, but 
+    // removing it would obscure the logic of un-dotted notes. 
+    // See also xkcd 1475.
+    if(dots.length > 0) {
+      numerator *= Math.pow(2, dots.length + 1) - 1;
+      denominator *= Math.pow(2, dots.length);
     }
     
     return [numerator, denominator];

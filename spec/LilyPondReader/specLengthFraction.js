@@ -25,4 +25,9 @@ describe("lengthFraction", function() {
     expect(length("2", ".")).toEqual([3, 4]);
   });
   
+  it("multiplies the lengt by 7/4 for two dots", function() {
+    var length = readerStub.lengthFraction();
+    expect(length("2", "..")).toEqual([7, 8]);
+  });
+  
 });
