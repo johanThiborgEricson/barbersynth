@@ -96,14 +96,14 @@ function LilyPondReader() {
         } else {
           previousLengthString = lengthString;
         }
-        var dominator = 1;
+        var numerator = 1;
         var denominator = Number(lengthString);
         if(dots == ".") {
-          dominator *= 3;
+          numerator *= 3;
           denominator *= 2;
         }
         
-        return [dominator, denominator];
+        return [numerator, denominator];
       };
     },
     
