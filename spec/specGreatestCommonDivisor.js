@@ -47,7 +47,7 @@ describe("Fraction().greatestCommonDivisor.ordered(a, b)", function() {
     expect(gcd.ordered).toHaveBeenCalledWith(1, 2);
   });
   
-  it("returns ordered(b%a, a) if a doesn't divide b", function() {
+  it("returns result of recursive call if a doesn't divide b", function() {
     var oldOrdered = gcd.ordered;
     spyOn(gcd, "ordered").and.returnValue("recursive result");
     expect(oldOrdered(2, 3)).toEqual("recursive result");
