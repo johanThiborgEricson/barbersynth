@@ -5,17 +5,17 @@ describe("scheduleToneChange", function(){
     .createSpy("computeBaseToneAndPartials").and.returnValue({
       partials: "partials",
     });
-    bsStub.normalizePartials = jasmine.createSpy("normalizePartials");
+    bsStub.computeA440Frequencies = jasmine.createSpy("computeA440Frequencies");
     bsStub.computeStartTime = jasmine.createSpy("computeStartTime");
     
     bsStub.scheduleToneChange({
       tones: "tones",
-      duration: "duration",
+      noteTime: "fraction",
     });
     
     expect(bsStub.computeBaseToneAndPartials).toHaveBeenCalledWith("tones");
-    expect(bsStub.normalizePartials).toHaveBeenCalledWith("partials");
-    expect(bsStub.computeStartTime).toHaveBeenCalledWith("duration");
+    expect(bsStub.computeA440Frequencies).toHaveBeenCalledWith("partials");
+    expect(bsStub.computeStartTime).toHaveBeenCalledWith("fraction");
   });
   
   xit("doesn't make heavy computations between computeStartTime and schedulilńg", function(){
