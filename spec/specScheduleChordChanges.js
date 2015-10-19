@@ -19,9 +19,10 @@ describe("scheduleChordChanges", function(){
   
   it("calls the scheduleToneChange method of each voice from the constructor " +
   "with the result of advanceStartTime", function() {
-    // TODO: spy on real object an method instead.
-    var voice1 = jasmine.createSpyObj("voice1", ["scheduleToneChange"]);
-    var voice2 = jasmine.createSpyObj("voice2", ["scheduleToneChange"]);
+    var voice1 = Voice();
+    spyOn(voice1, "scheduleToneChange");
+    var voice2 = Voice();
+    spyOn(voice2, "scheduleToneChange");
     var barberStub = Barbersynth([voice1, voice2]);
     spyOn(barberStub, "advanceStartTime").and
     .returnValues({value: "start time"}, {done: true});
@@ -31,7 +32,8 @@ describe("scheduleChordChanges", function(){
   });
   
   it("continues while advanceStartTime().done is false", function() {
-    var voice = jasmine.createSpyObj("voice", ["scheduleToneChange"]);
+    var voice = Voice();
+    spyOn(voice, "scheduleToneChange");
     var barberStub = Barbersynth([voice]);
     spyOn(barberStub, "advanceStartTime").and
     .returnValues({value: 0}, {done: false, value: 1}, {value: 2, done: true});
