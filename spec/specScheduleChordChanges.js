@@ -2,7 +2,8 @@ describe("scheduleChordChanges", function(){
   
   it("calls advanceStartTime", function(){
     var barberStub = Barbersynth([]);
-    spyOn(barberStub, "advanceStartTime");
+    spyOn(barberStub, "advanceStartTime").and
+    .returnValues({value: "start time"}, {done: true});
     barberStub.scheduleChordChanges();
     expect(barberStub.advanceStartTime).toHaveBeenCalled();
   });
@@ -10,20 +11,35 @@ describe("scheduleChordChanges", function(){
   it("calls computeBaseToneAndPartials()", function() {
     var barberStub = Barbersynth([]);
     spyOn(barberStub, "computeBaseToneAndPartials");
+    spyOn(barberStub, "advanceStartTime").and
+    .returnValues({value: "start time"}, {done: true});
     barberStub.scheduleChordChanges();
     expect(barberStub.computeBaseToneAndPartials).toHaveBeenCalled();
   });
   
   it("calls the scheduleToneChange method of each voice from the constructor " +
-  "with the result of nextStartTime", function() {
+  "with the result of advanceStartTime", function() {
+    // TODO: spy on real object an method instead.
     var voice1 = jasmine.createSpyObj("voice1", ["scheduleToneChange"]);
     var voice2 = jasmine.createSpyObj("voice2", ["scheduleToneChange"]);
     var barberStub = Barbersynth([voice1, voice2]);
-    spyOn(barberStub, "advanceStartTime").and.returnValue("start time");
+    spyOn(barberStub, "advanceStartTime").and
+    .returnValues({value: "start time"}, {done: true});
     barberStub.scheduleChordChanges();
     expect(voice1.scheduleToneChange).toHaveBeenCalledWith("start time");
     expect(voice2.scheduleToneChange).toHaveBeenCalledWith("start time");
   });
   
-  xit("doesn't make heavy computations between computeStartTime and scheduling");
+  it("continues while advanceStartTime().done is false", function() {
+    var voice = jasmine.createSpyObj("voice", ["scheduleToneChange"]);
+    var barberStub = Barbersynth([voice]);
+    spyOn(barberStub, "advanceStartTime").and
+    .returnValues({value: 0}, {done: false, value: 1}, {value: 2, done: true});
+    barberStub.scheduleChordChanges();
+    expect(voice.scheduleToneChange).toHaveBeenCalledWith(0);
+    expect(voice.scheduleToneChange).toHaveBeenCalledWith(1);
+    expect(voice.scheduleToneChange).not.toHaveBeenCalledWith(2);
+    
+  });
+  
 });
