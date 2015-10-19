@@ -1,7 +1,7 @@
 function Barbersynth(voices) {
   var that = Object.create(Barbersynth.prototype);
   
-  that.scheduleToneChanges = function() {
+  that.scheduleChordChanges = function() {
     var nextStartTime = that.advanceStartTime();
     that.computeBaseToneAndPartials();
     voices.map(function(voice){

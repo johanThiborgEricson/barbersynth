@@ -1,16 +1,16 @@
-describe("scheduleToneChanges", function(){
+describe("scheduleChordChanges", function(){
   
   it("calls advanceStartTime", function(){
     var barberStub = Barbersynth([]);
     spyOn(barberStub, "advanceStartTime");
-    barberStub.scheduleToneChanges();
+    barberStub.scheduleChordChanges();
     expect(barberStub.advanceStartTime).toHaveBeenCalled();
   });
   
   it("calls computeBaseToneAndPartials()", function() {
     var barberStub = Barbersynth([]);
     spyOn(barberStub, "computeBaseToneAndPartials");
-    barberStub.scheduleToneChanges();
+    barberStub.scheduleChordChanges();
     expect(barberStub.computeBaseToneAndPartials).toHaveBeenCalled();
   });
   
@@ -20,7 +20,7 @@ describe("scheduleToneChanges", function(){
     var voice2 = jasmine.createSpyObj("voice2", ["scheduleToneChange"]);
     var barberStub = Barbersynth([voice1, voice2]);
     spyOn(barberStub, "advanceStartTime").and.returnValue("start time");
-    barberStub.scheduleToneChanges();
+    barberStub.scheduleChordChanges();
     expect(voice1.scheduleToneChange).toHaveBeenCalledWith("start time");
     expect(voice2.scheduleToneChange).toHaveBeenCalledWith("start time");
   });
