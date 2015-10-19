@@ -12,7 +12,7 @@ function Barbersynth(voices) {
     
     // This is just a for...of loop, but IE doesn't seem to support that just
     // yet, so I leave it like this for now.
-    while(!(nextStartTime = that.advanceStartTime()).done) {
+    while(!(nextStartTime = that.advanceTone()).done) {
       nextStartTime = nextStartTime.value;
       that.computeBaseToneAndPartials();
       voices.map(scheduleToneChange);
@@ -20,7 +20,7 @@ function Barbersynth(voices) {
     
   };
   
-  that.advanceStartTime = function() {
+  that.advanceTone = function() {
     
   };
   
