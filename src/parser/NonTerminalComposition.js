@@ -6,7 +6,14 @@ function NonTerminalComposition(symbols) {
       return instruction;
     };
     
-    var instructions = symbols.map(makeInstruction);
+    var instructions = [];
+    while(instructions.length < symbols.length) {
+      var madeInstruction = makeInstruction(symbols[instructions.length]);
+      if(!madeInstruction) {
+        return null;
+      }
+      instructions.push(madeInstruction);
+    }
     
     var composer = function(valueIn, instruction) {
       var valueOut = instruction(valueIn);

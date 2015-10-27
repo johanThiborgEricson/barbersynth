@@ -45,13 +45,14 @@ describe("NonTerminalComposition([symbol1, ... , symbolN])" +
   
   it("with n= 0");
   
-  xit("returns null if any symbol.parse(code) in symbols returns null. " + 
+  it("returns null if any symbol.parse(code) in symbols returns null. " + 
   "Subsequent symbol.parse should not be called", function() {
-    spyOn(symbol1, parse).and.returnValue({codeOut: ""});
-    spyOn(symbol2, parse).and.returnValue(null);
-    spyOn(symbol1, parse).and.returnValue({codeOut: ""});
-    composition([symbol1, symbol2, symbol3]);
-    expect(composition.parse("")).toBe(null);
+    spyOn(symbol1, "parse").and.returnValue(function() {});
+    spyOn(symbol2, "parse").and.returnValue(null);
+    spyOn(symbol3, "parse").and.returnValue(function() {});
+    var composition = NonTerminalComposition([symbol1, symbol2, symbol3]);
+    expect(composition.parse({value: ""})).toBe(null);
+    expect(symbol3.parse).not.toHaveBeenCalled();
   });
   
 });
