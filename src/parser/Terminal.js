@@ -1,6 +1,5 @@
 function Terminal(token, interpretation){
   var that = Object.create(Terminal.prototype);
-  that.prototype = Symbol();
   
   that.parse = function(unparsedCodePointer) {
     var lexeme = this.lexemeHead(unparsedCodePointer);
@@ -27,3 +26,5 @@ function Terminal(token, interpretation){
   
   return that;
 }
+
+Terminal.prototype = Symbol();

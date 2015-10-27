@@ -30,4 +30,6 @@ describe("Terminal(/ignore0(token1)...(tokenN)/, interpretation).splitLexemeHead
     expect(terminal.lexemeHead({value: "nonsense"})).toBe(null);
   });
   
+  it("handles multiple calls with regexp with global flag = true, resets start index");
+  
 });

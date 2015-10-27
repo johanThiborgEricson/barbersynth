@@ -1,6 +1,5 @@
 function NonTerminalAlternative(alternatives) {
-  var that = Object.create(NonTerminalAlternative);
-  that.prototype = Symbol();
+  var that = Object.create(NonTerminalAlternative.prototype);
   
   that.parse = function(unparsedCodePointer) {
     var unparsedCodePointerBackup = unparsedCodePointer.value;
@@ -14,3 +13,5 @@ function NonTerminalAlternative(alternatives) {
   
   return that;
 }
+
+NonTerminalAlternative.prototype = Symbol();

@@ -22,3 +22,5 @@ function NonTerminalComposition(symbols) {
   
   return that;
 }
+
+NonTerminalComposition.prototype = Symbol();
