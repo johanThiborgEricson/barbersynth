@@ -1,27 +1,8 @@
 describe("NonTerminalAlternative([symbol1, ... , symbolN, ... symbolM])" + 
 ".parse(lexemeK + code)", function() {
-    var concat = function(lexeme) {
-    return function(valueIn) {
-      var valueOut = valueIn + lexeme;
-      return valueOut;
-    };
-  };
-  
-  function ConcatAnyStringCharByCharTerminal() {
-    var that = Object.create(ConcatAnyStringCharByCharTerminal.prototype);
-    that.prototype = Symbol();
-    that.parse = function(unparsedCodePointer) {
-      var lexeme = /^lexeme \d/.exec(unparsedCodePointer.value)[0];
-      unparsedCodePointer.value = unparsedCodePointer.value.slice(lexeme.length);
-      return concat(lexeme);
-    };
-    
-    return that;
-  }
-  
   it("if k = m = 1, calls symbol1.parse with unparsedCodePointer and returns " + 
   "the reslut and updates unparsedCodePointer", function() {
-    var symbol1 = ConcatAnyStringCharByCharTerminal();
+    var symbol1 = StubConcatenationTerminal();
     spyOn(symbol1, "parse").and.callThrough();
     var alternative = NonTerminalAlternative([symbol1]);
     var unparsedCodePointer = {value: "lexeme 1" + "code"};
@@ -37,7 +18,7 @@ describe("NonTerminalAlternative([symbol1, ... , symbolN, ... symbolM])" +
   });
 
   it("if k = m = 1, calls symbol1.parse with unparsedCodePointer", function() {
-    var symbol1 = ConcatAnyStringCharByCharTerminal();
+    var symbol1 = StubConcatenationTerminal();
     spyOn(symbol1, "parse");
     var alternative = NonTerminalAlternative([symbol1]);
     var unparsedCodePointer = {value: "lexeme 1" + "code"};
@@ -46,9 +27,9 @@ describe("NonTerminalAlternative([symbol1, ... , symbolN, ... symbolM])" +
   });
   
   it("if k = m = 2, returns symbol2.parse", function() {
-    var symbol1 = ConcatAnyStringCharByCharTerminal();
+    var symbol1 = StubConcatenationTerminal();
     spyOn(symbol1, "parse").and.returnValue(null);
-    var symbol2 = ConcatAnyStringCharByCharTerminal();
+    var symbol2 = StubConcatenationTerminal();
     var alternative = NonTerminalAlternative([symbol1, symbol2]);
     var unparsedCodePointer = {value: "lexeme 2" + "code"};
     var instruction = alternative.parse(unparsedCodePointer);
@@ -67,7 +48,7 @@ describe("NonTerminalAlternative([symbol1, ... , symbolN, ... symbolM])" +
   it("if k = m = 2 calls symbol2.parse with lexeme2 + code, even if " + 
   "symbol1.parse has moved the unparsedCodePointer before it failed", function() {
     var symbol1 = UnsuccessfulEaterOfChars();
-    var symbol2 = ConcatAnyStringCharByCharTerminal();
+    var symbol2 = StubConcatenationTerminal();
     var alternative = NonTerminalAlternative([symbol1, symbol2]);
     var unparsedCodePointer = {value: "lexeme 2" + "code"};
     var instruction = alternative.parse(unparsedCodePointer);

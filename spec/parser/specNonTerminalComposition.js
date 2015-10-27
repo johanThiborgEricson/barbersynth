@@ -1,35 +1,16 @@
 describe("NonTerminalComposition([symbol1, ... , symbolN])" + 
 ".parse(lexeme1 + ... + lexemeN + code).perform(value0)", function() {
-  var concat = function(lexeme) {
-    return function(valueIn) {
-      var valueOut = valueIn + lexeme;
-      return valueOut;
-    };
-  };
-  
-  function ConcatAnyStringCharByCharTerminal() {
-    var that = Object.create(ConcatAnyStringCharByCharTerminal.prototype);
-    that.prototype = Symbol();
-    that.parse = function(unparsedCodePointer) {
-      var lexeme = /^lexeme \d/.exec(unparsedCodePointer.value)[0];
-      unparsedCodePointer.value = unparsedCodePointer.value.slice(lexeme.length);
-      return concat(lexeme);
-    };
-    
-    return that;
-  }
-  
   var symbol1;
   var symbol2;
   var symbol3;
   beforeEach(function() {
-    symbol1 = ConcatAnyStringCharByCharTerminal();
-    symbol2 = ConcatAnyStringCharByCharTerminal();
-    symbol3 = ConcatAnyStringCharByCharTerminal();
+    symbol1 = StubConcatenationTerminal();
+    symbol2 = StubConcatenationTerminal();
+    symbol3 = StubConcatenationTerminal();
   });
   
-  it("(ConcatAnyStringCharByCharTerminal spike)", function() {
-    var stub = ConcatAnyStringCharByCharTerminal();
+  it("(StubConcatenationTerminal spike)", function() {
+    var stub = StubConcatenationTerminal();
     var code = {value: "lexeme 1" + "code"};
     var instruction = stub.parse(code);
     expect(code.value).toEqual("code");
