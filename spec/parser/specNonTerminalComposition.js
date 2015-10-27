@@ -43,7 +43,13 @@ describe("NonTerminalComposition([symbol1, ... , symbolN])" +
     expect(actuall("value 0")).toEqual(value);
   });
   
-  it("with n= 0");
+  it("with n = 0, parses nothing and returns the identity function", function() {
+    var composition = NonTerminalComposition([]);
+    var unparsedCodePointer = {value: "code"};
+    var identity = composition.parse(unparsedCodePointer);
+    expect(unparsedCodePointer.value).toEqual("code");
+    expect(identity("value")).toEqual("value");
+  });
   
   it("returns null if any symbol.parse(code) in symbols returns null. " + 
   "Subsequent symbol.parse should not be called", function() {
