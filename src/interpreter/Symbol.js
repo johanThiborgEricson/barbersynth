@@ -11,14 +11,14 @@ Symbol.prototype
 };
   
 Symbol.prototype
-.interpret = function(code, valueIn) {
+.interpret = function(code) {
   var unparsedCodePointer = {value: code};
   var instruction = this.parse(unparsedCodePointer);
   if(!instruction || unparsedCodePointer.value !== "") {
     return Symbol.PARSE_ERROR;
   }
-  var valueOut = instruction(valueIn);
-  return valueOut;
+  
+  instruction();
 };
 
 Symbol.PARSE_ERROR = new Error("Symbol.PARSE_ERROR");

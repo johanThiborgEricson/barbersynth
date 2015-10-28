@@ -7,14 +7,14 @@ describe("Terminal(token, interpretation)" +
     expect(terminal.lexemeHead).toHaveBeenCalledWith("unparsedCodePointer");
   });
   
-  it("calls interpretation with value and all the elements in the result " + 
-  "of lexemeHead", function() {
+  it("calls interpretation all the elements in the result of lexemeHead", 
+  function() {
     var interpretation = jasmine.createSpy("interpretation");
     var terminal = Terminal("token", interpretation);
     spyOn(terminal, "lexemeHead").and.returnValue(["lexeme a", "lexeme b"]);
     var instruction = terminal.parse();
-    instruction("value");
-    expect(interpretation).toHaveBeenCalledWith("value", "lexeme a", "lexeme b");
+    instruction();
+    expect(interpretation).toHaveBeenCalledWith("lexeme a", "lexeme b");
   });
   
   it("returns the result of interpretation", function() {

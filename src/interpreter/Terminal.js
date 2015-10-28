@@ -7,8 +7,8 @@ function Terminal(token, interpretation){
       return null;
     }
     
-    var instruction = function(value) {
-      return interpretation.apply(null, [value].concat(lexeme));
+    var instruction = function() {
+      return interpretation.apply(null, lexeme);
     };
     
     return instruction;

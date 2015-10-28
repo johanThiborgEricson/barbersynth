@@ -1,22 +1,18 @@
-describe("Symbol().interpret(code, value)", function() {
-  it("calls this.parse with {value: code}, calls the result with value and " + 
-  "returns the result", function() {
+describe("Symbol().interpret(code)", function() {
+  it("calls this.parse with {value: code}, calls the result", function() {
     var symbol = Symbol();
-    var instruction = jasmine.createSpy("instruction").and
-    .returnValue("result");
+    var instruction = jasmine.createSpy("instruction");
     spyOn(symbol, "parse").and
     .returnValue(instruction);
-    
-    var result = symbol.interpret("", "value");
+    symbol.interpret("");
     expect(symbol.parse).toHaveBeenCalledWith({value: ""});
-    expect(instruction).toHaveBeenCalledWith("value");
-    expect(result).toEqual("result");
+    expect(instruction).toHaveBeenCalled();
   });
   
   it("is reachable from all sub-classes", function() {
     expect(Terminal().interpret).toBeDefined();
     expect(NonTerminalAlternative().interpret).toBeDefined();
-    expect(NonTerminalComposition().interpret).toBeDefined();
+    expect(NonTerminalSequence().interpret).toBeDefined();
   });
   
   it("returns Symbol.PARSE_ERROR if parse returns null", function() {
