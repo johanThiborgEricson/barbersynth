@@ -1,5 +1,5 @@
-describe("Terminal(token, interpretation)" + 
-".parse(unparsedCodePointer)(value)", function() {
+describe("Terminal(token, interpretation, thisBinding)" + 
+".parse(unparsedCodePointer)()", function() {
   it("calls lexemeHead with unparsedCodePointer", function() {
     var terminal = Terminal("token", "interpretation");
     spyOn(terminal, "lexemeHead");
@@ -7,8 +7,8 @@ describe("Terminal(token, interpretation)" +
     expect(terminal.lexemeHead).toHaveBeenCalledWith("unparsedCodePointer");
   });
   
-  it("calls interpretation all the elements in the result of lexemeHead", 
-  function() {
+  it("calls interpretation all the elements in the result " + 
+  "of lexemeHead", function() {
     var interpretation = jasmine.createSpy("interpretation");
     var terminal = Terminal("token", interpretation);
     spyOn(terminal, "lexemeHead").and.returnValue(["lexeme a", "lexeme b"]);
@@ -17,12 +17,18 @@ describe("Terminal(token, interpretation)" +
     expect(interpretation).toHaveBeenCalledWith("lexeme a", "lexeme b");
   });
   
-  it("returns the result of interpretation", function() {
-    var interpretation = jasmine.createSpy("interpretation").and
-    .returnValue("interpretation result");
-    var terminal = Terminal("token", interpretation);
+  it("calls interpretation with this bound to thisBinding", function() {
+    var stolenThis;
+    var thisThief = function() {
+      stolenThis = this;
+    };
+    
+    var thisBinding = {property: "property"};
+    var terminal = Terminal("token", thisThief, thisBinding);
     spyOn(terminal, "lexemeHead").and.returnValue([]);
-    expect(instruction = terminal.parse()()).toEqual("interpretation result");
+    var instruction = terminal.parse();
+    instruction();
+    expect(stolenThis).toBe(thisBinding);
   });
   
   it("returns null if the result of lexemeHead is null", function() {
