@@ -25,7 +25,7 @@ describe("NonTerminalSequence([symbol1, ... , symbolN])" +
   it("(StubLexeme_dConcatenator spike)", function() {
     var thisBinding = {con: "value 0"};
     var stub = StubLexeme_dConcatenator(thisBinding);
-    var code = CodePointer("lexeme 1" + "code");
+    var code = StubCodePointer("lexeme 1" + "code");
     thisBinding.method = stub.parse(code);
     expect(code.getUnparsed()).toEqual("code");
     thisBinding.method();
@@ -34,9 +34,9 @@ describe("NonTerminalSequence([symbol1, ... , symbolN])" +
   
   it("with n = 1, returns the same thing as symbol1.parse(code)", function() {
     var composition = NonTerminalSequence([actuallSymbol1]);
-    var actuallCodePointer = CodePointer("lexeme 1" + "code");
+    var actuallCodePointer = StubCodePointer("lexeme 1" + "code");
     actuallThisBinding.method = composition.parse(actuallCodePointer);
-    var expectedCodePointer = CodePointer("lexeme 1" + "code");
+    var expectedCodePointer = StubCodePointer("lexeme 1" + "code");
     expectedThisBinding.method = expectedSymbol1.parse(expectedCodePointer);
     expect(actuallCodePointer.getUnparsed()).toEqual(expectedCodePointer.value);
     actuallThisBinding.method();
@@ -47,12 +47,12 @@ describe("NonTerminalSequence([symbol1, ... , symbolN])" +
   it("with n = 2, returns the same thing as calling parse on symbol1 and 2 " + 
   "with apropriate code and composing the results", function() {
     var composition = NonTerminalSequence([actuallSymbol1, actuallSymbol2]);
-    var expectedCodePointer = CodePointer("lexeme 1" + "lexeme 2" + "code");
+    var expectedCodePointer = StubCodePointer("lexeme 1" + "lexeme 2" + "code");
     expectedThisBinding.method1 = expectedSymbol1.parse(expectedCodePointer);
     expectedThisBinding.method2 = expectedSymbol2.parse(expectedCodePointer);
     expectedThisBinding.method1();
     expectedThisBinding.method2();
-    var actuallCodePointer = CodePointer("lexeme 1" + "lexeme 2" + "code");
+    var actuallCodePointer = StubCodePointer("lexeme 1" + "lexeme 2" + "code");
     actuallThisBinding.method = composition.parse(actuallCodePointer);
     expect(actuallCodePointer.getUnparsed())
     .toEqual(expectedCodePointer.getUnparsed());
@@ -62,7 +62,7 @@ describe("NonTerminalSequence([symbol1, ... , symbolN])" +
   
   it("with n = 0, parses nothing", function() {
     var composition = NonTerminalSequence([]);
-    var unparsedCodePointer = CodePointer("code");
+    var unparsedCodePointer = StubCodePointer("code");
     composition.parse(unparsedCodePointer);
     expect(unparsedCodePointer.getUnparsed()).toEqual("code");
   });
