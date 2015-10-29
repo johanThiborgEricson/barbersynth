@@ -23,11 +23,6 @@ Symbol.prototype
 
 Symbol.PARSE_ERROR = new Error("Symbol.PARSE_ERROR");
 
-Symbol.prototype
-.regExpParseInstaller = MethodInstaller(RegExp.prototype, "parse", function(unparsedCodePointer) {
-  return Terminal(this, Symbol().id).parse(unparsedCodePointer);
-});
-
 Symbol
 .regExpParseInstaller = function(Terminal) {
   return MethodInstaller(RegExp.prototype, "parse", function(unparsedCodePointer) {
