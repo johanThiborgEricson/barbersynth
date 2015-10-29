@@ -12,14 +12,14 @@ describe("NonTerminalSequence([symbol1, ... , symbolN])" +
   var expectedThisBinding;
   beforeEach(function() {
     actuallThisBinding = {con: "value 0"};
-    actuallSymbol1 = StubLexeme_dConcatenator(actuallThisBinding);
-    actuallSymbol2 = StubLexeme_dConcatenator(actuallThisBinding);
-    actuallSymbol3 = StubLexeme_dConcatenator(actuallThisBinding);
+    actuallSymbol1 = StubLexeme_dConcatenator();
+    actuallSymbol2 = StubLexeme_dConcatenator();
+    actuallSymbol3 = StubLexeme_dConcatenator();
     
     expectedThisBinding = {con: "value 0"};
-    expectedSymbol1 = StubLexeme_dConcatenator(expectedThisBinding);
-    expectedSymbol2 = StubLexeme_dConcatenator(expectedThisBinding);
-    expectedSymbol3 = StubLexeme_dConcatenator(expectedThisBinding);
+    expectedSymbol1 = StubLexeme_dConcatenator();
+    expectedSymbol2 = StubLexeme_dConcatenator();
+    expectedSymbol3 = StubLexeme_dConcatenator();
   });
   
   it("(StubLexeme_dConcatenator spike)", function() {
