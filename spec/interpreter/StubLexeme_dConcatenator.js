@@ -6,7 +6,7 @@ function StubLexeme_dConcatenator(thisBinding) {
     var lexeme = /^lexeme \d/.exec(unparsedCodePointer.value)[0];
     unparsedCodePointer.value = unparsedCodePointer.value.slice(lexeme.length);
     return function() {
-      thisBinding.con = thisBinding.con + lexeme;
+      this.con = this.con + lexeme;
     };
   };
   

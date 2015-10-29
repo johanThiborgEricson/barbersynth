@@ -1,32 +1,26 @@
 describe("NonTerminalAlternative([symbol1, ... , symbolN, ... symbolM])" + 
 ".parse(lexemeK + code)", function() {
-  it("if k = m = 1, calls symbol1.parse with unparsedCodePointer and returns " + 
-  "the reslut and updates unparsedCodePointer", function() {
+  it("if k = m = 1, calls symbol1.parse with codePointer and returns " + 
+  "the reslut and updates codePointer", function() {
     var actuallThisBinding = {con: "value 0"};
     var symbol1 = StubLexeme_dConcatenator(actuallThisBinding);
     spyOn(symbol1, "parse").and.callThrough();
     var alternative = NonTerminalAlternative([symbol1]);
-    var unparsedCodePointer = {value: "lexeme 1" + "code"};
-    var actuallInstruction = alternative.parse(unparsedCodePointer);
-    expect(unparsedCodePointer.value).toEqual("code");
-    actuallInstruction();
+    var codePointer = CodePointer("lexeme 1" + "code");
+    actuallThisBinding.method = alternative.parse(codePointer);
+    expect(codePointer.getUnparsed()).toEqual("code");
+    actuallThisBinding.method();
     expect(actuallThisBinding.con).toEqual("value 0" + "lexeme 1");
-    
-    // This fails, because jasmine makes shallow copies of the arguments
-    // TODO: make jasmine bug report and dissapear for a while...
-    // FIXME: will fixing this jasmine bug introduce problems with closures?
-    // function arguments can be got afterwards...
-    // expect(symbol1.parse).toHaveBeenCalledWith({value: "lexeme 1" + "code"});
   });
-
-  it("if k = m = 1, calls symbol1.parse with unparsedCodePointer", function() {
-    var actuallThisBinding = {con: "value 0"};
-    var symbol1 = StubLexeme_dConcatenator(actuallThisBinding);
+  
+  // FIXME: is this test still relevant?
+  it("if k = m = 1, calls symbol1.parse with codePointer", function() {
+    var symbol1 = StubLexeme_dConcatenator();
     spyOn(symbol1, "parse");
     var alternative = NonTerminalAlternative([symbol1]);
-    var unparsedCodePointer = {value: "lexeme 1" + "code"};
-    alternative.parse(unparsedCodePointer);
-    expect(symbol1.parse).toHaveBeenCalledWith({value: "lexeme 1" + "code"});
+    var codePointer = CodePointer("lexeme 1" + "code");
+    alternative.parse(codePointer);
+    expect(symbol1.parse).toHaveBeenCalledWith(codePointer);
   });
   
   it("if k = m = 2, returns symbol2.parse", function() {
@@ -35,16 +29,16 @@ describe("NonTerminalAlternative([symbol1, ... , symbolN, ... symbolM])" +
     spyOn(symbol1, "parse").and.returnValue(null);
     var symbol2 = StubLexeme_dConcatenator(actuallThisBinding);
     var alternative = NonTerminalAlternative([symbol1, symbol2]);
-    var unparsedCodePointer = {value: "lexeme 2" + "code"};
-    var instruction = alternative.parse(unparsedCodePointer);
-    instruction();
+    var codePointer = CodePointer("lexeme 2" + "code");
+    actuallThisBinding.method = alternative.parse(codePointer);
+    actuallThisBinding.method();
     expect(actuallThisBinding.con).toEqual("value 0" + "lexeme 2");
   });
   
   function UnsuccessfulEaterOfChars() {
     return {
-      parse(unparsedCodePointer) {
-        unparsedCodePointer.value = unparsedCodePointer.value.slice(1);
+      parse(codePointer) {
+        codePointer.value = codePointer.getUnparsed().slice(1);
         return null;
       }, 
     };
@@ -56,9 +50,9 @@ describe("NonTerminalAlternative([symbol1, ... , symbolN, ... symbolM])" +
     var actuallThisBinding = {con: "value 0"};
     var symbol2 = StubLexeme_dConcatenator(actuallThisBinding);
     var alternative = NonTerminalAlternative([symbol1, symbol2]);
-    var unparsedCodePointer = {value: "lexeme 2" + "code"};
-    var instruction = alternative.parse(unparsedCodePointer);
-    instruction();
+    var codePointer = CodePointer("lexeme 2" + "code");
+    actuallThisBinding.method = alternative.parse(codePointer);
+    actuallThisBinding.method();
     expect(actuallThisBinding.con).toEqual("value 0" + "lexeme 2");
   });
   

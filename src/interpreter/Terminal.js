@@ -1,8 +1,8 @@
 function Terminal(token, interpretation){
   var that = Object.create(Terminal.prototype);
   
-  that.parse = function(unparsedCodePointer) {
-    var lexeme = this.lexemeHead(unparsedCodePointer);
+  that.makeInstruction = function(codePointer) {
+    var lexeme = codePointer.parse(token);
     if(!lexeme) {
       return null;
     }
