@@ -14,6 +14,9 @@ function Terminal(token, interpretation){
     return instruction;
   };
   
+  // TODO: this function should take the token and be in a Parser object
+  // that is passed to Symbol().parse instead.
+  // FIXME: then the Symbol().parse method should be renamed. To what?
   that.lexemeHead = function(unparsedCodePointer) {
     var match = token.exec(unparsedCodePointer.value);
     if(!match || match.index !== 0) {
