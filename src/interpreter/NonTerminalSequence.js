@@ -2,14 +2,17 @@ function NonTerminalSequence(symbols) {
   var that = Object.create(NonTerminalSequence.prototype);
   that.parse = function(unparsedCodePointer) {
     var instructions = [];
+    var lastMade = true;
     
-    for(var i = 0; i < symbols.length; i++) {
-      var maybeInstruction = symbols[i].parse(unparsedCodePointer);
-      if(!maybeInstruction) {
-        return null;
-      }
-      
-      instructions.push(maybeInstruction);
+    var makeInstructionIfAllPreviousWasSuccessful = function(symbol) {
+      lastMade = lastMade && symbol.parse(unparsedCodePointer);
+      instructions.push(lastMade);
+    };
+    
+    symbols.map(makeInstructionIfAllPreviousWasSuccessful);
+    
+    if(!lastMade) {
+      return null;
     }
     
     var instruction = function() {
