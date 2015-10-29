@@ -1,5 +1,5 @@
 describe("NonTerminalSequence([symbol1, ... , symbolN])" + 
-".parse(lexeme1 + ... + lexemeN + code).perform(value0)", function() {
+".parse(lexeme1 + ... + lexemeN + code).call(thisBinding)", function() {
   var actuallSymbol1;
   var actuallSymbol2;
   var actuallSymbol3;
@@ -80,4 +80,21 @@ describe("NonTerminalSequence([symbol1, ... , symbolN])" +
     expect(actuallSymbol3.parse).not.toHaveBeenCalled();
   });
   
+  it("calls the instructions from the symbols with thisBinding as this-binding", 
+  function() {
+    var stolenThis;
+    var thisThief = function() {
+      stolenThis = this;
+    };
+    
+    var thisBinding = {
+      property: "property",
+    };
+    
+    spyOn(actuallSymbol1, "parse").and.returnValue(thisThief);
+    var composition = NonTerminalSequence([actuallSymbol1]);
+    var instruction = composition.parse({value: "code"});
+    instruction.call(thisBinding);
+    expect(stolenThis).toBe(thisBinding);
+  });
 });

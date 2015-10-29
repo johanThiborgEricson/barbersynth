@@ -13,8 +13,9 @@ function NonTerminalSequence(symbols) {
     }
     
     var instruction = function() {
+      var that = this;
       instructions.map(function(instruction) {
-        instruction();
+        instruction.call(that);
       });
     };
     
