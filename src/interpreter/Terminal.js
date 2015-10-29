@@ -1,4 +1,4 @@
-function Terminal(token, interpretation, thisBinding){
+function Terminal(token, interpretation){
   var that = Object.create(Terminal.prototype);
   
   that.parse = function(unparsedCodePointer) {
@@ -8,7 +8,7 @@ function Terminal(token, interpretation, thisBinding){
     }
     
     var instruction = function() {
-      return interpretation.apply(thisBinding, lexeme);
+      return interpretation.apply(this, lexeme);
     };
     
     return instruction;

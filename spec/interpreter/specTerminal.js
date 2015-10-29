@@ -1,5 +1,5 @@
 describe("Terminal(token, interpretation, thisBinding)" + 
-".parse(unparsedCodePointer)()", function() {
+".parse(unparsedCodePointer).apply(thisBinding)", function() {
   it("calls lexemeHead with unparsedCodePointer", function() {
     var terminal = Terminal("token", "interpretation");
     spyOn(terminal, "lexemeHead");
@@ -17,17 +17,18 @@ describe("Terminal(token, interpretation, thisBinding)" +
     expect(interpretation).toHaveBeenCalledWith("lexeme a", "lexeme b");
   });
   
-  it("calls interpretation with this bound to thisBinding", function() {
+  it("calls interpretation with its call method with thisBinding as argument", 
+  function() {
     var stolenThis;
     var thisThief = function() {
       stolenThis = this;
     };
     
     var thisBinding = {property: "property"};
-    var terminal = Terminal("token", thisThief, thisBinding);
+    var terminal = Terminal("token", thisThief);
     spyOn(terminal, "lexemeHead").and.returnValue([]);
     var instruction = terminal.parse();
-    instruction();
+    instruction.call(thisBinding);
     expect(stolenThis).toBe(thisBinding);
   });
   
