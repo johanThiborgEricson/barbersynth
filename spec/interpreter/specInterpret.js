@@ -1,41 +1,45 @@
-describe("Symbol().interpret(code)", function() {
-  it("calls this.makeInstruction with {value: code}, calls the result and " + 
-  "returns the result", function() {
-    var symbol = Symbol();
+describe("Interpreter().interpret(startSymbol, code)", function() {
+
+  xit("calls this.makeInstruction with CodePointer(code), calls the result " + 
+  "and returns the result", function() {
+    var RealCodePointer = CodePointer;
+    CodePointer = jasmine.createSpy("CodePointer").and
+    .returnValue("code pointer");
+    
+    var startSymbol = Symbol();
     var instruction = jasmine.createSpy("instruction").and
     .returnValue("result");
-    spyOn(symbol, "makeInstruction").and
+    spyOn(startSymbol, "makeInstruction").and
     .returnValue(instruction);
-    expect(symbol.interpret("")).toEqual("result");
-    expect(symbol.makeInstruction).toHaveBeenCalledWith({value: ""});
+    var interpreter = Interpreter();
+    expect(interpreter.interpret("")).toEqual("result");
+    expect(startSymbol.makeInstruction).toHaveBeenCalledWith("code pointer");
     expect(instruction).toHaveBeenCalled();
-  });
-  
-  it("is reachable from all sub-classes", function() {
-    expect(Terminal().interpret).toBeDefined();
-    expect(NonTerminalAlternative().interpret).toBeDefined();
-    expect(NonTerminalSequence().interpret).toBeDefined();
-  });
-  
-  it("returns Symbol.PARSE_ERROR if makeInstruction returns null", function() {
-    var symbol = Symbol();
-    spyOn(symbol, "makeInstruction").and
-    .returnValue(null);
     
-    expect(symbol.interpret("code")).toEqual(Symbol.PARSE_ERROR);
+    CodePointer = RealCodePointer;
   });
   
-  it("returns Symbol.PARSE_ERROR if code is non-empty after parse without " + 
-  "calling instruction", function() {
-    var symbol = Symbol();
+  it("throws Symbol.PARSE_ERROR if makeInstruction returns null", function() {
+    var startSymbol = Symbol();
+    spyOn(startSymbol, "makeInstruction").and
+    .returnValue(null);
+    var interpreter = Interpreter();
+    expect(function() {interpreter.interpret(startSymbol, "code");})
+    .toThrowError("Interpreter.PARSE_ERROR");
+  });
+  
+  it("returns Symbol.PARSE_ERROR if codePointer.getUnparsed() is non-empty " + 
+  "after parse without calling instruction", function() {
+    var startSymbol = Symbol();
     var instruction;
-    symbol.makeInstruction = function(unparsedCodePointer) {
-      unparsedCodePointer.value = "ode";
+    startSymbol.makeInstruction = function(codePointer) {
+      codePointer.parse(/./);
       instruction = jasmine.createSpy("symbol.makeInstruction result");
       return instruction;
     };
     
-    expect(symbol.interpret("code")).toEqual(Symbol.PARSE_ERROR);
+    expect(function() {Interpreter().interpret(startSymbol, "code");})
+    .toThrowError("Interpreter.PARSE_ERROR");
     expect(instruction).not.toHaveBeenCalled();
   });
   

@@ -10,17 +10,6 @@ Symbol.prototype
   throw "Symbol().makeInstruction is an abstract method and should not be called.";
 };
   
-Symbol.prototype
-.interpret = function(code) {
-  var unparsedCodePointer = {value: code};
-  var instruction = this.makeInstruction(unparsedCodePointer);
-  if(!instruction || unparsedCodePointer.value !== "") {
-    return Symbol.PARSE_ERROR;
-  }
-  
-  return instruction();
-};
-
 Symbol.PARSE_ERROR = new Error("Symbol.PARSE_ERROR");
 
 Symbol
