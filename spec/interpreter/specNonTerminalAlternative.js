@@ -38,7 +38,7 @@ describe("NonTerminalAlternative([symbol1, ... , symbolN, ... symbolM])" +
   function UnsuccessfulEaterOfChars() {
     return {
       makeInstruction(codePointer) {
-        codePointer.value = codePointer.getUnparsed().slice(1);
+        codePointer.restore(codePointer.getUnparsed().slice(1));
         return null;
       }, 
     };
