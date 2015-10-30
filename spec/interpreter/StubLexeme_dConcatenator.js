@@ -8,6 +8,7 @@ function StubLexeme_dConcatenator() {
     codePointer.restore(codePointer.backup().slice(lexeme.length));
     return function() {
       this.con = this.con + lexeme;
+      return this.con;
     };
   };
   

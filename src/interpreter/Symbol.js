@@ -18,7 +18,7 @@ Symbol.prototype
     return Symbol.PARSE_ERROR;
   }
   
-  instruction();
+  return instruction();
 };
 
 Symbol.PARSE_ERROR = new Error("Symbol.PARSE_ERROR");

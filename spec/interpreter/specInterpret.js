@@ -1,10 +1,12 @@
 describe("Symbol().interpret(code)", function() {
-  it("calls this.makeInstruction with {value: code}, calls the result", function() {
+  it("calls this.makeInstruction with {value: code}, calls the result and " + 
+  "returns the result", function() {
     var symbol = Symbol();
-    var instruction = jasmine.createSpy("instruction");
+    var instruction = jasmine.createSpy("instruction").and
+    .returnValue("result");
     spyOn(symbol, "makeInstruction").and
     .returnValue(instruction);
-    symbol.interpret("");
+    expect(symbol.interpret("")).toEqual("result");
     expect(symbol.makeInstruction).toHaveBeenCalledWith({value: ""});
     expect(instruction).toHaveBeenCalled();
   });

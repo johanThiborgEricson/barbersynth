@@ -18,9 +18,12 @@ function NonTerminalSequence(symbols) {
     
     var instruction = function() {
       var that = this;
+      var lastResult;
       instructions.map(function(instruction) {
-        instruction.call(that);
+        lastResult = instruction.call(that);
       });
+      
+      return lastResult;
     };
     
     return instruction;
