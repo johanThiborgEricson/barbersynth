@@ -7,5 +7,6 @@ function Symbol() {
 // CodePointer => Instruction
 Symbol.prototype
 .makeInstruction = function(codePointer) {
-  throw "Symbol().makeInstruction is an abstract method and should not be called.";
+  throw "Symbol().makeInstruction is an abstract method " + 
+  "and should not be called.";
 };
