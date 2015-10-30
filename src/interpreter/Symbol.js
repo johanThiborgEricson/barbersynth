@@ -24,13 +24,27 @@ Symbol.prototype
 Symbol.PARSE_ERROR = new Error("Symbol.PARSE_ERROR");
 
 Symbol
-.regExpParseInstaller = function(Terminal) {
+.regExpParseInstaller2 = function(Terminal) {
   return MethodInstaller(RegExp.prototype, "parse", function(unparsedCodePointer) {
     return Terminal(this, Symbol.id).parse(unparsedCodePointer);
   });
 };
 
 Symbol
-.id = function() {
+.regExpPrototypeMakeInstructionInstaller = function(Terminal) {
+  var noopInstruction = function(codePointer) {
+    return Terminal(this, Symbol.noop).makeInstruction(codePointer);
+  };
+  
+  return MethodInstaller(RegExp.prototype, "makeInstruction", noopInstruction);
+};
+
+Symbol
+.noop = function() {
+  
+};
+
+Symbol
+.id2 = function() {
   
 };
