@@ -1,11 +1,11 @@
 function NonTerminalAlternative(alternatives) {
   var that = Object.create(NonTerminalAlternative.prototype);
   
-  that.makeInstruction = function(unparsedCodePointer) {
-    var unparsedCodePointerBackup = unparsedCodePointer.backup();
+  that.makeInstruction = function(codePointer) {
+    var backup = codePointer.backup();
     var instruction = alternatives.reduce(function(instruction, alternative) {
-      unparsedCodePointer.restore(unparsedCodePointerBackup);
-      return instruction || alternative.makeInstruction(unparsedCodePointer);
+      codePointer.restore(backup);
+      return instruction || alternative.makeInstruction(codePointer);
     }, null);
     
     return instruction;
