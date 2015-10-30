@@ -6,8 +6,8 @@ function Symbol() {
 
 // unparsedCodePointer => Instruction
 Symbol.prototype
-.parse = function(unparsedCodePointer) {
-  throw "Symbol().parse is an abstract method and should not be called.";
+.makeInstruction = function(unparsedCodePointer) {
+  throw "Symbol().makeInstruction is an abstract method and should not be called.";
 };
   
 Symbol.prototype
