@@ -4,9 +4,9 @@ function Symbol() {
   return that;
 }
 
-// unparsedCodePointer => Instruction
+// CodePointer => Instruction
 Symbol.prototype
-.makeInstruction = function(unparsedCodePointer) {
+.makeInstruction = function(codePointer) {
   throw "Symbol().makeInstruction is an abstract method and should not be called.";
 };
   
@@ -24,13 +24,6 @@ Symbol.prototype
 Symbol.PARSE_ERROR = new Error("Symbol.PARSE_ERROR");
 
 Symbol
-.regExpParseInstaller2 = function(Terminal) {
-  return MethodInstaller(RegExp.prototype, "parse", function(unparsedCodePointer) {
-    return Terminal(this, Symbol.id).parse(unparsedCodePointer);
-  });
-};
-
-Symbol
 .regExpPrototypeMakeInstructionInstaller = function(Terminal) {
   var noopInstruction = function(codePointer) {
     return Terminal(this, Symbol.noop).makeInstruction(codePointer);
@@ -41,10 +34,5 @@ Symbol
 
 Symbol
 .noop = function() {
-  
-};
-
-Symbol
-.id2 = function() {
   
 };
