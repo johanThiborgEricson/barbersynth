@@ -1,4 +1,4 @@
-describe("Symbol.regExpPrototypeMakeInstructionInstaller(Terminal)", 
+describe("Interpreter.regExpPrototypeMakeInstructionInstaller(Terminal)", 
 function() {
   var oldTerminal;
   beforeAll(function() {
@@ -20,7 +20,7 @@ function() {
   it("has methods install and uninstall that adds and removes makeInstruction methods " + 
   "on all regular expressions", function() {
     expect(new RegExp().makeInstruction).not.toBeDefined();
-    var installer = Symbol.regExpPrototypeMakeInstructionInstaller(Terminal);
+    var installer = Interpreter.regExpPrototypeMakeInstructionInstaller(Terminal);
     installer.install();
     expect(new RegExp().makeInstruction).toBeDefined();
     installer.uninstall();
@@ -35,12 +35,12 @@ function() {
         makeInstruction() {},
       });
       
-      var installer = Symbol.regExpPrototypeMakeInstructionInstaller(StubTerminal);
+      var installer = Interpreter.regExpPrototypeMakeInstructionInstaller(StubTerminal);
       installer.install();
       var regularExpression = new RegExp();
       regularExpression.makeInstruction();
       expect(StubTerminal)
-      .toHaveBeenCalledWith(regularExpression, Symbol.noop);
+      .toHaveBeenCalledWith(regularExpression, Interpreter.noop);
       
       installer.uninstall();
     });
@@ -53,7 +53,7 @@ function() {
         makeInstruction: makeInstruction,
       });
       
-      var installer = Symbol.regExpPrototypeMakeInstructionInstaller(StubTerminal);
+      var installer = Interpreter.regExpPrototypeMakeInstructionInstaller(StubTerminal);
       installer.install();
       expect(new RegExp().makeInstruction("unparsedCodePointer"))
       .toEqual("lexeme");
