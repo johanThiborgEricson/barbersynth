@@ -1,12 +1,12 @@
 function NonTerminalSequence(symbols) {
   var that = Object.create(NonTerminalSequence.prototype);
 
-  that.makeInstruction = function(unparsedCodePointer) {
+  that.makeInstruction = function(codePointer) {
     var instructions = [];
     var lastMade = true;
     
     var makeInstructionIfAllPreviousWasSuccessful = function(symbol) {
-      lastMade = lastMade && symbol.makeInstruction(unparsedCodePointer);
+      lastMade = lastMade && symbol.makeInstruction(codePointer);
       instructions.push(lastMade);
     };
     
