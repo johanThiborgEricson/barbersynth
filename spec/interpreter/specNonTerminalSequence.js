@@ -22,7 +22,6 @@ describe("NonTerminalSequence([symbol1, ... , symbolN])" +
     expectedSymbol3 = StubLexeme_dConcatenator();
   });
   
-  // TODO: rename composition to sequence
   it("(StubLexeme_dConcatenator spike)", function() {
     var thisBinding = {con: "value 0"};
     var stub = StubLexeme_dConcatenator(thisBinding);
@@ -34,9 +33,9 @@ describe("NonTerminalSequence([symbol1, ... , symbolN])" +
   });
   
   it("with n = 1, returns the same thing as symbol1.getInstruction(code)", function() {
-    var composition = NonTerminalSequence([actuallSymbol1]);
+    var sequence = NonTerminalSequence([actuallSymbol1]);
     var actuallCodePointer = StubCodePointer("lexeme 1" + "code");
-    actuallThisBinding.method = composition.makeInstruction(actuallCodePointer);
+    actuallThisBinding.method = sequence.makeInstruction(actuallCodePointer);
     var expectedCodePointer = StubCodePointer("lexeme 1" + "code");
     expectedThisBinding.method = 
     expectedSymbol1.makeInstruction(expectedCodePointer);
@@ -49,14 +48,14 @@ describe("NonTerminalSequence([symbol1, ... , symbolN])" +
   
   it("with n = 2, returns the same thing as calling makeInstruction on symbol1 and 2 " + 
   "with apropriate code and composing the results", function() {
-    var composition = NonTerminalSequence([actuallSymbol1, actuallSymbol2]);
+    var sequence = NonTerminalSequence([actuallSymbol1, actuallSymbol2]);
     var expectedCodePointer = StubCodePointer("lexeme 1" + "lexeme 2" + "code");
     expectedThisBinding.method1 = expectedSymbol1.makeInstruction(expectedCodePointer);
     expectedThisBinding.method2 = expectedSymbol2.makeInstruction(expectedCodePointer);
     expectedThisBinding.method1();
     expectedThisBinding.method2();
     var actuallCodePointer = StubCodePointer("lexeme 1" + "lexeme 2" + "code");
-    actuallThisBinding.method = composition.makeInstruction(actuallCodePointer);
+    actuallThisBinding.method = sequence.makeInstruction(actuallCodePointer);
     expect(actuallCodePointer.getUnparsed())
     .toEqual(expectedCodePointer.getUnparsed());
     actuallThisBinding.method();
@@ -64,9 +63,9 @@ describe("NonTerminalSequence([symbol1, ... , symbolN])" +
   });
   
   it("with n = 0, parses nothing", function() {
-    var composition = NonTerminalSequence([]);
+    var sequence = NonTerminalSequence([]);
     var unparsedCodePointer = StubCodePointer("code");
-    composition.makeInstruction(unparsedCodePointer);
+    sequence.makeInstruction(unparsedCodePointer);
     expect(unparsedCodePointer.getUnparsed()).toEqual("code");
   });
   
@@ -75,11 +74,11 @@ describe("NonTerminalSequence([symbol1, ... , symbolN])" +
     spyOn(actuallSymbol1, "makeInstruction").and.returnValue(function() {});
     spyOn(actuallSymbol2, "makeInstruction").and.returnValue(null);
     spyOn(actuallSymbol3, "makeInstruction").and.returnValue(function() {});
-    var composition = NonTerminalSequence(
+    var sequence = NonTerminalSequence(
       [actuallSymbol1, actuallSymbol2, actuallSymbol3]
     );
     
-    expect(composition.makeInstruction(CodePointer(""))).toBe(null);
+    expect(sequence.makeInstruction(CodePointer(""))).toBe(null);
     expect(actuallSymbol3.makeInstruction).not.toHaveBeenCalled();
   });
   
@@ -95,8 +94,8 @@ describe("NonTerminalSequence([symbol1, ... , symbolN])" +
     };
     
     spyOn(actuallSymbol1, "makeInstruction").and.returnValue(thisThief);
-    var composition = NonTerminalSequence([actuallSymbol1]);
-    var instruction = composition.makeInstruction(CodePointer(""));
+    var sequence = NonTerminalSequence([actuallSymbol1]);
+    var instruction = sequence.makeInstruction(CodePointer(""));
     instruction.call(thisBinding);
     expect(stolenThis).toBe(thisBinding);
   });

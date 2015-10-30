@@ -1,11 +1,11 @@
 describe("Symbol().interpret(code)", function() {
-  it("calls this.parse with {value: code}, calls the result", function() {
+  it("calls this.makeInstruction with {value: code}, calls the result", function() {
     var symbol = Symbol();
     var instruction = jasmine.createSpy("instruction");
-    spyOn(symbol, "parse").and
+    spyOn(symbol, "makeInstruction").and
     .returnValue(instruction);
     symbol.interpret("");
-    expect(symbol.parse).toHaveBeenCalledWith({value: ""});
+    expect(symbol.makeInstruction).toHaveBeenCalledWith({value: ""});
     expect(instruction).toHaveBeenCalled();
   });
   
@@ -15,9 +15,9 @@ describe("Symbol().interpret(code)", function() {
     expect(NonTerminalSequence().interpret).toBeDefined();
   });
   
-  it("returns Symbol.PARSE_ERROR if parse returns null", function() {
+  it("returns Symbol.PARSE_ERROR if makeInstruction returns null", function() {
     var symbol = Symbol();
-    spyOn(symbol, "parse").and
+    spyOn(symbol, "makeInstruction").and
     .returnValue(null);
     
     expect(symbol.interpret("code")).toEqual(Symbol.PARSE_ERROR);
@@ -27,9 +27,9 @@ describe("Symbol().interpret(code)", function() {
   "calling instruction", function() {
     var symbol = Symbol();
     var instruction;
-    symbol.parse = function(unparsedCodePointer) {
+    symbol.makeInstruction = function(unparsedCodePointer) {
       unparsedCodePointer.value = "ode";
-      instruction = jasmine.createSpy("symbol.parse result");
+      instruction = jasmine.createSpy("symbol.makeInstruction result");
       return instruction;
     };
     

@@ -13,7 +13,7 @@ Symbol.prototype
 Symbol.prototype
 .interpret = function(code) {
   var unparsedCodePointer = {value: code};
-  var instruction = this.parse(unparsedCodePointer);
+  var instruction = this.makeInstruction(unparsedCodePointer);
   if(!instruction || unparsedCodePointer.value !== "") {
     return Symbol.PARSE_ERROR;
   }
