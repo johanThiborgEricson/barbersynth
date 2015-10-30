@@ -1,8 +1,17 @@
 describe("Terminal(token, interpretation)" + 
 ".parse(codePointer).apply(thisBinding)", function() {
   var codePointer;
+  function StubCodePointer() {
+    var that = Object.create(StubCodePointer.prototype);
+    that.parse = function() {
+      
+    };
+    
+    return that;
+  }
+  
   beforeEach(function() {
-    codePointer = CodePointer();
+    codePointer = StubCodePointer();
   });
   
   it("calls codePointer.parse with token", function() {
