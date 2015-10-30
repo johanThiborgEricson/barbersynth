@@ -1,20 +1,19 @@
   function StubCodePointer(code) {
     var that = Object.create(StubCodePointer.prototype);
-    that.value = code;
     that.parse = function() {
       
     };
     
     that.getUnparsed = function() {
-      return that.value;
+      return code;
     };
     
     that.backup = function() {
-      return that.value;
+      return code;
     };
     
     that.restore = function(backup) {
-      that.value = backup;
+      code = backup;
     };
     
     return that;

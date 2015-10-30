@@ -1,18 +1,17 @@
 function CodePointer(code) {
   var that = Object.create(CodePointer.prototype);
-  that.value = code;
   that.parse = function(token) {
-    var match = token.exec(this.value);
+    var match = token.exec(code);
     if(!match || match.index !== 0) {
       return null;
     }
     
-    this.value = this.value.slice(match[0].length);
+    code = code.slice(match[0].length);
     return match.slice(1);
   };
   
   that.getUnparsed = function() {
-    return that.value;
+    return code;
   };
   
   return that;

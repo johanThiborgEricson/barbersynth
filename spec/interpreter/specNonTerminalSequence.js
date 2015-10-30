@@ -38,7 +38,8 @@ describe("NonTerminalSequence([symbol1, ... , symbolN])" +
     actuallThisBinding.method = composition.parse(actuallCodePointer);
     var expectedCodePointer = StubCodePointer("lexeme 1" + "code");
     expectedThisBinding.method = expectedSymbol1.parse(expectedCodePointer);
-    expect(actuallCodePointer.getUnparsed()).toEqual(expectedCodePointer.value);
+    expect(actuallCodePointer.getUnparsed())
+    .toEqual(expectedCodePointer.getUnparsed());
     actuallThisBinding.method();
     expectedThisBinding.method();
     expect(actuallThisBinding.con).toEqual(expectedThisBinding.con);
