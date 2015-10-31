@@ -1,5 +1,6 @@
 describe("NonTerminalAsterisk(symbol)" + 
 ".makeInstruction(lexeme1 + ... + lexemeN + code)", function() {
+  var interpreter = Interpreter();
   
   it("with n = 1, does the same thing as symbol.makeInstruction(lexeme1)", 
   function() {
@@ -8,7 +9,7 @@ describe("NonTerminalAsterisk(symbol)" +
     var actuallThisValue = {con: "value 0"};
     var expectedThisValue  = {con: "value 0"};
     var symbol = StubLexeme_dConcatenator();
-    var asterisk = NonTerminalAsterisk(symbol);
+    var asterisk = interpreter.nonTerminalAsterisk(symbol);
     actuallThisValue.method = asterisk.makeInstruction(actuallCodePointer);
     expectedThisValue.method = symbol.makeInstruction(expectedCodePointer);
     expect(actuallThisValue.method())
@@ -26,7 +27,7 @@ describe("NonTerminalAsterisk(symbol)" +
     var actuallThisValue = {con: "value 0"};
     var expectedThisValue  = {con: "value 0"};
     var symbol = StubLexeme_dConcatenator();
-    var asterisk = NonTerminalAsterisk(symbol);
+    var asterisk = interpreter.nonTerminalAsterisk(symbol);
     actuallThisValue.method = asterisk.makeInstruction(actuallCodePointer);
     expectedThisValue.method1 = symbol.makeInstruction(expectedCodePointer);
     expectedThisValue.method2 = symbol.makeInstruction(expectedCodePointer);

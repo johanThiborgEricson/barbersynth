@@ -1,5 +1,7 @@
-function Terminal(token, interpretation){
-  var that = Object.create(Terminal.prototype);
+
+// TODO: marked for deletion
+function Terminal2(token, interpretation){
+  var that = Object.create(Terminal2.prototype);
   
   that.makeInstruction = function(codePointer) {
     var lexeme = codePointer.parse(token);
@@ -17,4 +19,4 @@ function Terminal(token, interpretation){
   return that;
 }
 
-Terminal.prototype = Symbol();
+Terminal2.prototype = Symbol();

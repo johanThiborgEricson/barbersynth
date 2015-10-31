@@ -1,5 +1,7 @@
-function NonTerminalAlternative(alternatives) {
-  var that = Object.create(NonTerminalAlternative.prototype);
+
+// TODO: marked for deletion
+function NonTerminalAlternative2(alternatives) {
+  var that = Object.create(NonTerminalAlternative2.prototype);
   
   that.makeInstruction = function(codePointer) {
     var backup = codePointer.backup();
@@ -14,4 +16,4 @@ function NonTerminalAlternative(alternatives) {
   return that;
 }
 
-NonTerminalAlternative.prototype = Symbol();
+NonTerminalAlternative2.prototype = Symbol();

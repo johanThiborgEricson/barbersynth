@@ -1,5 +1,7 @@
-function NonTerminalSequence(symbols) {
-  var that = Object.create(NonTerminalSequence.prototype);
+
+// TODO: marked for deletion
+function NonTerminalSequence2(symbols) {
+  var that = Object.create(NonTerminalSequence2.prototype);
 
   that.makeInstruction = function(codePointer) {
     var instructions = [];
@@ -32,4 +34,4 @@ function NonTerminalSequence(symbols) {
   return that;
 }
 
-NonTerminalSequence.prototype = Symbol();
+NonTerminalSequence2.prototype = Symbol();

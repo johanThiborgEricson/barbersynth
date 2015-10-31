@@ -1,12 +1,15 @@
-describe("NonTerminalAlternative([symbol1, ... , symbolN, ... symbolM])" + 
+describe("Interpreter()" + 
+".nonTerminalAlternative([symbol1, ... , symbolN, ... symbolM])" + 
 ".parse(lexemeK + code)", function() {
-
+  
+  var interpreter = Interpreter();
+  
   it("if k = m = 1, calls symbol1.makeInstruction with codePointer and returns " + 
   "the reslut and updates codePointer", function() {
     var actuallThisBinding = {con: "value 0"};
     var symbol1 = StubLexeme_dConcatenator(actuallThisBinding);
     spyOn(symbol1, "makeInstruction").and.callThrough();
-    var alternative = NonTerminalAlternative([symbol1]);
+    var alternative = interpreter.nonTerminalAlternative([symbol1]);
     var codePointer = StubCodePointer("lexeme 1" + "code");
     actuallThisBinding.method = alternative.makeInstruction(codePointer);
     expect(codePointer.getUnparsed()).toEqual("code");
@@ -17,7 +20,7 @@ describe("NonTerminalAlternative([symbol1, ... , symbolN, ... symbolM])" +
   it("if k = m = 1, calls symbol1.parse with codePointer", function() {
     var symbol1 = StubLexeme_dConcatenator();
     spyOn(symbol1, "makeInstruction");
-    var alternative = NonTerminalAlternative([symbol1]);
+    var alternative = interpreter.nonTerminalAlternative([symbol1]);
     var codePointer = StubCodePointer("lexeme 1" + "code");
     alternative.makeInstruction(codePointer);
     expect(symbol1.makeInstruction).toHaveBeenCalledWith(codePointer);
@@ -28,7 +31,7 @@ describe("NonTerminalAlternative([symbol1, ... , symbolN, ... symbolM])" +
     var symbol1 = StubLexeme_dConcatenator(actuallThisBinding);
     spyOn(symbol1, "makeInstruction").and.returnValue(null);
     var symbol2 = StubLexeme_dConcatenator(actuallThisBinding);
-    var alternative = NonTerminalAlternative([symbol1, symbol2]);
+    var alternative = interpreter.nonTerminalAlternative([symbol1, symbol2]);
     var codePointer = StubCodePointer("lexeme 2" + "code");
     actuallThisBinding.method = alternative.makeInstruction(codePointer);
     actuallThisBinding.method();
@@ -50,7 +53,7 @@ describe("NonTerminalAlternative([symbol1, ... , symbolN, ... symbolM])" +
     var symbol1 = UnsuccessfulEaterOfChars();
     var actuallThisBinding = {con: "value 0"};
     var symbol2 = StubLexeme_dConcatenator(actuallThisBinding);
-    var alternative = NonTerminalAlternative([symbol1, symbol2]);
+    var alternative = interpreter.nonTerminalAlternative([symbol1, symbol2]);
     var codePointer = StubCodePointer("lexeme 2" + "code");
     actuallThisBinding.method = alternative.makeInstruction(codePointer);
     actuallThisBinding.method();

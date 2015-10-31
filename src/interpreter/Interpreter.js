@@ -44,6 +44,92 @@ Interpreter.prototype
   return that;
 };
 
+Interpreter.prototype
+.nonTerminalSequence = function (symbols) {
+  var that = this.symbol();
+
+  that.makeInstruction = function(codePointer) {
+    var instructions = [];
+    var lastMade = true;
+    
+    var makeInstructionIfAllPreviousWasSuccessful = function(symbol) {
+      lastMade = lastMade && symbol.makeInstruction(codePointer);
+      instructions.push(lastMade);
+    };
+    
+    symbols.map(makeInstructionIfAllPreviousWasSuccessful);
+    
+    if(!lastMade) {
+      return null;
+    }
+    
+    var instruction = function() {
+      var that = this;
+      var lastResult;
+      instructions.map(function(instruction) {
+        lastResult = instruction.call(that);
+      });
+      
+      return lastResult;
+    };
+    
+    return instruction;
+  };
+  
+  return that;
+};
+
+Interpreter.prototype
+.nonTerminalAlternative = function(alternatives) {
+  var that = this.symbol();
+  
+  that.makeInstruction = function(codePointer) {
+    var backup = codePointer.backup();
+    var instruction = alternatives.reduce(function(instruction, alternative) {
+      codePointer.restore(backup);
+      return instruction || alternative.makeInstruction(codePointer);
+    }, null);
+    
+    return instruction;
+  };
+  
+  return that;
+};
+
+Interpreter.prototype
+.nonTerminalAsterisk = function(symbol) {
+  var that = this.symbol;
+  
+  that.makeInstruction = function(codePointer) {
+    var instructions = [];
+    var madeInstruction = true;
+    while(madeInstruction) {
+      var backup = codePointer.backup();
+      madeInstruction = symbol.makeInstruction(codePointer);
+      if(madeInstruction){
+        instructions.push(madeInstruction);
+      } else {
+        codePointer.restore(backup);
+      }
+      
+    }
+    
+    var instruction = function() {
+      var lastResult;
+      var that = this;
+      instructions.map(function(instruction) {
+        lastResult = instruction.call(that);
+      });
+      
+      return lastResult;
+    };
+    
+    return instruction;
+  };
+  
+  return that;
+};
+
 Interpreter.GLOBAL = this;
 
 Interpreter.prototype
@@ -58,7 +144,6 @@ Interpreter.prototype
 };
 
 Interpreter.PARSE_ERROR = new Error("Interpreter.PARSE_ERROR");
-
 
 Interpreter.prototype
 .regExpPrototypeMakeInstructionInstaller = function() {

@@ -1,5 +1,7 @@
-function NonTerminalAsterisk(symbol) {
-  var that = Object.create(NonTerminalAsterisk.prototype);
+
+// TODO: marked for deletion
+function NonTerminalAsterisk2(symbol) {
+  var that = Object.create(NonTerminalAsterisk2.prototype);
   
   that.makeInstruction = function(codePointer) {
     var instructions = [];
@@ -31,4 +33,4 @@ function NonTerminalAsterisk(symbol) {
   return that;
 }
 
-NonTerminalAsterisk.prototype = Symbol();
+NonTerminalAsterisk2.prototype = Symbol();
