@@ -1,8 +1,50 @@
 function Interpreter() {
   var that = Object.create(Interpreter.prototype);
   
+  that.CodePointer = CodePointer;
+  
   return that;
 }
+
+Interpreter.prototype
+.symbol = function() {
+  var interpreter = this;
+  var that = function(code) {
+    var codePointer = interpreter.CodePointer(code);
+    var instruction = that.makeInstruction(codePointer);
+    if(!instruction || codePointer.getUnparsed() !== "") {
+      throw new Error();
+    }
+    
+    var isMethodCall = this !== Interpreter.GLOBAL;
+    var thisBinding = isMethodCall ? this : interpreter;
+    return instruction.call(thisBinding);
+  };
+  
+  return that;
+};
+
+Interpreter.prototype
+.terminal = function(token, interpretation){
+  var that = this.symbol();
+  
+  that.makeInstruction = function(codePointer) {
+    var lexeme = codePointer.parse(token);
+    if(!lexeme) {
+      return null;
+    }
+    
+    var instruction = function() {
+      return interpretation.apply(this, lexeme);
+    };
+    
+    return instruction;
+  };
+  
+  return that;
+};
+
+Interpreter.GLOBAL = this;
 
 Interpreter.prototype
 .interpret = function(startSymbol, code) {
@@ -18,16 +60,17 @@ Interpreter.prototype
 Interpreter.PARSE_ERROR = new Error("Interpreter.PARSE_ERROR");
 
 
-Interpreter
-.regExpPrototypeMakeInstructionInstaller = function(Terminal) {
+Interpreter.prototype
+.regExpPrototypeMakeInstructionInstaller = function() {
+  var interpreter = this;
   var noopInstruction = function(codePointer) {
-    return Terminal(this, Interpreter.noop).makeInstruction(codePointer);
+    return interpreter.terminal(this, interpreter.noop).makeInstruction(codePointer);
   };
   
   return MethodInstaller(RegExp.prototype, "makeInstruction", noopInstruction);
 };
 
-Interpreter
+Interpreter.prototype
 .noop = function() {
   
 };

@@ -1,13 +1,7 @@
-describe("Interpreter.regExpPrototypeMakeInstructionInstaller(Terminal)", 
+describe("Interpreter().regExpPrototypeMakeInstructionInstaller(Terminal)", 
 function() {
   var oldTerminal;
-  beforeAll(function() {
-    oldTerminal = Terminal;
-  });
-  
-  afterAll(function() {
-    expect(Terminal).toBe(oldTerminal);
-  });
+  var interpreter = Interpreter();
   
   beforeEach(function() {
     expect(new RegExp().makeInstruction).not.toBeDefined();
@@ -20,7 +14,7 @@ function() {
   it("has methods install and uninstall that adds and removes makeInstruction methods " + 
   "on all regular expressions", function() {
     expect(new RegExp().makeInstruction).not.toBeDefined();
-    var installer = Interpreter.regExpPrototypeMakeInstructionInstaller(Terminal);
+    var installer = interpreter.regExpPrototypeMakeInstructionInstaller();
     installer.install();
     expect(new RegExp().makeInstruction).toBeDefined();
     installer.uninstall();
@@ -31,16 +25,16 @@ function() {
   "expressions that", function() {
   
     it("calls Terminal with this and Symbol().id", function() {
-      StubTerminal = jasmine.createSpy("StubTerminal").and.returnValue({
+      interpreter.terminal = jasmine.createSpy("StubTerminal").and.returnValue({
         makeInstruction() {},
       });
       
-      var installer = Interpreter.regExpPrototypeMakeInstructionInstaller(StubTerminal);
+      var installer = interpreter.regExpPrototypeMakeInstructionInstaller();
       installer.install();
       var regularExpression = new RegExp();
       regularExpression.makeInstruction();
-      expect(StubTerminal)
-      .toHaveBeenCalledWith(regularExpression, Interpreter.noop);
+      expect(interpreter.terminal)
+      .toHaveBeenCalledWith(regularExpression, interpreter.noop);
       
       installer.uninstall();
     });
@@ -49,11 +43,11 @@ function() {
     "unparsedCodePointer on its terminal", function() {
       var makeInstruction = jasmine.createSpy("makeInstruction").and
       .returnValue("lexeme");
-      var StubTerminal = jasmine.createSpy("StubTerminal").and.returnValue({
+      interpreter.terminal = jasmine.createSpy("StubTerminal").and.returnValue({
         makeInstruction: makeInstruction,
       });
       
-      var installer = Interpreter.regExpPrototypeMakeInstructionInstaller(StubTerminal);
+      var installer = interpreter.regExpPrototypeMakeInstructionInstaller();
       installer.install();
       expect(new RegExp().makeInstruction("unparsedCodePointer"))
       .toEqual("lexeme");
