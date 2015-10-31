@@ -60,4 +60,15 @@ describe("Interpreter()" +
     expect(actuallThisBinding.con).toEqual("value 0" + "lexeme 2");
   });
   
+  it("if k = 1 and m = 2, moves unparsedCodePointer past lexeme1", 
+  function() {
+    var symbol1 = StubLexeme_dConcatenator(actuallThisBinding);
+    var actuallThisBinding = {con: "value 0"};
+    var symbol2 = UnsuccessfulEaterOfChars();
+    var alternative = interpreter.nonTerminalAlternative([symbol1, symbol2]);
+    var codePointer = StubCodePointer("lexeme 1" + "code");
+    alternative.makeInstruction(codePointer)();
+    expect(codePointer.getUnparsed()).toEqual("code");
+  });
+  
 });
