@@ -20,6 +20,7 @@ function LilyPondInterpreter() {
     this.tone += 12 * apostrofeCount;
   });
   
+  // TODO: move this to Interpreter
   that.nothing = that.terminal(/()/, function() {});
   
   that.octavation = that.nonTerminalAlternative(
@@ -60,8 +61,23 @@ function LilyPondInterpreter() {
     }
   });
   
+  that.dots = that.terminal(/(\.+)/, function(dotsString) {
+    var dotCount = dotsString.length;
+    this.lengthFraction[0] *= 2 * Math.pow(2, dotCount) - 1;
+    this.lengthFraction[1] *= Math.pow(2, dotCount);
+  });
+  
+  // TODO: write nonTerminalQuestionMark as a shorthand for this.
+  that.possiblyDots = that.nonTerminalAlternative(
+      [that.dots, that.nothing]
+    );
+  
+  that.possiblyDottedLength = that.nonTerminalSequence(
+      [that.reciprocalLength, that.possiblyDots]
+    );
+  
   that.noteLength = that.nonTerminalAlternative(
-      [that.reciprocalLength, that.unspecifiedLength]
+      [that.possiblyDottedLength, that.unspecifiedLength]
     );
 
   return that;

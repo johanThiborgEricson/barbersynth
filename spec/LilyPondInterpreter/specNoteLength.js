@@ -35,4 +35,16 @@ describe("noteLength", function() {
     expect(interpreter.lengthFraction).toEqual([1, 4]);
   });
   
+  it("when called with a power of two and a dot, returns the reciprocal " +
+  "value of power times 3/2", function() {
+    interpreter.noteLength("2.");
+    expect(interpreter.lengthFraction).toEqual([3, 4]);
+  });
+  
+  it("when called with a power of two and two dots, returns the reciprocal " +
+  "value of power times 7/4", function() {
+    interpreter.noteLength("2..");
+    expect(interpreter.lengthFraction).toEqual([7, 8]);
+  });
+  
 });
