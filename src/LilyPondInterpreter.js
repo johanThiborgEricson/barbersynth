@@ -5,6 +5,7 @@ function LilyPondInterpreter() {
     var minusA = naturalName.charCodeAt(0) - "a".charCodeAt(0);
     var lilyPondIndex = (minusA + 5) % 7;
     this.natural = lilyPondIndex - 12;
+    this.tone = this.natural2tone(this.natural);
   });
   
   var octavationDown = that.terminal(/(,+)/, function(commaString) {
