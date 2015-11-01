@@ -25,6 +25,13 @@ function LilyPondInterpreter() {
       [octavationDown, octavationUp, nothing]
     );
   
+  that.natural2tone = function(natural) {
+    var aMinorScaleTone = ((natural % 7) + 7) % 7;
+    var octave = (natural - aMinorScaleTone) / 7;
+    var aMinorTones = [0, 2, 3, 5, 7, 8, 10];
+    return octave * 12 + aMinorTones[aMinorScaleTone];
+  };
+  
   return that;
 }
 
