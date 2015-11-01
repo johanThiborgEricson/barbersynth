@@ -8,13 +8,13 @@ function LilyPondInterpreter() {
     this.tone = this.natural2tone(this.natural);
   });
   
-  var octavationDown = that.terminal(/(,+)/, function(commaString) {
+  that.octavationDown = that.terminal(/(,+)/, function(commaString) {
     var commaCount = commaString.length;
     this.natural -= 7 * commaCount;
     this.tone -= 12 * commaCount;
   });
   
-  var octavationUp = that.terminal(/('+)/, function(apostrofeString) {
+  that.octavationUp = that.terminal(/('+)/, function(apostrofeString) {
     var apostrofeCount = apostrofeString.length;
     this.natural += 7 * apostrofeCount;
     this.tone += 12 * apostrofeCount;
@@ -23,7 +23,7 @@ function LilyPondInterpreter() {
   that.nothing = that.terminal(/()/, function() {});
   
   that.octavation = that.nonTerminalAlternative(
-      [octavationDown, octavationUp, that.nothing]
+      [that.octavationDown, that.octavationUp, that.nothing]
     );
   
   that.natural2tone = function(natural) {
@@ -47,6 +47,23 @@ function LilyPondInterpreter() {
       [that.flat, that.sharp, that.nothing]
     );
   
+  that.reciprocalLength = that.terminal(/(128|64|32|16|8|4|2|1)/, 
+  function(lengthString){
+    var numerator = 1;
+    var denominator = Number(lengthString);
+    this.lengthFraction = [numerator, denominator];
+  });
+  
+  that.unspecifiedLength = that.terminal(/()/, function() {
+    if(!this.lengthFraction) {
+      this.lengthFraction = [1, 4];
+    }
+  });
+  
+  that.noteLength = that.nonTerminalAlternative(
+      [that.reciprocalLength, that.unspecifiedLength]
+    );
+
   return that;
 }
 
