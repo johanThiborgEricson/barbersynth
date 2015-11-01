@@ -40,17 +40,6 @@ function LilyPondInterpreter() {
       LilyPondInterpreter.prototype.nothing
     ]);
   
-  // TODO: move this to Interpreter
-  LilyPondInterpreter.prototype.nothing = semanticSymbol
-  .terminal(/()/, function() {});
-  
-  LilyPondInterpreter.prototype.octavation = semanticSymbol
-  .nonTerminalAlternative([
-      LilyPondInterpreter.prototype.octavationDown, 
-      LilyPondInterpreter.prototype.octavationUp, 
-      LilyPondInterpreter.prototype.nothing
-    ]);
-  
   LilyPondInterpreter.prototype.natural2tone = function(natural) {
     var aMinorScaleTone = ((natural % 7) + 7) % 7;
     var octave = (natural - aMinorScaleTone) / 7;
