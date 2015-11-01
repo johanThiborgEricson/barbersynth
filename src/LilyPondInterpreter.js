@@ -20,10 +20,10 @@ function LilyPondInterpreter() {
     this.tone += 12 * apostrofeCount;
   });
   
-  var nothing = that.terminal(/()/, function() {});
+  that.nothing = that.terminal(/()/, function() {});
   
   that.octavation = that.nonTerminalAlternative(
-      [octavationDown, octavationUp, nothing]
+      [octavationDown, octavationUp, that.nothing]
     );
   
   that.natural2tone = function(natural) {
@@ -32,6 +32,20 @@ function LilyPondInterpreter() {
     var aMinorTones = [0, 2, 3, 5, 7, 8, 10];
     return octave * 12 + aMinorTones[aMinorScaleTone];
   };
+  
+  that.flat = that.terminal(/((?:es)+)/, function(esesString) {
+    var esesCount = esesString.length / 2;
+    this.tone -= esesCount;
+  });
+  
+  that.sharp = that.terminal(/((?:is)+)/, function(isesString) {
+    var isesCount = isesString.length / 2;
+    this.tone += isesCount;
+  });
+  
+  that.accidentals = that.nonTerminalAlternative(
+      [that.flat, that.sharp, that.nothing]
+    );
   
   return that;
 }
