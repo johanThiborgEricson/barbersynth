@@ -8,6 +8,8 @@ function Interpreter() {
 
 Interpreter.JUST_MAKE_INSTRUCTION = {Interpreter:"JUST_MAKE_INSTRUCTION"};
 
+Interpreter.GLOBAL = this;
+
 Interpreter.prototype
 .symbol = function(instructionMaker) {
   var interpreter = this;
@@ -128,23 +130,4 @@ Interpreter.prototype
   };
   
   return this.symbol(makeInstruction);
-};
-
-Interpreter.GLOBAL = this;
-
-Interpreter.PARSE_ERROR = new Error("Interpreter.PARSE_ERROR");
-
-Interpreter.prototype
-.regExpPrototypeMakeInstructionInstaller = function() {
-  var interpreter = this;
-  var noopInstruction = function(codePointer) {
-    return interpreter.terminal(this, interpreter.noop).makeInstruction(codePointer);
-  };
-  
-  return MethodInstaller(RegExp.prototype, "makeInstruction", noopInstruction);
-};
-
-Interpreter.prototype
-.noop = function() {
-  
 };
