@@ -1,4 +1,4 @@
-describe("interpreter.symbol(makeInstruction)" + 
+describe("interpreter.symbol(instructionMaker)" + 
 ".call(thisBinding, code)", function() {
   var CodePointer;
   var interpreter;
@@ -20,27 +20,27 @@ describe("interpreter.symbol(makeInstruction)" +
     expect(interpreter.CodePointer).toHaveBeenCalledWith("code");
   });
   
-  it("calls makeInstruction with the result of " + 
+  it("calls instructionMaker with the result of " + 
   "CodePointer(code)", function() {
     var codePointer = {getUnparsed() {return "";}};
     interpreter.CodePointer = function() {
       return codePointer;
     };
     
-    var makeInstruction = jasmine.createSpy("makeInstruction").and
+    var instructionMaker = jasmine.createSpy("instructionMaker").and
     .returnValue(function(){});
-    interpreter.method = interpreter.symbol(makeInstruction);
+    interpreter.method = interpreter.symbol(instructionMaker);
     interpreter.method();
-    expect(makeInstruction)
+    expect(instructionMaker)
     .toHaveBeenCalledWith(codePointer);
   });
   
-  it("throws an error if !makeInstruction(codePointer)", function() {
-    var makeInstruction = function() {
+  it("throws an error if !instructionMaker(codePointer)", function() {
+    var instructionMaker = function() {
       return null;
     };
     
-    interpreter.method = interpreter.symbol(makeInstruction);
+    interpreter.method = interpreter.symbol(instructionMaker);
     
     expect(interpreter.method.bind(interpreter)).toThrow();
   });
@@ -61,20 +61,20 @@ describe("interpreter.symbol(makeInstruction)" +
     expect(interpreter.method.bind(interpreter)).toThrow();
   });
   
-  it("calls the result of makeInstruction and returns the result", function() {
+  it("calls the result of instructionMaker and returns the result", function() {
     var instruction = jasmine.createSpy("instruction").and
     .returnValue("result");
-    var makeInstruction = function() {
+    var instructionMaker = function() {
       return instruction;
     };
     
-    interpreter.method = interpreter.symbol(makeInstruction);
+    interpreter.method = interpreter.symbol(instructionMaker);
     
     expect(interpreter.method()).toEqual("result");
     expect(instruction).toHaveBeenCalled();
   });
   
-  it("calls the result of makeInstruction with this bound to thisBinding", 
+  it("calls the result of instructionMaker with this bound to thisBinding", 
   function() {
     var thisBinding = {};
     var stolenThis;
@@ -82,11 +82,11 @@ describe("interpreter.symbol(makeInstruction)" +
       stolenThis = this;
     };
     
-    var makeInstruction = function() {
+    var instructionMaker = function() {
       return thisThief;
     };
     
-    thisBinding.method = interpreter.symbol(makeInstruction);
+    thisBinding.method = interpreter.symbol(instructionMaker);
     
     thisBinding.method();
     expect(stolenThis).toBe(thisBinding);
