@@ -35,7 +35,7 @@ Interpreter.prototype
 
 Interpreter.prototype
 .terminal = function(token, interpretation){
-  var makeInstruction = function(codePointer) {
+  var instructionMaker = function(codePointer) {
     var lexeme = codePointer.parse(token);
     if(!lexeme) {
       return null;
@@ -48,13 +48,13 @@ Interpreter.prototype
     return instruction;
   };
   
-  var terminal = this.symbol(makeInstruction);
+  var terminal = this.symbol(instructionMaker);
   return terminal;
 };
 
 Interpreter.prototype
 .nonTerminalSequence = function (symbols) {
-  var makeInstruction = function(codePointer) {
+  var instructionMaker = function(codePointer) {
     var instructions = [];
     var lastMade = true;
     
@@ -82,12 +82,12 @@ Interpreter.prototype
     return instruction;
   };
   
-  return this.symbol(makeInstruction);
+  return this.symbol(instructionMaker);
 };
 
 Interpreter.prototype
 .nonTerminalAlternative = function(alternatives) {
-  var makeInstruction = function(codePointer) {
+  var instructionMaker = function(codePointer) {
     var backup = codePointer.backup();
     var instruction = alternatives.reduce(function(instruction, alternative) {
       if(!instruction)codePointer.restore(backup);
@@ -97,12 +97,12 @@ Interpreter.prototype
     return instruction;
   };
   
-  return this.symbol(makeInstruction);
+  return this.symbol(instructionMaker);
 };
 
 Interpreter.prototype
 .nonTerminalAsterisk = function(symbol) {
-  var makeInstruction = function(codePointer) {
+  var instructionMaker = function(codePointer) {
     var instructions = [];
     var madeInstruction = true;
     while(madeInstruction) {
@@ -129,5 +129,5 @@ Interpreter.prototype
     return instruction;
   };
   
-  return this.symbol(makeInstruction);
+  return this.symbol(instructionMaker);
 };
