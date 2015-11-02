@@ -39,12 +39,12 @@ describe("Interpreter()" +
   });
   
   function UnsuccessfulEaterOfChars() {
-    return {
-      makeInstruction(codePointer) {
-        codePointer.restore(codePointer.getUnparsed().slice(1));
-        return null;
-      }, 
-    };
+    function instructionMaker(codePointer) {
+      codePointer.restore(codePointer.getUnparsed().slice(1));
+      return null;
+    }
+    
+    return Interpreter().symbol(instructionMaker);
   }
   
   it("if k = m = 2 calls symbol2.parse with lexeme2 + code, even if " + 
