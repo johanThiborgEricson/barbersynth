@@ -6,12 +6,18 @@ function Interpreter() {
   return that;
 }
 
+Interpreter.JUST_MAKE_INSTRUCTION = {Interpreter:"JUST_MAKE_INSTRUCTION"};
+
 Interpreter.prototype
-.symbol = function(makeInstruction) {
+.symbol = function(instructionMaker) {
   var interpreter = this;
-  var that = function(code) {
+  var that = function(code, justMakeInstruction) {
+    if(justMakeInstruction) {
+      return instructionMaker(code);
+    }
+    
     var codePointer = interpreter.CodePointer(code);
-    var instruction = makeInstruction(codePointer);
+    var instruction = instructionMaker(codePointer);
     if(!instruction || codePointer.getUnparsed() !== "") {
       throw new Error();
     }
@@ -21,7 +27,7 @@ Interpreter.prototype
     return instruction.call(thisBinding);
   };
   
-  that.makeInstruction = makeInstruction;
+  that.makeInstruction = instructionMaker;
   return that;
 };
 
@@ -51,7 +57,7 @@ Interpreter.prototype
     var lastMade = true;
     
     var makeInstructionIfAllPreviousWasSuccessful = function(symbol) {
-      lastMade = lastMade && symbol.makeInstruction(codePointer);
+      lastMade = lastMade && symbol(codePointer, Interpreter.JUST_MAKE_INSTRUCTION);
       instructions.push(lastMade);
     };
     

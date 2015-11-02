@@ -96,8 +96,9 @@ describe("Interpreter().nonTerminalSequence([symbol1, ... , symbolN])" +
       property: "property",
     };
     
-    spyOn(actuallSymbol1, "makeInstruction").and.returnValue(thisThief);
-    var sequence = interpreter.nonTerminalSequence([actuallSymbol1]);
+    var symbol = jasmine.createSpy("symbol").and.returnValue(thisThief);
+    symbol.makeInstruction = symbol;
+    var sequence = interpreter.nonTerminalSequence([symbol]);
     var instruction = sequence.makeInstruction(CodePointer(""));
     instruction.call(thisBinding);
     expect(stolenThis).toBe(thisBinding);
