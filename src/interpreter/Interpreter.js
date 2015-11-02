@@ -83,10 +83,11 @@ Interpreter.prototype
 Interpreter.prototype
 .nonTerminalAlternative = function(alternatives) {
   var instructionMaker = function(codePointer) {
+    var that = this;
     var backup = codePointer.backup();
     var instruction = alternatives.reduce(function(instruction, alternative) {
       if(!instruction)codePointer.restore(backup);
-      return instruction || alternative(codePointer);
+      return instruction || alternative.call(that, codePointer);
     }, null);
     
     return instruction;

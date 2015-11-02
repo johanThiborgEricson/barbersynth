@@ -81,4 +81,19 @@ describe("Interpreter()" +
     expect(codePointer.getUnparsed()).toEqual("code");
   });
   
+  it("calls symbol 1 with the same this binding", function() {
+        var thisBinding = {binding: "this"};
+    var stolenThis;
+    var thisThief = function() {
+      stolenThis = this;
+      return function() {};
+    };
+    
+    thisBinding.method = interpreter.nonTerminalAlternative([thisThief]);
+    
+    thisBinding.method(CodePointer());
+    expect(stolenThis).toBe(thisBinding);
+
+  });
+  
 });
