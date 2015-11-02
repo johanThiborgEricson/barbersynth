@@ -1,5 +1,6 @@
 describe("Interpreter().nonTerminalSequence([symbol1, ... , symbolN])" + 
-".getInstruction(lexeme1 + ... + lexemeN + code).call(thisBinding)", function() {
+"(lexeme1 + ... + lexemeN + code, Interpreter.JUST_MAKE_INSTRUCTION)" +
+".call(thisBinding)", function() {
   var actuallSymbol1;
   var actuallSymbol2;
   var actuallSymbol3;
@@ -29,19 +30,20 @@ describe("Interpreter().nonTerminalSequence([symbol1, ... , symbolN])" +
     var thisBinding = {con: "value 0"};
     var stub = StubLexeme_dConcatenator();
     var code = StubCodePointer("lexeme 1" + "code");
-    thisBinding.method = stub.makeInstruction(code);
+    thisBinding.method = stub(code, true);
     expect(code.getUnparsed()).toEqual("code");
     thisBinding.method();
     expect(thisBinding.con).toEqual("value 0" + "lexeme 1");
   });
   
-  it("with n = 1, returns the same thing as symbol1.getInstruction(code)", function() {
+  it("with n = 1, returns the same thing as " +
+  "symbol1(code, Interpreter.JUST_MAKE_INSTRUCTION)", function() {
     var sequence = interpreter.nonTerminalSequence([actuallSymbol1]);
     var actuallCodePointer = StubCodePointer("lexeme 1" + "code");
-    actuallThisBinding.method = sequence.makeInstruction(actuallCodePointer);
+    actuallThisBinding.method = sequence(actuallCodePointer, true);
     var expectedCodePointer = StubCodePointer("lexeme 1" + "code");
     expectedThisBinding.method = 
-    expectedSymbol1.makeInstruction(expectedCodePointer);
+    expectedSymbol1(expectedCodePointer, true);
     expect(actuallCodePointer.getUnparsed())
     .toEqual(expectedCodePointer.getUnparsed());
     expect(actuallThisBinding.method())
@@ -49,16 +51,16 @@ describe("Interpreter().nonTerminalSequence([symbol1, ... , symbolN])" +
     expect(actuallThisBinding.con).toEqual(expectedThisBinding.con);
   });
   
-  it("with n = 2, returns the same thing as calling makeInstruction on symbol1 and 2 " + 
+  it("with n = 2, returns the same thing as calling symbol1 and 2 " + 
   "with apropriate code and composing the results", function() {
     var sequence = interpreter.nonTerminalSequence([actuallSymbol1, actuallSymbol2]);
     var expectedCodePointer = StubCodePointer("lexeme 1" + "lexeme 2" + "code");
-    expectedThisBinding.method1 = expectedSymbol1.makeInstruction(expectedCodePointer);
-    expectedThisBinding.method2 = expectedSymbol2.makeInstruction(expectedCodePointer);
+    expectedThisBinding.method1 = expectedSymbol1(expectedCodePointer, true);
+    expectedThisBinding.method2 = expectedSymbol2(expectedCodePointer, true);
     expectedThisBinding.method1();
     var expectedResult = expectedThisBinding.method2();
     var actuallCodePointer = StubCodePointer("lexeme 1" + "lexeme 2" + "code");
-    actuallThisBinding.method = sequence.makeInstruction(actuallCodePointer);
+    actuallThisBinding.method = sequence(actuallCodePointer, true);
     expect(actuallCodePointer.getUnparsed())
     .toEqual(expectedCodePointer.getUnparsed());
     expect(actuallThisBinding.method()).toEqual(expectedResult);
@@ -68,21 +70,24 @@ describe("Interpreter().nonTerminalSequence([symbol1, ... , symbolN])" +
   it("with n = 0, parses nothing", function() {
     var sequence = interpreter.nonTerminalSequence([]);
     var unparsedCodePointer = StubCodePointer("code");
-    expect(sequence.makeInstruction(unparsedCodePointer)()).toBe(undefined);
+    expect(sequence(unparsedCodePointer, true)()).toBe(undefined);
     expect(unparsedCodePointer.getUnparsed()).toEqual("code");
   });
   
-  it("returns null if any symbol.makeInstruction(code) in symbols returns null. " + 
-  "Subsequent symbol.makeInstruction should not be called", function() {
-    spyOn(actuallSymbol1, "makeInstruction").and.returnValue(function() {});
-    spyOn(actuallSymbol2, "makeInstruction").and.returnValue(null);
-    spyOn(actuallSymbol3, "makeInstruction").and.returnValue(function() {});
+  it("returns null if any symbol(code) in symbols returns null. " + 
+  "Subsequent symbols should not be called", function() {
+    var actuallSymbol1 = jasmine.createSpy("actuallSymbol1").and
+    .returnValue(function() {});
+    var actuallSymbol2 = jasmine.createSpy("actuallSymbol1").and
+    .returnValue(null);
+    var actuallSymbol3 = jasmine.createSpy("actuallSymbol1").and
+    .returnValue(function() {});
     var sequence = interpreter.nonTerminalSequence(
       [actuallSymbol1, actuallSymbol2, actuallSymbol3]
     );
     
-    expect(sequence.makeInstruction(CodePointer(""))).toBe(null);
-    expect(actuallSymbol3.makeInstruction).not.toHaveBeenCalled();
+    expect(sequence(CodePointer(""), true)).toBe(null);
+    expect(actuallSymbol3).not.toHaveBeenCalled();
   });
   
   it("calls the instructions from the symbols with thisBinding as this-binding", 
@@ -97,9 +102,8 @@ describe("Interpreter().nonTerminalSequence([symbol1, ... , symbolN])" +
     };
     
     var symbol = jasmine.createSpy("symbol").and.returnValue(thisThief);
-    symbol.makeInstruction = symbol;
     var sequence = interpreter.nonTerminalSequence([symbol]);
-    var instruction = sequence.makeInstruction(CodePointer(""));
+    var instruction = sequence(CodePointer(""), true);
     instruction.call(thisBinding);
     expect(stolenThis).toBe(thisBinding);
   });

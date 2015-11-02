@@ -1,8 +1,8 @@
 describe("NonTerminalAsterisk(symbol)" + 
-".makeInstruction(lexeme1 + ... + lexemeN + code)", function() {
+"(CodePointer(lexeme1 + ... + lexemeN + code))", function() {
   var interpreter = Interpreter();
   
-  it("with n = 1, does the same thing as symbol.makeInstruction(lexeme1)", 
+  it("with n = 1, does the same thing as symbol(CodePointer(lexeme1))", 
   function() {
     var actuallCodePointer = StubCodePointer("lexeme 1" + "code");
     var expectedCodePointer = StubCodePointer("lexeme 1" + "code");
@@ -10,8 +10,8 @@ describe("NonTerminalAsterisk(symbol)" +
     var expectedThisValue  = {con: "value 0"};
     var symbol = StubLexeme_dConcatenator();
     var asterisk = interpreter.nonTerminalAsterisk(symbol);
-    actuallThisValue.method = asterisk.makeInstruction(actuallCodePointer);
-    expectedThisValue.method = symbol.makeInstruction(expectedCodePointer);
+    actuallThisValue.method = asterisk(actuallCodePointer, true);
+    expectedThisValue.method = symbol(expectedCodePointer, true);
     expect(actuallThisValue.method())
     .toEqual(expectedThisValue.method());
     expect(actuallThisValue.con).toEqual(expectedThisValue.con);
@@ -20,7 +20,7 @@ describe("NonTerminalAsterisk(symbol)" +
   });
   
   it("with n = 2, does the same thing as calling " + 
-  "symbol.makeInstruction(codePointer) twice and calling the result as " + 
+  "symbol(codePointer) twice and calling the result as " + 
   "methods of the thisBinding", function() {
     var actuallCodePointer = StubCodePointer("lexeme 1" + "lexeme 2" + "code");
     var expectedCodePointer = StubCodePointer("lexeme 1" + "lexeme 2" + "code");
@@ -28,9 +28,9 @@ describe("NonTerminalAsterisk(symbol)" +
     var expectedThisValue  = {con: "value 0"};
     var symbol = StubLexeme_dConcatenator();
     var asterisk = interpreter.nonTerminalAsterisk(symbol);
-    actuallThisValue.method = asterisk.makeInstruction(actuallCodePointer);
-    expectedThisValue.method1 = symbol.makeInstruction(expectedCodePointer);
-    expectedThisValue.method2 = symbol.makeInstruction(expectedCodePointer);
+    actuallThisValue.method = asterisk(actuallCodePointer, true);
+    expectedThisValue.method1 = symbol(expectedCodePointer, true);
+    expectedThisValue.method2 = symbol(expectedCodePointer, true);
     expectedThisValue.method1();
     expect(actuallThisValue.method())
     .toEqual(expectedThisValue.method2());
