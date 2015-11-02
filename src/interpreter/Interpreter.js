@@ -13,11 +13,11 @@ Interpreter.prototype
   var interpreter = this;
   var that = function(code) {
     if(code instanceof CodePointer) {
-      return instructionMaker(code);
+      return instructionMaker.call(this, code);
     }
     
     var codePointer = interpreter.CodePointer(code);
-    var instruction = instructionMaker(codePointer);
+    var instruction = instructionMaker.call(this, codePointer);
     if(!instruction || codePointer.getUnparsed() !== "") {
       throw new Error();
     }

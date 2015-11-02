@@ -76,7 +76,7 @@ describe("interpreter.symbol(instructionMaker)" +
   
   it("calls the result of instructionMaker with this bound to thisBinding", 
   function() {
-    var thisBinding = {};
+    var thisBinding = {binding: "this"};
     var stolenThis;
     var thisThief = function() {
       stolenThis = this;
@@ -87,6 +87,38 @@ describe("interpreter.symbol(instructionMaker)" +
     };
     
     thisBinding.method = interpreter.symbol(instructionMaker);
+    
+    thisBinding.method();
+    expect(stolenThis).toBe(thisBinding);
+  });
+  
+  it("if code is CodePointer, calls instructionMaker with this bound to " +
+  "thisBinding", 
+  function() {
+    var thisBinding = {binding: "this"};
+    var stolenThis;
+    var thisThief = function() {
+      stolenThis = this;
+      return function() {};
+    };
+    
+    thisBinding.method = interpreter.symbol(thisThief);
+    
+    thisBinding.method(CodePointer());
+    expect(stolenThis).toBe(thisBinding);
+  });
+  
+  it("if code is not CodePointer, calls instructionMaker with this bound to " +
+  "thisBinding", 
+  function() {
+    var thisBinding = {binding: "this"};
+    var stolenThis;
+    var thisThief = function() {
+      stolenThis = this;
+      return function() {};
+    };
+    
+    thisBinding.method = interpreter.symbol(thisThief);
     
     thisBinding.method();
     expect(stolenThis).toBe(thisBinding);
