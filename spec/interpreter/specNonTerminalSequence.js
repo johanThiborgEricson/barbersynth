@@ -27,7 +27,7 @@ describe("Interpreter().nonTerminalSequence([symbol1, ... , symbolN])" +
   
   it("(StubLexeme_dConcatenator spike)", function() {
     var thisBinding = {con: "value 0"};
-    var stub = StubLexeme_dConcatenator(thisBinding);
+    var stub = StubLexeme_dConcatenator();
     var code = StubCodePointer("lexeme 1" + "code");
     thisBinding.method = stub.makeInstruction(code);
     expect(code.getUnparsed()).toEqual("code");

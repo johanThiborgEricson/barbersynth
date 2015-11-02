@@ -7,7 +7,7 @@ describe("Interpreter()" +
   it("if k = m = 1, calls symbol1.makeInstruction with codePointer and returns " + 
   "the reslut and updates codePointer", function() {
     var actuallThisBinding = {con: "value 0"};
-    var symbol1 = StubLexeme_dConcatenator(actuallThisBinding);
+    var symbol1 = StubLexeme_dConcatenator();
     spyOn(symbol1, "makeInstruction").and.callThrough();
     var alternative = interpreter.nonTerminalAlternative([symbol1]);
     var codePointer = StubCodePointer("lexeme 1" + "code");
@@ -28,9 +28,9 @@ describe("Interpreter()" +
   
   it("if k = m = 2, returns symbol2.makeInstruction", function() {
     var actuallThisBinding = {con: "value 0"};
-    var symbol1 = StubLexeme_dConcatenator(actuallThisBinding);
+    var symbol1 = StubLexeme_dConcatenator();
     spyOn(symbol1, "makeInstruction").and.returnValue(null);
-    var symbol2 = StubLexeme_dConcatenator(actuallThisBinding);
+    var symbol2 = StubLexeme_dConcatenator();
     var alternative = interpreter.nonTerminalAlternative([symbol1, symbol2]);
     var codePointer = StubCodePointer("lexeme 2" + "code");
     actuallThisBinding.method = alternative.makeInstruction(codePointer);
@@ -52,7 +52,7 @@ describe("Interpreter()" +
   function() {
     var symbol1 = UnsuccessfulEaterOfChars();
     var actuallThisBinding = {con: "value 0"};
-    var symbol2 = StubLexeme_dConcatenator(actuallThisBinding);
+    var symbol2 = StubLexeme_dConcatenator(true);
     var alternative = interpreter.nonTerminalAlternative([symbol1, symbol2]);
     var codePointer = StubCodePointer("lexeme 2" + "code");
     actuallThisBinding.method = alternative.makeInstruction(codePointer);
@@ -62,7 +62,7 @@ describe("Interpreter()" +
   
   it("if k = 1 and m = 2, moves unparsedCodePointer past lexeme1", 
   function() {
-    var symbol1 = StubLexeme_dConcatenator(actuallThisBinding);
+    var symbol1 = StubLexeme_dConcatenator(true);
     var actuallThisBinding = {con: "value 0"};
     var symbol2 = UnsuccessfulEaterOfChars();
     var alternative = interpreter.nonTerminalAlternative([symbol1, symbol2]);

@@ -1,7 +1,7 @@
 function StubLexeme_dConcatenator() {
   var that = Object.create(StubLexeme_dConcatenator.prototype);
-
-  that.makeInstruction = function(codePointer) {
+  
+  var instructionMaker = function(codePointer) {
     // TODO: use array.slice and concatenate.apply(this, lexeme) to 
     // better illustrate how it is supposed to work.
     var match = /^lexeme \d/.exec(codePointer.backup());
@@ -17,7 +17,9 @@ function StubLexeme_dConcatenator() {
     };
   };
   
-  return that;
+  // TODO: replace with stub implementation
+  return Interpreter().symbol(instructionMaker);
+
 }
 
 StubLexeme_dConcatenator.prototype = Symbol();
