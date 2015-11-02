@@ -27,7 +27,6 @@ Interpreter.prototype
     return instruction.call(this);
   };
   
-  that.makeInstruction = instructionMaker;
   return that;
 };
 
