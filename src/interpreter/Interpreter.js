@@ -105,7 +105,7 @@ Interpreter.prototype
     var madeInstruction = true;
     while(madeInstruction) {
       var backup = codePointer.backup();
-      madeInstruction = symbol.makeInstruction(codePointer);
+      madeInstruction = symbol(codePointer, Interpreter.JUST_MAKE_INSTRUCTION);
       if(madeInstruction){
         instructions.push(madeInstruction);
       } else {
