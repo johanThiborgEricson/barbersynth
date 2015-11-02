@@ -7,11 +7,11 @@ function Interpreter() {
 }
 
 Interpreter.prototype
-.symbol = function() {
+.symbol = function(makeInstruction) {
   var interpreter = this;
   var that = function(code) {
     var codePointer = interpreter.CodePointer(code);
-    var instruction = that.makeInstruction(codePointer);
+    var instruction = makeInstruction(codePointer);
     if(!instruction || codePointer.getUnparsed() !== "") {
       throw new Error();
     }
@@ -21,14 +21,13 @@ Interpreter.prototype
     return instruction.call(thisBinding);
   };
   
+  that.makeInstruction = makeInstruction;
   return that;
 };
 
 Interpreter.prototype
 .terminal = function(token, interpretation){
-  var that = this.symbol();
-  
-  that.makeInstruction = function(codePointer) {
+  var makeInstruction = function(codePointer) {
     var lexeme = codePointer.parse(token);
     if(!lexeme) {
       return null;
@@ -41,14 +40,13 @@ Interpreter.prototype
     return instruction;
   };
   
-  return that;
+  var terminal = this.symbol(makeInstruction);
+  return terminal;
 };
 
 Interpreter.prototype
 .nonTerminalSequence = function (symbols) {
-  var that = this.symbol();
-
-  that.makeInstruction = function(codePointer) {
+  var makeInstruction = function(codePointer) {
     var instructions = [];
     var lastMade = true;
     
@@ -76,14 +74,12 @@ Interpreter.prototype
     return instruction;
   };
   
-  return that;
+  return this.symbol(makeInstruction);
 };
 
 Interpreter.prototype
 .nonTerminalAlternative = function(alternatives) {
-  var that = this.symbol();
-  
-  that.makeInstruction = function(codePointer) {
+  var makeInstruction = function(codePointer) {
     var backup = codePointer.backup();
     var instruction = alternatives.reduce(function(instruction, alternative) {
       if(!instruction)codePointer.restore(backup);
@@ -93,14 +89,12 @@ Interpreter.prototype
     return instruction;
   };
   
-  return that;
+  return this.symbol(makeInstruction);
 };
 
 Interpreter.prototype
 .nonTerminalAsterisk = function(symbol) {
-  var that = this.symbol;
-  
-  that.makeInstruction = function(codePointer) {
+  var makeInstruction = function(codePointer) {
     var instructions = [];
     var madeInstruction = true;
     while(madeInstruction) {
@@ -127,7 +121,7 @@ Interpreter.prototype
     return instruction;
   };
   
-  return that;
+  return this.symbol(makeInstruction);
 };
 
 Interpreter.GLOBAL = this;
