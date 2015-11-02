@@ -17,13 +17,14 @@ describe("Interpreter()" +
     expect(actuallThisBinding.con).toEqual("value 0" + "lexeme 1");
   });
   
-  it("if k = m = 1, calls symbol1.parse with codePointer", function() {
-    var symbol1 = StubLexeme_dConcatenator();
-    spyOn(symbol1, "makeInstruction");
+  it("if k = m = 1, calls symbol1 with codePointer and " +
+  "Interpreter.JUST_MAKE_INSTRUCTION", function() {
+    var symbol1 = jasmine.createSpy("symbol 1");
     var alternative = interpreter.nonTerminalAlternative([symbol1]);
     var codePointer = StubCodePointer("lexeme 1" + "code");
     alternative.makeInstruction(codePointer);
-    expect(symbol1.makeInstruction).toHaveBeenCalledWith(codePointer);
+    expect(symbol1).toHaveBeenCalledWith(codePointer, 
+    Interpreter.JUST_MAKE_INSTRUCTION);
   });
   
   it("if k = m = 2, returns symbol2.makeInstruction", function() {

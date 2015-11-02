@@ -89,7 +89,7 @@ Interpreter.prototype
     var backup = codePointer.backup();
     var instruction = alternatives.reduce(function(instruction, alternative) {
       if(!instruction)codePointer.restore(backup);
-      return instruction || alternative.makeInstruction(codePointer);
+      return instruction || alternative(codePointer, Interpreter.JUST_MAKE_INSTRUCTION);
     }, null);
     
     return instruction;
