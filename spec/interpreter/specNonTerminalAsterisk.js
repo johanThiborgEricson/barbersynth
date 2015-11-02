@@ -10,8 +10,8 @@ describe("NonTerminalAsterisk(symbol)" +
     var expectedThisValue  = {con: "value 0"};
     var symbol = StubLexeme_dConcatenator();
     var asterisk = interpreter.nonTerminalAsterisk(symbol);
-    actuallThisValue.method = asterisk(actuallCodePointer, true);
-    expectedThisValue.method = symbol(expectedCodePointer, true);
+    actuallThisValue.method = asterisk(actuallCodePointer);
+    expectedThisValue.method = symbol(expectedCodePointer);
     expect(actuallThisValue.method())
     .toEqual(expectedThisValue.method());
     expect(actuallThisValue.con).toEqual(expectedThisValue.con);
@@ -28,9 +28,9 @@ describe("NonTerminalAsterisk(symbol)" +
     var expectedThisValue  = {con: "value 0"};
     var symbol = StubLexeme_dConcatenator();
     var asterisk = interpreter.nonTerminalAsterisk(symbol);
-    actuallThisValue.method = asterisk(actuallCodePointer, true);
-    expectedThisValue.method1 = symbol(expectedCodePointer, true);
-    expectedThisValue.method2 = symbol(expectedCodePointer, true);
+    actuallThisValue.method = asterisk(actuallCodePointer);
+    expectedThisValue.method1 = symbol(expectedCodePointer);
+    expectedThisValue.method2 = symbol(expectedCodePointer);
     expectedThisValue.method1();
     expect(actuallThisValue.method())
     .toEqual(expectedThisValue.method2());

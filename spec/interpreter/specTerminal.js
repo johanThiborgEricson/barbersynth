@@ -11,6 +11,8 @@ describe("Terminal(token, interpretation)" +
     return that;
   }
   
+  StubCodePointer.prototype = CodePointer();
+  
   beforeEach(function() {
     codePointer = StubCodePointer();
     interpreter = Interpreter();
@@ -19,7 +21,7 @@ describe("Terminal(token, interpretation)" +
   it("calls codePointer.parse with token", function() {
     var terminal = interpreter.terminal("token", "interpretation");
     spyOn(codePointer, "parse");
-    terminal(codePointer, true);
+    terminal(codePointer);
     expect(codePointer.parse).toHaveBeenCalledWith("token");
   });
   
@@ -28,7 +30,7 @@ describe("Terminal(token, interpretation)" +
     var interpretation = jasmine.createSpy("interpretation");
     var terminal = interpreter.terminal("token", interpretation);
     spyOn(codePointer, "parse").and.returnValue(["lexeme a", "lexeme b"]);
-    var instruction = terminal(codePointer, true);
+    var instruction = terminal(codePointer);
     instruction();
     expect(interpretation).toHaveBeenCalledWith("lexeme a", "lexeme b");
   });
@@ -43,7 +45,7 @@ describe("Terminal(token, interpretation)" +
     var thisBinding = {property: "property"};
     var terminal = interpreter.terminal("token", thisThief);
     spyOn(codePointer, "parse").and.returnValue([]);
-    var instruction = terminal(codePointer, true);
+    var instruction = terminal(codePointer);
     instruction.call(thisBinding);
     expect(stolenThis).toBe(thisBinding);
   });
@@ -51,7 +53,7 @@ describe("Terminal(token, interpretation)" +
   it("returns null if the result of parse is null", function() {
     var terminal = interpreter.terminal("token", "interpretation");
     spyOn(codePointer, "parse").and.returnValue(null);
-    expect(terminal(codePointer, true)).toBe(null);
+    expect(terminal(codePointer)).toBe(null);
   });
   
 });

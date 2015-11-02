@@ -6,15 +6,13 @@ function Interpreter() {
   return that;
 }
 
-Interpreter.JUST_MAKE_INSTRUCTION = {Interpreter:"JUST_MAKE_INSTRUCTION"};
-
 Interpreter.GLOBAL = this;
 
 Interpreter.prototype
 .symbol = function(instructionMaker) {
   var interpreter = this;
-  var that = function(code, justMakeInstruction) {
-    if(justMakeInstruction) {
+  var that = function(code) {
+    if(code instanceof CodePointer) {
       return instructionMaker(code);
     }
     
@@ -56,7 +54,7 @@ Interpreter.prototype
     var lastMade = true;
     
     var makeInstructionIfAllPreviousWasSuccessful = function(symbol) {
-      lastMade = lastMade && symbol(codePointer, Interpreter.JUST_MAKE_INSTRUCTION);
+      lastMade = lastMade && symbol(codePointer);
       instructions.push(lastMade);
     };
     
@@ -88,7 +86,7 @@ Interpreter.prototype
     var backup = codePointer.backup();
     var instruction = alternatives.reduce(function(instruction, alternative) {
       if(!instruction)codePointer.restore(backup);
-      return instruction || alternative(codePointer, Interpreter.JUST_MAKE_INSTRUCTION);
+      return instruction || alternative(codePointer);
     }, null);
     
     return instruction;
@@ -104,7 +102,7 @@ Interpreter.prototype
     var madeInstruction = true;
     while(madeInstruction) {
       var backup = codePointer.backup();
-      madeInstruction = symbol(codePointer, Interpreter.JUST_MAKE_INSTRUCTION);
+      madeInstruction = symbol(codePointer);
       if(madeInstruction){
         instructions.push(madeInstruction);
       } else {
