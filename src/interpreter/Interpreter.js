@@ -132,17 +132,6 @@ Interpreter.prototype
 
 Interpreter.GLOBAL = this;
 
-Interpreter.prototype
-.interpret = function(startSymbol, code) {
-  var codePointer = CodePointer(code);
-  var instruction = startSymbol.makeInstruction(codePointer);
-  if(!instruction || codePointer.getUnparsed() !== "") {
-    throw Interpreter.PARSE_ERROR;
-  }
-  
-  return instruction.call(this);
-};
-
 Interpreter.PARSE_ERROR = new Error("Interpreter.PARSE_ERROR");
 
 Interpreter.prototype
