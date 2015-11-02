@@ -24,9 +24,7 @@ Interpreter.prototype
       throw new Error();
     }
     
-    var isMethodCall = this !== Interpreter.GLOBAL;
-    var thisBinding = isMethodCall ? this : interpreter;
-    return instruction.call(thisBinding);
+    return instruction.call(this);
   };
   
   that.makeInstruction = instructionMaker;

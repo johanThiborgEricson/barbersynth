@@ -92,25 +92,4 @@ describe("interpreter.symbol(makeInstruction)" +
     expect(stolenThis).toBe(thisBinding);
   });
   
-  // I would much rather to call this with null or undefined, but JavaScript
-  // won't let me. 
-  // FIXME: replace with an object that screams aloud if anyone tries to 
-  // get or set properties.
-  it("calls the result of makeInstruction with this bound to interpreter if " + 
-  "thisBinding = global", function() {
-    var stolenThis;
-    var thisThief = function() {
-      stolenThis = this;
-    };
-    
-    var symbol = interpreter.symbol(function() {
-      return thisThief;
-    });
-    
-    symbol();
-    expect(stolenThis).toBe(interpreter);
-    
-  });
-  
-
 });
