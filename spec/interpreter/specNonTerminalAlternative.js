@@ -52,7 +52,7 @@ describe("Interpreter()" +
   function() {
     var symbol1 = UnsuccessfulEaterOfChars();
     var actuallThisBinding = {con: "value 0"};
-    var symbol2 = StubLexeme_dConcatenator(true);
+    var symbol2 = StubLexeme_dConcatenator();
     var alternative = interpreter.nonTerminalAlternative([symbol1, symbol2]);
     var codePointer = StubCodePointer("lexeme 2" + "code");
     actuallThisBinding.method = alternative.makeInstruction(codePointer);
@@ -62,7 +62,7 @@ describe("Interpreter()" +
   
   it("if k = 1 and m = 2, moves unparsedCodePointer past lexeme1", 
   function() {
-    var symbol1 = StubLexeme_dConcatenator(true);
+    var symbol1 = StubLexeme_dConcatenator();
     var actuallThisBinding = {con: "value 0"};
     var symbol2 = UnsuccessfulEaterOfChars();
     var alternative = interpreter.nonTerminalAlternative([symbol1, symbol2]);
