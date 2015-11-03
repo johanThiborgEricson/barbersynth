@@ -1,4 +1,4 @@
-describe("Terminal(token, interpretation)" + 
+xdescribe("Terminal(token, interpretation)" + 
 ".parse(codePointer).apply(thisBinding)", function() {
   var codePointer;
   var methodFactory;

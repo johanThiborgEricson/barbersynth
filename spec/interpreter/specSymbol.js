@@ -1,4 +1,4 @@
-describe("Interpreter.MethodFactory().symbol(instructionMaker)" + 
+xdescribe("Interpreter.MethodFactory().symbol(instructionMaker)" + 
 ".call(interpreter, code)", function() {
   var CodePointer;
   var interpreter;

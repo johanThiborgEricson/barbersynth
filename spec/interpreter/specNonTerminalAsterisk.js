@@ -1,4 +1,4 @@
-describe("NonTerminalAsterisk(symbol)" + 
+xdescribe("NonTerminalAsterisk(symbol)" + 
 "(CodePointer(lexeme1 + ... + lexemeN + code))", function() {
   var methodFactory = Interpreter.MethodFactory();
   

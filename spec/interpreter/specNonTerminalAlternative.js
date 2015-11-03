@@ -1,4 +1,4 @@
-describe("Interpreter.MethodFactory()" + 
+xdescribe("Interpreter.MethodFactory()" + 
 ".nonTerminalAlternative([symbol1, ... , symbolN, ... symbolM])" + 
 ".call(interpreter, lexemeK + code).call(interpreter)", function() {
   

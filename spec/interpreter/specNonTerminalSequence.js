@@ -1,4 +1,4 @@
-describe("Interpreter().nonTerminalSequence([symbol1, ... , symbolN])" + 
+xdescribe("Interpreter().nonTerminalSequence([symbol1, ... , symbolN])" + 
 "(lexeme1 + ... + lexemeN + code, Interpreter.JUST_MAKE_INSTRUCTION)" +
 ".call(thisBinding)", function() {
   var actuallSymbol1;
