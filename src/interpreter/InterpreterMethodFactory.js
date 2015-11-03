@@ -15,7 +15,7 @@ Interpreter.MethodFactory.prototype
     }
     
     var codePointer = methodFactory.CodePointer(code);
-    var instruction = instructionMaker.call(this, codePointer);
+    var instruction = instructionMaker.call(this, codePointer, this);
     if(!instruction || codePointer.getUnparsed() !== "") {
       throw new Error();
     }

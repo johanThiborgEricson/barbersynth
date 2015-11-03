@@ -23,7 +23,7 @@ describe("Interpreter.MethodFactory().symbol(instructionMaker)" +
   });
   
   it("calls instructionMaker with the result of " + 
-  "CodePointer(code)", function() {
+  "CodePointer(code) and the interpreter that the method was on", function() {
     var codePointer = {getUnparsed() {return "";}};
     methodFactory.CodePointer = function() {
       return codePointer;
@@ -34,7 +34,7 @@ describe("Interpreter.MethodFactory().symbol(instructionMaker)" +
     interpreter.method = methodFactory.symbol(instructionMaker);
     interpreter.method();
     expect(instructionMaker)
-    .toHaveBeenCalledWith(codePointer);
+    .toHaveBeenCalledWith(codePointer, interpreter);
   });
   
   it("throws an error if !instructionMaker(codePointer)", function() {
