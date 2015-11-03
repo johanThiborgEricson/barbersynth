@@ -28,14 +28,14 @@ Interpreter.MethodFactory.prototype
 
 Interpreter.MethodFactory.prototype
 .terminal = function(token, interpretation){
-  var instructionMaker = function(codePointer) {
+  var instructionMaker = function(codePointer, interpreter) {
     var lexeme = codePointer.parse(token);
     if(!lexeme) {
       return null;
     }
     
-    var instruction = function() {
-      return interpretation.apply(this, lexeme);
+    var instruction = function(interpreter) {
+      return interpretation.apply(interpreter, lexeme);
     };
     
     return instruction;

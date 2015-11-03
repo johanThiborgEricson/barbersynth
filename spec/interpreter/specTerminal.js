@@ -1,5 +1,5 @@
 describe("Interpreter.MethodFactory().terminal(token, interpretation)" + 
-".call(interpreter, codePointer).apply(interpreter)", function() {
+".call(interpreter, codePointer)(interpreter)", function() {
   var codePointer;
   var methodFactory;
   var interpreter;
@@ -38,19 +38,18 @@ describe("Interpreter.MethodFactory().terminal(token, interpretation)" +
     expect(interpretation).toHaveBeenCalledWith("lexeme a", "lexeme b");
   });
   
-  it("calls interpretation with its call method with thisBinding as argument", 
+  it("calls interpretation with interpreter", 
   function() {
     var stolenThis;
     var thisThief = function() {
       stolenThis = this;
     };
     
-    var thisBinding = {property: "property"};
     interpreter.method = methodFactory.terminal("token", thisThief);
     spyOn(codePointer, "parse").and.returnValue([]);
     var instruction = interpreter.method(codePointer);
-    instruction.call(thisBinding);
-    expect(stolenThis).toBe(thisBinding);
+    instruction(interpreter);
+    expect(stolenThis).toBe(interpreter);
   });
   
   it("returns null if the result of parse is null", function() {
