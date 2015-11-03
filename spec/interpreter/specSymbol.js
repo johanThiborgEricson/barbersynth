@@ -108,19 +108,4 @@ describe("Interpreter.MethodFactory().symbol(instructionMaker)" +
     expect(stolenThis).toBe(interpreter);
   });
   
-  it("if code is not CodePointer, calls instructionMaker with this bound to " +
-  "thisBinding", 
-  function() {
-    var stolenThis;
-    var thisThief = function() {
-      stolenThis = this;
-      return function() {};
-    };
-    
-    interpreter.method = methodFactory.symbol(thisThief);
-    
-    interpreter.method();
-    expect(stolenThis).toBe(interpreter);
-  });
-  
 });
