@@ -21,5 +21,3 @@ function StubLexeme_dConcatenator() {
   return Interpreter.MethodFactory().symbol(instructionMaker);
 
 }
-
-StubLexeme_dConcatenator.prototype = Symbol();
