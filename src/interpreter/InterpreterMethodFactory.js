@@ -1,6 +1,8 @@
 Interpreter.MethodFactory = function() {
   var that = Object.create(Interpreter.MethodFactory.prototype);
   
+  that.CodePointer = CodePointer;
+  
   return that;
 };
 

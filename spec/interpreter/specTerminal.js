@@ -15,7 +15,7 @@ describe("Terminal(token, interpretation)" +
   
   beforeEach(function() {
     codePointer = StubCodePointer();
-    interpreter = Interpreter();
+    interpreter = Interpreter.MethodFactory();
   });
   
   it("calls codePointer.parse with token", function() {

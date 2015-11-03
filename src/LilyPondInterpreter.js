@@ -5,7 +5,7 @@ function LilyPondInterpreter() {
 }
 
 (function() {
-  var semanticSymbol = Interpreter();
+  var semanticSymbol = Interpreter.MethodFactory();
   
   LilyPondInterpreter.prototype.absoluteNatural = semanticSymbol
   .terminal(/([a-g])/, function(naturalName) {

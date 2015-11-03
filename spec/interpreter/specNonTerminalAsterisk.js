@@ -1,6 +1,6 @@
 describe("NonTerminalAsterisk(symbol)" + 
 "(CodePointer(lexeme1 + ... + lexemeN + code))", function() {
-  var interpreter = Interpreter();
+  var methodFactory = Interpreter.MethodFactory();
   
   it("with n = 1, does the same thing as symbol(CodePointer(lexeme1))", 
   function() {
@@ -9,7 +9,7 @@ describe("NonTerminalAsterisk(symbol)" +
     var actuallThisValue = {con: "value 0"};
     var expectedThisValue  = {con: "value 0"};
     var symbol = StubLexeme_dConcatenator();
-    var asterisk = interpreter.nonTerminalAsterisk(symbol);
+    var asterisk = methodFactory.nonTerminalAsterisk(symbol);
     actuallThisValue.method = asterisk(actuallCodePointer);
     expectedThisValue.method = symbol(expectedCodePointer);
     expect(actuallThisValue.method())
@@ -27,7 +27,7 @@ describe("NonTerminalAsterisk(symbol)" +
     var actuallThisValue = {con: "value 0"};
     var expectedThisValue  = {con: "value 0"};
     var symbol = StubLexeme_dConcatenator();
-    var asterisk = interpreter.nonTerminalAsterisk(symbol);
+    var asterisk = methodFactory.nonTerminalAsterisk(symbol);
     actuallThisValue.method = asterisk(actuallCodePointer);
     expectedThisValue.method1 = symbol(expectedCodePointer);
     expectedThisValue.method2 = symbol(expectedCodePointer);

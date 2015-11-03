@@ -1,35 +1,37 @@
-describe("interpreter.symbol(instructionMaker)" + 
-".call(thisBinding, code)", function() {
+describe("Interpreter.MethodFactory().symbol(instructionMaker)" + 
+".call(interpreter, code)", function() {
   var CodePointer;
   var interpreter;
+  var methodFactory;
 
   beforeEach(function() {
-    interpreter = Interpreter();
-    interpreter.CodePointer = jasmine.createSpy("interpreter.CodePointer").and
+    interpreter = Interpreter;
+    methodFactory = Interpreter.MethodFactory();
+    methodFactory.CodePointer = jasmine.createSpy("interpreter.CodePointer").and
     .returnValue(StubCodePointer(""));
     CodePointer = jasmine.createSpy("CodePointer").and
     .returnValue(StubCodePointer(""));
   });
   
   it("calls CodePointer with code", function() {
-    interpreter.method = interpreter.symbol(function() {
+    interpreter.method = methodFactory.symbol(function() {
       return function() {};
     });
     
     interpreter.method("code");
-    expect(interpreter.CodePointer).toHaveBeenCalledWith("code");
+    expect(methodFactory.CodePointer).toHaveBeenCalledWith("code");
   });
   
   it("calls instructionMaker with the result of " + 
   "CodePointer(code)", function() {
     var codePointer = {getUnparsed() {return "";}};
-    interpreter.CodePointer = function() {
+    methodFactory.CodePointer = function() {
       return codePointer;
     };
     
     var instructionMaker = jasmine.createSpy("instructionMaker").and
     .returnValue(function(){});
-    interpreter.method = interpreter.symbol(instructionMaker);
+    interpreter.method = methodFactory.symbol(instructionMaker);
     interpreter.method();
     expect(instructionMaker)
     .toHaveBeenCalledWith(codePointer);
@@ -40,13 +42,13 @@ describe("interpreter.symbol(instructionMaker)" +
       return null;
     };
     
-    interpreter.method = interpreter.symbol(instructionMaker);
+    interpreter.method = methodFactory.symbol(instructionMaker);
     
     expect(interpreter.method.bind(interpreter)).toThrow();
   });
   
   it("throws an error if codePointer.getUnparsed() !== ''", function() {
-    interpreter.CodePointer = function() {
+    methodFactory.CodePointer = function() {
       return {
         getUnparsed() {
           return "trailing code";
@@ -54,7 +56,7 @@ describe("interpreter.symbol(instructionMaker)" +
       };
     };
     
-    interpreter.method = interpreter.symbol(function() {
+    interpreter.method = methodFactory.symbol(function() {
       return function() {};
     });
     
@@ -68,7 +70,7 @@ describe("interpreter.symbol(instructionMaker)" +
       return instruction;
     };
     
-    interpreter.method = interpreter.symbol(instructionMaker);
+    interpreter.method = methodFactory.symbol(instructionMaker);
     
     expect(interpreter.method()).toEqual("result");
     expect(instruction).toHaveBeenCalled();
@@ -76,7 +78,6 @@ describe("interpreter.symbol(instructionMaker)" +
   
   it("calls the result of instructionMaker with this bound to thisBinding", 
   function() {
-    var thisBinding = {binding: "this"};
     var stolenThis;
     var thisThief = function() {
       stolenThis = this;
@@ -86,42 +87,40 @@ describe("interpreter.symbol(instructionMaker)" +
       return thisThief;
     };
     
-    thisBinding.method = interpreter.symbol(instructionMaker);
+    interpreter.method = methodFactory.symbol(instructionMaker);
     
-    thisBinding.method();
-    expect(stolenThis).toBe(thisBinding);
+    interpreter.method();
+    expect(stolenThis).toBe(interpreter);
   });
   
   it("if code is CodePointer, calls instructionMaker with this bound to " +
   "thisBinding", 
   function() {
-    var thisBinding = {binding: "this"};
     var stolenThis;
     var thisThief = function() {
       stolenThis = this;
       return function() {};
     };
     
-    thisBinding.method = interpreter.symbol(thisThief);
+    interpreter.method = methodFactory.symbol(thisThief);
     
-    thisBinding.method(CodePointer());
-    expect(stolenThis).toBe(thisBinding);
+    interpreter.method(CodePointer());
+    expect(stolenThis).toBe(interpreter);
   });
   
   it("if code is not CodePointer, calls instructionMaker with this bound to " +
   "thisBinding", 
   function() {
-    var thisBinding = {binding: "this"};
     var stolenThis;
     var thisThief = function() {
       stolenThis = this;
       return function() {};
     };
     
-    thisBinding.method = interpreter.symbol(thisThief);
+    interpreter.method = methodFactory.symbol(thisThief);
     
-    thisBinding.method();
-    expect(stolenThis).toBe(thisBinding);
+    interpreter.method();
+    expect(stolenThis).toBe(interpreter);
   });
   
 });
