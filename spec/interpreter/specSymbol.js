@@ -1,16 +1,31 @@
-xdescribe("Interpreter.MethodFactory().symbol(instructionMaker)" + 
+describe("Interpreter.MethodFactory().symbol(instructionMaker)" + 
 ".call(interpreter, code)", function() {
   var CodePointer;
   var interpreter;
   var methodFactory;
 
   beforeEach(function() {
-    interpreter = Interpreter;
+    interpreter = Interpreter();
     methodFactory = Interpreter.MethodFactory();
     methodFactory.CodePointer = jasmine.createSpy("interpreter.CodePointer").and
     .returnValue(StubCodePointer(""));
     CodePointer = jasmine.createSpy("CodePointer").and
     .returnValue(StubCodePointer(""));
+  });
+  
+  describe("if code is a codePointer,", function() {
+    
+    it("calls instructionMaker with code and interpreter and returns the " +
+    "result", function() {
+      var instructionMaker = jasmine.createSpy("instructionMaker").and
+      .returnValue("instruction maker result");
+      interpreter.method = methodFactory.symbol(instructionMaker);
+      var codePointer = CodePointer();
+      expect(interpreter.method(codePointer))
+      .toEqual("instruction maker result");
+      expect(instructionMaker).toHaveBeenCalledWith(codePointer, interpreter);
+    });
+    
   });
   
   it("calls CodePointer with code", function() {
@@ -90,21 +105,6 @@ xdescribe("Interpreter.MethodFactory().symbol(instructionMaker)" +
     interpreter.method = methodFactory.symbol(instructionMaker);
     
     interpreter.method();
-    expect(stolenThis).toBe(interpreter);
-  });
-  
-  it("if code is CodePointer, calls instructionMaker with this bound to " +
-  "thisBinding", 
-  function() {
-    var stolenThis;
-    var thisThief = function() {
-      stolenThis = this;
-      return function() {};
-    };
-    
-    interpreter.method = methodFactory.symbol(thisThief);
-    
-    interpreter.method(CodePointer());
     expect(stolenThis).toBe(interpreter);
   });
   

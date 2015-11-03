@@ -11,7 +11,7 @@ Interpreter.MethodFactory.prototype
   var methodFactory = this;
   var that = function(code) {
     if(code instanceof CodePointer) {
-      return instructionMaker.call(this, code);
+      return instructionMaker(code, this);
     }
     
     var codePointer = methodFactory.CodePointer(code);
