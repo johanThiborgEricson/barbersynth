@@ -1,7 +1,7 @@
 describe("Terminal(token, interpretation)" + 
 ".parse(codePointer).apply(thisBinding)", function() {
   var codePointer;
-  var interpreter;
+  var methodFactory;
   function StubCodePointer() {
     var that = Object.create(StubCodePointer.prototype);
     that.parse = function() {
@@ -15,11 +15,11 @@ describe("Terminal(token, interpretation)" +
   
   beforeEach(function() {
     codePointer = StubCodePointer();
-    interpreter = Interpreter.MethodFactory();
+    methodFactory = Interpreter.MethodFactory();
   });
   
   it("calls codePointer.parse with token", function() {
-    var terminal = interpreter.terminal("token", "interpretation");
+    var terminal = methodFactory.terminal("token", "interpretation");
     spyOn(codePointer, "parse");
     terminal(codePointer);
     expect(codePointer.parse).toHaveBeenCalledWith("token");
@@ -28,7 +28,7 @@ describe("Terminal(token, interpretation)" +
   it("calls interpretation with all the elements in the result " + 
   "of codePointer.parse", function() {
     var interpretation = jasmine.createSpy("interpretation");
-    var terminal = interpreter.terminal("token", interpretation);
+    var terminal = methodFactory.terminal("token", interpretation);
     spyOn(codePointer, "parse").and.returnValue(["lexeme a", "lexeme b"]);
     var instruction = terminal(codePointer);
     instruction();
@@ -43,7 +43,7 @@ describe("Terminal(token, interpretation)" +
     };
     
     var thisBinding = {property: "property"};
-    var terminal = interpreter.terminal("token", thisThief);
+    var terminal = methodFactory.terminal("token", thisThief);
     spyOn(codePointer, "parse").and.returnValue([]);
     var instruction = terminal(codePointer);
     instruction.call(thisBinding);
@@ -51,7 +51,7 @@ describe("Terminal(token, interpretation)" +
   });
   
   it("returns null if the result of parse is null", function() {
-    var terminal = interpreter.terminal("token", "interpretation");
+    var terminal = methodFactory.terminal("token", "interpretation");
     spyOn(codePointer, "parse").and.returnValue(null);
     expect(terminal(codePointer)).toBe(null);
   });
