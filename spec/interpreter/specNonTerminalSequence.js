@@ -1,6 +1,6 @@
-xdescribe("Interpreter().nonTerminalSequence([symbol1, ... , symbolN])" + 
-"(lexeme1 + ... + lexemeN + code, Interpreter.JUST_MAKE_INSTRUCTION)" +
-".call(thisBinding)", function() {
+describe("Interpreter().nonTerminalSequence([symbol1, ... , symbolN])" + 
+"(CodePointer(lexeme1 + ... + lexemeN + code), interpreter)" + 
+"(interpreter)", function() {
   var actuallSymbol1;
   var actuallSymbol2;
   var actuallSymbol3;
