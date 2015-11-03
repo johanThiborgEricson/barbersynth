@@ -8,13 +8,13 @@ Interpreter.MethodFactory = function() {
 
 Interpreter.MethodFactory.prototype
 .symbol = function(instructionMaker) {
-  var interpreter = this;
+  var methodFactory = this;
   var that = function(code) {
     if(code instanceof CodePointer) {
       return instructionMaker.call(this, code);
     }
     
-    var codePointer = interpreter.CodePointer(code);
+    var codePointer = methodFactory.CodePointer(code);
     var instruction = instructionMaker.call(this, codePointer);
     if(!instruction || codePointer.getUnparsed() !== "") {
       throw new Error();
