@@ -1,51 +1,53 @@
-describe("Interpreter()" + 
+describe("Interpreter.MethodFactory()" + 
 ".nonTerminalAlternative([symbol1, ... , symbolN, ... symbolM])" + 
-".parse(lexemeK + code)", function() {
+".call(interpreter, lexemeK + code).call(interpreter)", function() {
   
-  var methodFactory = Interpreter.MethodFactory();
+  var methodFactory;
+  var interpreter;
+  
+  beforeEach(function() {
+    methodFactory = Interpreter.MethodFactory();
+    interpreter = {con: "value 0"};
+  });
   
   it("if k = m = 1, calls symbol1 with codePointer", 
   function() {
     var actuallThisBinding = {con: "value 0"};
     var symbol1 = jasmine.createSpy("symbol 1").and
     .returnValue(function() {});
-    var alternative = methodFactory.nonTerminalAlternative([symbol1]);
+    interpreter.alternative = methodFactory.nonTerminalAlternative([symbol1]);
     var codePointer = StubCodePointer("lexeme 1" + "code");
-    actuallThisBinding.method = alternative(codePointer);
-    actuallThisBinding.method();
+    interpreter.alternative(codePointer);
     expect(symbol1)
     .toHaveBeenCalledWith(codePointer);
   });
   
   it("if k = m = 1, returns the reslut of calling symbol1 and updates codePointer", function() {
-    var actuallThisBinding = {con: "value 0"};
     var symbol1 = StubLexeme_dConcatenator();
-    var alternative = methodFactory.nonTerminalAlternative([symbol1]);
+    interpreter.alternative = methodFactory.nonTerminalAlternative([symbol1]);
     var codePointer = StubCodePointer("lexeme 1" + "code");
-    actuallThisBinding.method = alternative(codePointer);
+    var instruction = interpreter.alternative(codePointer);
     expect(codePointer.getUnparsed()).toEqual("code");
-    actuallThisBinding.method();
-    expect(actuallThisBinding.con).toEqual("value 0" + "lexeme 1");
+    instruction.call(interpreter);
+    expect(interpreter.con).toEqual("value 0" + "lexeme 1");
   });
   
-  it("if k = m = 1, calls symbol1 with codePointer and " +
-  "Interpreter.JUST_MAKE_INSTRUCTION", function() {
+  it("if k = m = 1, calls symbol1 with codePointer", function() {
     var symbol1 = jasmine.createSpy("symbol 1");
-    var alternative = methodFactory.nonTerminalAlternative([symbol1]);
+    interpreter.alternative = methodFactory.nonTerminalAlternative([symbol1]);
     var codePointer = StubCodePointer("lexeme 1" + "code");
-    alternative(codePointer);
+    interpreter.alternative(codePointer);
     expect(symbol1).toHaveBeenCalledWith(codePointer);
   });
   
   it("if k = m = 2, returns result of calling symbol2", function() {
-    var actuallThisBinding = {con: "value 0"};
     var symbol1 = jasmine.createSpy("symbol1").and.returnValue(null);
     var symbol2 = StubLexeme_dConcatenator();
-    var alternative = methodFactory.nonTerminalAlternative([symbol1, symbol2]);
+    interpreter.alternative = methodFactory.nonTerminalAlternative([symbol1, symbol2]);
     var codePointer = StubCodePointer("lexeme 2" + "code");
-    actuallThisBinding.method = alternative(codePointer);
-    actuallThisBinding.method();
-    expect(actuallThisBinding.con).toEqual("value 0" + "lexeme 2");
+    interpreter.method = interpreter.alternative(codePointer);
+    interpreter.method();
+    expect(interpreter.con).toEqual("value 0" + "lexeme 2");
   });
   
   function UnsuccessfulEaterOfChars() {
@@ -63,9 +65,9 @@ describe("Interpreter()" +
     var symbol1 = UnsuccessfulEaterOfChars();
     var actuallThisBinding = {con: "value 0"};
     var symbol2 = StubLexeme_dConcatenator();
-    var alternative = methodFactory.nonTerminalAlternative([symbol1, symbol2]);
+    interpreter.alternative = methodFactory.nonTerminalAlternative([symbol1, symbol2]);
     var codePointer = StubCodePointer("lexeme 2" + "code");
-    actuallThisBinding.method = alternative(codePointer);
+    actuallThisBinding.method = interpreter.alternative(codePointer);
     actuallThisBinding.method();
     expect(actuallThisBinding.con).toEqual("value 0" + "lexeme 2");
   });
@@ -75,9 +77,9 @@ describe("Interpreter()" +
     var symbol1 = StubLexeme_dConcatenator();
     var actuallThisBinding = {con: "value 0"};
     var symbol2 = UnsuccessfulEaterOfChars();
-    var alternative = methodFactory.nonTerminalAlternative([symbol1, symbol2]);
+    interpreter.alternative = methodFactory.nonTerminalAlternative([symbol1, symbol2]);
     var codePointer = StubCodePointer("lexeme 1" + "code");
-    alternative(codePointer)();
+    interpreter.alternative(codePointer)();
     expect(codePointer.getUnparsed()).toEqual("code");
   });
   
