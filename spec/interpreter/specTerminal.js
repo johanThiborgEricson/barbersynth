@@ -1,5 +1,5 @@
-xdescribe("Terminal(token, interpretation)" + 
-".parse(codePointer).apply(thisBinding)", function() {
+describe("Interpreter.MethodFactory().terminal(token, interpretation)" + 
+".call(interpreter, codePointer).apply(interpreter)", function() {
   var codePointer;
   var methodFactory;
   var interpreter;
