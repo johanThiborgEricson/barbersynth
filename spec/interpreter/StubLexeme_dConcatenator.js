@@ -11,9 +11,9 @@ function StubLexeme_dConcatenator() {
     
     var lexeme = match[0];
     codePointer.restore(codePointer.backup().slice(lexeme.length));
-    return function() {
-      this.con = this.con + lexeme;
-      return this.con;
+    return function(interpreter) {
+      interpreter.con = interpreter.con + lexeme;
+      return interpreter.con;
     };
   };
   

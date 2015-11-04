@@ -46,14 +46,15 @@ Interpreter.MethodFactory.prototype
 };
 
 Interpreter.MethodFactory.prototype
-.nonTerminalSequence = function (symbols) {
-  var instructionMaker = function(codePointer) {
-    var instructions = [];
+.nonTerminalSequence = function () {
+  var symbols = Array.prototype.slice.call(arguments);
+  var instructionMaker = function(codePointer, interpreter) {
+    var instructions = {};
     var lastMade = true;
     
     var makeInstructionIfAllPreviousWasSuccessful = function(symbol) {
-      lastMade = lastMade && symbol(codePointer);
-      instructions.push(lastMade);
+      lastMade = lastMade && interpreter[symbol](codePointer);
+      instructions[symbol] = lastMade;
     };
     
     symbols.map(makeInstructionIfAllPreviousWasSuccessful);
@@ -62,14 +63,37 @@ Interpreter.MethodFactory.prototype
       return null;
     }
     
-    var instruction = function() {
-      var that = this;
-      var lastResult;
-      instructions.map(function(instruction) {
-        lastResult = instruction.call(that);
+    var instruction = function(interpreter) {
+      var results = {};
+      symbols.map(function(symbol) {
+        results[symbol] = instructions[symbol].call(interpreter, interpreter);
       });
       
-      return lastResult;
+      return results;
+    };
+    
+    return instruction;
+  };
+  
+  return this.symbol(instructionMaker);
+};
+
+Interpreter.MethodFactory.prototype
+.nonTerminalSequence2 = function() {
+  var names = Array.prototype.slice.call(arguments);
+  var instructionMaker = function(codePointer, interpreter) {
+    var instructions = {};
+    names.map(function(name) {
+      instructions[name] = interpreter[name](codePointer);
+    });
+    
+    var instruction = function(interpreter) {
+      var results = {};
+      names.map(function(name) {
+        results[name] = instructions[name](interpreter);
+      });
+      
+      return results;
     };
     
     return instruction;
