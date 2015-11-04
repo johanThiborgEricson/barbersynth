@@ -108,4 +108,8 @@ describe("Interpreter.MethodFactory().symbol(instructionMaker)" +
     expect(stolenThis).toBe(interpreter);
   });
   
+  it("if code is a CodePointer, calls backup on that codePointer before " +
+  "instructionMaker is called, and calls restore iff instructionMaker" +
+  "returns null");
+  
 });
