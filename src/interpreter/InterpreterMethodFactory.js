@@ -83,10 +83,16 @@ Interpreter.MethodFactory.prototype
   var names = Array.prototype.slice.call(arguments);
   var instructionMaker = function(codePointer, interpreter) {
     var instructions = {};
-    names.map(function(name) {
-      instructions[name] = interpreter[name](codePointer);
-    });
-    
+    for(var i = 0; i < names.length; i++) {
+      var name = names[i];
+      var maybeInstruction = interpreter[name](codePointer);
+      if(!maybeInstruction) {
+        return null;
+      }
+      
+      instructions[name] = maybeInstruction;
+    }
+
     var instruction = function(interpreter) {
       var results = {};
       names.map(function(name) {
