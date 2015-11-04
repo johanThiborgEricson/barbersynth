@@ -109,7 +109,7 @@ describe("Interpreter.MethodFactory().symbol(instructionMaker)" +
   });
   
   it("if code is a CodePointer, calls backup on that codePointer before " +
-  "instructionMaker is called, and calls restore iff instructionMaker" +
-  "returns null");
+  "instructionMaker is called, and calls restore with the result iff " +
+  "instructionMaker returns null");
   
 });
