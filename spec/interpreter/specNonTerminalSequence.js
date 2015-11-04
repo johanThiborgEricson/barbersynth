@@ -81,16 +81,6 @@ function() {
     
   });
 
-  xit("(StubLexeme_dConcatenator spike)", function() {
-    var thisBinding = {con: "value 0"};
-    var stub = StubLexeme_dConcatenator();
-    var code = StubCodePointer("lexeme 1" + "code");
-    var instruction = stub(code);
-    expect(code.getUnparsed()).toEqual("code");
-    instruction(thisBinding);
-    expect(thisBinding.con).toEqual("value 0" + "lexeme 1");
-  });
-  
   xit("with n = 1, calls interpretation with an object with one field, " +
   "name1, that contains the result of calling name1", 
   function() {
