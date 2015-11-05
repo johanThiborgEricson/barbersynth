@@ -95,16 +95,16 @@ Interpreter.MethodFactory.prototype
 };
 
 Interpreter.MethodFactory.prototype
-.nonTerminalAlternative = function(alternatives) {
-  var instructionMaker = function(codePointer) {
-    var that = this;
-    var backup = codePointer.backup();
-    var instruction = alternatives.reduce(function(instruction, alternative) {
-      if(!instruction)codePointer.restore(backup);
-      return instruction || alternative.call(that, codePointer);
-    }, null);
+.nonTerminalAlternative = function() {
+  var alternatives = Array.prototype.slice.call(arguments);
+  var instructionMaker = function(codePointer, interpreter) {
+    var parseSuccess = false;
+    var i = 0;
+    while(!parseSuccess && i < alternatives.length) {
+      parseSuccess = interpreter[alternatives[i++]](codePointer);
+    }
     
-    return instruction;
+    return parseSuccess;
   };
   
   return this.makeMethod(instructionMaker);
