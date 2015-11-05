@@ -20,7 +20,7 @@ Interpreter.MethodFactory.prototype
       throw new Error();
     }
     
-    return instruction.call(this);
+    return instruction(this);
   };
   
   return method;
@@ -120,11 +120,10 @@ Interpreter.MethodFactory.prototype
       
     }
     
-    var instruction = function() {
+    var instruction = function(interpreter) {
       var lastResult;
-      var that = this;
       instructions.map(function(instruction) {
-        lastResult = instruction.call(that);
+        lastResult = instruction(interpreter);
       });
       
       return lastResult;
