@@ -111,38 +111,7 @@ Interpreter.MethodFactory.prototype
 };
 
 Interpreter.MethodFactory.prototype
-.nonTerminalAsterisk = function(symbol) {
-  var instructionMaker = function(codePointer) {
-    var instructions = [];
-    var madeInstruction = true;
-    while(madeInstruction) {
-      var backup = codePointer.backup();
-      madeInstruction = symbol(codePointer);
-      if(madeInstruction){
-        instructions.push(madeInstruction);
-      } else {
-        codePointer.restore(backup);
-      }
-      
-    }
-    
-    var instruction = function(interpreter) {
-      var lastResult;
-      instructions.map(function(instruction) {
-        lastResult = instruction(interpreter);
-      });
-      
-      return lastResult;
-    };
-    
-    return instruction;
-  };
-  
-  return this.makeMethod(instructionMaker);
-};
-
-Interpreter.MethodFactory.prototype
-.nonTerminalAsterisk2 = function(name, interpretation) {
+.nonTerminalAsterisk = function(name, interpretation) {
   var instructionMaker = function(codePointer, interpreter) {
     var maybeInstruction = true;
     var instructions = [];
@@ -159,7 +128,7 @@ Interpreter.MethodFactory.prototype
       });
       
       if(interpretation) {
-        interpretation(results);
+        return interpretation.call(interpreter, results);
       } else {
         return results;
       }

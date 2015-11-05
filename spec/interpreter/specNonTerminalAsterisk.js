@@ -18,7 +18,7 @@ function() {
   it("with n = 0, calls name with codePointer once", 
   function() {
     spyOn(interpreter, "name").and.returnValue(null);
-    interpreter.asterisk = methodFactory.nonTerminalAsterisk2("name");
+    interpreter.asterisk = methodFactory.nonTerminalAsterisk("name");
     var codePointer = CodePointer("");
     interpreter.asterisk(codePointer);
     expect(interpreter.name).toHaveBeenCalledWith(codePointer);
@@ -27,7 +27,7 @@ function() {
   
   it("with n = 1, calls name twice", function() {
     spyOn(interpreter, "name").and.returnValues(noop, null);
-    interpreter.sequence = methodFactory.nonTerminalAsterisk2("name");
+    interpreter.sequence = methodFactory.nonTerminalAsterisk("name");
     var codePointer = CodePointer("lexeme 1");
     interpreter.sequence(codePointer);
     expect(interpreter.name.calls.count()).toBe(2);
@@ -39,7 +39,7 @@ function() {
     var instruction = jasmine.createSpy("instruction");
     spyOn(interpreter, "name").and
     .returnValues(instruction, instruction, null);
-    interpreter.asterisk = methodFactory.nonTerminalAsterisk2("name");
+    interpreter.asterisk = methodFactory.nonTerminalAsterisk("name");
     var asteriskInstruction = interpreter.asterisk(CodePointer());
     asteriskInstruction(interpreter);
     expect(instruction).toHaveBeenCalledWith(interpreter);
@@ -50,7 +50,7 @@ function() {
     "by name", function() {
     var instruction = jasmine.createSpy("instruction");
     spyOn(interpreter, "name").and.returnValues(null, instruction);
-    interpreter.asterisk = methodFactory.nonTerminalAsterisk2("name");
+    interpreter.asterisk = methodFactory.nonTerminalAsterisk("name");
     var asteriskInstruction = interpreter.asterisk(CodePointer(""));
     asteriskInstruction(interpreter);
     expect(instruction).not.toHaveBeenCalled();
@@ -70,7 +70,7 @@ function() {
       };
       
       spyOn(interpreter, "name").and.returnValues(instruction1, instruction2);
-      interpreter.asterisk = methodFactory.nonTerminalAsterisk2("name");
+      interpreter.asterisk = methodFactory.nonTerminalAsterisk("name");
       var asteriskInstruction = interpreter.asterisk(CodePointer());
       expect(asteriskInstruction(interpreter)).toEqual([
         "instruction result 1",
@@ -97,7 +97,7 @@ function() {
       spyOn(interpreter, "name").and.returnValues(instruction1, instruction2);
       var interpretation = jasmine.createSpy("interpretation");
       interpreter.asterisk = methodFactory
-      .nonTerminalAsterisk2("name", interpretation);
+      .nonTerminalAsterisk("name", interpretation);
       var codePointer = CodePointer();
       var asteriskInstruction = interpreter.asterisk(codePointer);
       asteriskInstruction(interpreter);
@@ -108,7 +108,7 @@ function() {
       
     });
     
-    xit("returns an instruction that, when called with interpreter, calls " + 
+    it("returns an instruction that, when called with interpreter, calls " + 
     "interpretation with this-binding bound to interpreter", 
     function(){
       var stolenThis;
@@ -116,25 +116,26 @@ function() {
         stolenThis = this;
       };
       
-      interpreter.sequence = methodFactory
-      .nonTerminalSequence(thisThief);
+      interpreter.asterisk = methodFactory
+      .nonTerminalAsterisk("name", thisThief);
+      spyOn(interpreter, "name").and.returnValue(null);
       var codePointer = CodePointer();
-      var sequenceInstruction = interpreter.sequence2(codePointer);
-      sequenceInstruction(interpreter);
+      var asteriskInstruction = interpreter.asterisk(codePointer);
+      asteriskInstruction(interpreter);
       expect(stolenThis).toBe(interpreter);
     });
     
-    xit("returns an instruction that returns the result of interpretation",
+    it("returns an instruction that returns the result of interpretation",
     function() {
       var interpretation = function() {
         return "interpretation result";
       };
       
-      interpreter.sequence = methodFactory
-      .nonTerminalSequence(interpretation);
+      interpreter.asterisk = methodFactory
+      .nonTerminalAsterisk("name", interpretation);
       var codePointer = CodePointer();
-      var sequenceInstruction = interpreter.sequence2(codePointer);
-      expect(sequenceInstruction(interpreter))
+      var asteriskInstruction = interpreter.asterisk(codePointer);
+      expect(asteriskInstruction(interpreter))
       .toEqual("interpretation result");
     });
     
