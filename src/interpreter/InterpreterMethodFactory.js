@@ -7,9 +7,9 @@ Interpreter.MethodFactory = function() {
 };
 
 Interpreter.MethodFactory.prototype
-.symbol = function(instructionMaker) {
+.makeMethod = function(instructionMaker) {
   var methodFactory = this;
-  var that = function(code) {
+  var method = function(code) {
     if(code instanceof CodePointer) {
       return instructionMaker(code, this);
     }
@@ -23,7 +23,7 @@ Interpreter.MethodFactory.prototype
     return instruction.call(this);
   };
   
-  return that;
+  return method;
 };
 
 Interpreter.MethodFactory.prototype
@@ -41,7 +41,7 @@ Interpreter.MethodFactory.prototype
     return instruction;
   };
   
-  var terminal = this.symbol(instructionMaker);
+  var terminal = this.makeMethod(instructionMaker);
   return terminal;
 };
 
@@ -85,7 +85,7 @@ Interpreter.MethodFactory.prototype
     return instruction;
   };
   
-  return this.symbol(instructionMaker);
+  return this.makeMethod(instructionMaker);
 };
 
 Interpreter.MethodFactory.prototype
@@ -101,7 +101,7 @@ Interpreter.MethodFactory.prototype
     return instruction;
   };
   
-  return this.symbol(instructionMaker);
+  return this.makeMethod(instructionMaker);
 };
 
 Interpreter.MethodFactory.prototype
@@ -133,5 +133,5 @@ Interpreter.MethodFactory.prototype
     return instruction;
   };
   
-  return this.symbol(instructionMaker);
+  return this.makeMethod(instructionMaker);
 };

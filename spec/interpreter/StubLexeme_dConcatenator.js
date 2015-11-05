@@ -18,6 +18,6 @@ function StubLexeme_dConcatenator() {
   };
   
   // TODO: replace with stub implementation
-  return Interpreter.MethodFactory().symbol(instructionMaker);
+  return Interpreter.MethodFactory().makeMethod(instructionMaker);
 
 }
