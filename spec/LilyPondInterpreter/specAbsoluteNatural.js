@@ -1,4 +1,4 @@
-xdescribe("absoluteNatural(naturalName)", function() {
+describe("absoluteNatural(naturalName)", function() {
   
   var interpreter;
   
