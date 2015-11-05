@@ -140,3 +140,33 @@ Interpreter.MethodFactory.prototype
   
   return this.makeMethod(instructionMaker);
 };
+
+Interpreter.MethodFactory.prototype
+.nonTerminalAsterisk2 = function(name, interpretation) {
+  var instructionMaker = function(codePointer, interpreter) {
+    var maybeInstruction = true;
+    var instructions = [];
+    while(maybeInstruction) {
+      maybeInstruction = interpreter[name](codePointer);
+      instructions.push(maybeInstruction);
+    }
+    
+    instructions.pop();
+    
+    var instruction = function(interpreter) {
+      var results = instructions.map(function(subInstruction) {
+        return subInstruction(interpreter);
+      });
+      
+      if(interpretation) {
+        interpretation(results);
+      } else {
+        return results;
+      }
+    };
+    
+    return instruction;
+  };
+  
+  return this.makeMethod(instructionMaker);
+};
