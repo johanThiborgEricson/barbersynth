@@ -1,4 +1,4 @@
-xdescribe("accidentals", function() {
+describe("accidentals", function() {
   
   var interpreter;
   

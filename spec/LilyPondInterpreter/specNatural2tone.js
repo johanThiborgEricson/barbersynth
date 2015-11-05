@@ -1,4 +1,4 @@
-xdescribe("natural2tone", function() {
+describe("natural2tone", function() {
   
   var interpreter = LilyPondInterpreter();
   

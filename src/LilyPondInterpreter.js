@@ -5,9 +5,9 @@ function LilyPondInterpreter() {
 }
 
 (function() {
-  var semanticSymbol = Interpreter.MethodFactory();
+  var methodFactory = Interpreter.MethodFactory();
   
-  LilyPondInterpreter.prototype.absoluteNatural = semanticSymbol
+  LilyPondInterpreter.prototype.absoluteNatural = methodFactory
   .terminal(/([a-g])/, function(naturalName) {
     var minusA = naturalName.charCodeAt(0) - "a".charCodeAt(0);
     var lilyPondIndex = (minusA + 5) % 7;
@@ -15,14 +15,14 @@ function LilyPondInterpreter() {
     this.tone = this.natural2tone(this.natural);
   });
   
-  LilyPondInterpreter.prototype.octavationDown = semanticSymbol
+  LilyPondInterpreter.prototype.octavationDown = methodFactory
   .terminal(/(,+)/, function(commaString) {
     var commaCount = commaString.length;
     this.natural -= 7 * commaCount;
     this.tone -= 12 * commaCount;
   });
   
-  LilyPondInterpreter.prototype.octavationUp = semanticSymbol
+  LilyPondInterpreter.prototype.octavationUp = methodFactory
   .terminal(/('+)/, function(apostrofeString) {
     var apostrofeCount = apostrofeString.length;
     this.natural += 7 * apostrofeCount;
@@ -30,15 +30,11 @@ function LilyPondInterpreter() {
   });
   
   // TODO: move this to Interpreter
-  LilyPondInterpreter.prototype.nothing = semanticSymbol
+  LilyPondInterpreter.prototype.nothing = methodFactory
   .terminal(/()/, function() {});
   
-  LilyPondInterpreter.prototype.octavation = semanticSymbol
-  .nonTerminalAlternative([
-      LilyPondInterpreter.prototype.octavationDown, 
-      LilyPondInterpreter.prototype.octavationUp, 
-      LilyPondInterpreter.prototype.nothing
-    ]);
+  LilyPondInterpreter.prototype.octavation = methodFactory
+  .nonTerminalAlternative("octavationDown", "octavationUp", "nothing");
   
   LilyPondInterpreter.prototype.natural2tone = function(natural) {
     var aMinorScaleTone = ((natural % 7) + 7) % 7;
@@ -47,40 +43,36 @@ function LilyPondInterpreter() {
     return octave * 12 + aMinorTones[aMinorScaleTone];
   };
   
-  LilyPondInterpreter.prototype.flat = semanticSymbol
+  LilyPondInterpreter.prototype.flat = methodFactory
   .terminal(/((?:es)+)/, function(esesString) {
     var esesCount = esesString.length / 2;
     this.tone -= esesCount;
   });
   
-  LilyPondInterpreter.prototype.sharp = semanticSymbol
+  LilyPondInterpreter.prototype.sharp = methodFactory
   .terminal(/((?:is)+)/, function(isesString) {
     var isesCount = isesString.length / 2;
     this.tone += isesCount;
   });
   
-  LilyPondInterpreter.prototype.accidentals = semanticSymbol
-  .nonTerminalAlternative([
-      LilyPondInterpreter.prototype.flat, 
-      LilyPondInterpreter.prototype.sharp, 
-      LilyPondInterpreter.prototype.nothing
-    ]);
+  LilyPondInterpreter.prototype.accidentals = methodFactory
+  .nonTerminalAlternative("flat", "sharp", "nothing");
   
-  LilyPondInterpreter.prototype.reciprocalLength = semanticSymbol
+  LilyPondInterpreter.prototype.reciprocalLength = methodFactory
   .terminal(/(128|64|32|16|8|4|2|1)/, function(lengthString){
     var numerator = 1;
     var denominator = Number(lengthString);
     this.lengthFraction = [numerator, denominator];
   });
   
-  LilyPondInterpreter.prototype.unspecifiedLength = semanticSymbol
+  LilyPondInterpreter.prototype.unspecifiedLength = methodFactory
   .terminal(/()/, function() {
     if(!this.lengthFraction) {
       this.lengthFraction = [1, 4];
     }
   });
   
-  LilyPondInterpreter.prototype.dots = semanticSymbol
+  LilyPondInterpreter.prototype.dots = methodFactory
   .terminal(/(\.+)/, function(dotsString) {
     var dotCount = dotsString.length;
     this.lengthFraction[0] *= 2 * Math.pow(2, dotCount) - 1;
@@ -88,22 +80,14 @@ function LilyPondInterpreter() {
   });
   
   // TODO: write nonTerminalQuestionMark as a shorthand for this.
-  LilyPondInterpreter.prototype.possiblyDots = semanticSymbol
-  .nonTerminalAlternative([
-      LilyPondInterpreter.prototype.dots, 
-      LilyPondInterpreter.prototype.nothing
-    ]);
+  LilyPondInterpreter.prototype.possiblyDots = methodFactory
+  .nonTerminalAlternative("dots", "nothing");
   
-  LilyPondInterpreter.prototype.possiblyDottedLength = semanticSymbol
-  .nonTerminalSequence([
-      LilyPondInterpreter.prototype.reciprocalLength, 
-      LilyPondInterpreter.prototype.possiblyDots
-    ]);
+  LilyPondInterpreter.prototype.possiblyDottedLength = methodFactory
+  .nonTerminalSequence("reciprocalLength", "possiblyDots");
   
-  LilyPondInterpreter.prototype.noteLength = semanticSymbol.nonTerminalAlternative([
-      LilyPondInterpreter.prototype.possiblyDottedLength, 
-      LilyPondInterpreter.prototype.unspecifiedLength
-    ]);
+  LilyPondInterpreter.prototype.noteLength = methodFactory
+  .nonTerminalAlternative("possiblyDottedLength", "unspecifiedLength");
 
 })();
   

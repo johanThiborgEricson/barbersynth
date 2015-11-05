@@ -1,4 +1,4 @@
-xdescribe("noteLength", function() {
+describe("noteLength", function() {
   
   var interpreter;
   

@@ -1,4 +1,4 @@
-xdescribe("octavation", function() {
+describe("octavation", function() {
   it("when called with , decreases natural by 7 and tone by 12", function() {
     var interpreter = LilyPondInterpreter();
     interpreter.natural = 3;
