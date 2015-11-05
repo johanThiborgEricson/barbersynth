@@ -125,6 +125,7 @@ function() {
       });
     });
     
+    // TODO this test is confusing. Add one name before interpretation.
     it("returns an instruction that, when called with interpreter, calls " + 
     "interpretation with this-binding bound to interpreter", 
     function(){
@@ -134,7 +135,7 @@ function() {
       };
       
       interpreter.sequence = methodFactory
-      .nonTerminalSequence(thisThief);
+      .nonTerminalSequence("name1", "name2", thisThief);
       var codePointer = CodePointer();
       var sequenceInstruction = interpreter.sequence(codePointer);
       sequenceInstruction(interpreter);
