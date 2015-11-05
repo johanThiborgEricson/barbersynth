@@ -92,11 +92,33 @@ describe("Interpreter.MethodFactory().makeMethod(instructionMaker)" +
     expect(instruction).toHaveBeenCalledWith(interpreter);
   });
   
-  it("logs a warning if an interpreter is called as a function (this bound " +
-  "to global)");
-  
   it("if code is a CodePointer, calls backup on that codePointer before " +
   "instructionMaker is called, and calls restore with the result iff " +
-  "instructionMaker returns null");
+  "instructionMaker returns null", function() {
+    var successfulInstructionMaker = function() {
+      return "instruction";
+    };
+    
+    var failInstructionMaker = function() {
+      return null;
+    };
+    
+    interpreter.parseSuccessful = 
+    methodFactory.makeMethod(successfulInstructionMaker);
+    interpreter.parseFail = 
+    methodFactory.makeMethod(failInstructionMaker);
+    var codePointer = CodePointer();
+    spyOn(codePointer, "backup").and.returnValue("backup");
+    spyOn(codePointer, "restore");
+    interpreter.parseSuccessful(codePointer);
+    expect(codePointer.backup).toHaveBeenCalled();
+    expect(codePointer.restore).not.toHaveBeenCalled();
+
+    interpreter.parseFail(codePointer);
+    expect(codePointer.restore).toHaveBeenCalledWith("backup");
+  });
+  
+  it("logs a warning if an interpreter is called as a function (this bound " +
+  "to global)");
   
 });

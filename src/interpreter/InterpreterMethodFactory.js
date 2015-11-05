@@ -11,7 +11,13 @@ Interpreter.MethodFactory.prototype
   var methodFactory = this;
   var method = function(code) {
     if(code instanceof CodePointer) {
-      return instructionMaker(code, this);
+      var backup = code.backup();
+      var maybeInstruction = instructionMaker(code, this);
+      if(!maybeInstruction){
+        code.restore(backup);
+      }
+      
+      return maybeInstruction;
     }
     
     var codePointer = methodFactory.CodePointer(code);
