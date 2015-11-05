@@ -46,41 +46,17 @@ Interpreter.MethodFactory.prototype
 };
 
 Interpreter.MethodFactory.prototype
-.nonTerminalSequence = function () {
-  var symbols = Array.prototype.slice.call(arguments);
-  var instructionMaker = function(codePointer, interpreter) {
-    var instructions = {};
-    var lastMade = true;
-    
-    var makeInstructionIfAllPreviousWasSuccessful = function(symbol) {
-      lastMade = lastMade && interpreter[symbol](codePointer);
-      instructions[symbol] = lastMade;
-    };
-    
-    symbols.map(makeInstructionIfAllPreviousWasSuccessful);
-    
-    if(!lastMade) {
-      return null;
-    }
-    
-    var instruction = function(interpreter) {
-      var results = {};
-      symbols.map(function(symbol) {
-        results[symbol] = instructions[symbol].call(interpreter, interpreter);
-      });
-      
-      return results;
-    };
-    
-    return instruction;
-  };
+.nonTerminalSequence = function() {
+  var names;
+  var interpretation;
   
-  return this.symbol(instructionMaker);
-};
-
-Interpreter.MethodFactory.prototype
-.nonTerminalSequence2 = function() {
-  var names = Array.prototype.slice.call(arguments);
+  if(typeof arguments[arguments.length - 1] === "string") {
+    names = Array.prototype.slice.call(arguments);
+  } else {
+    interpretation = arguments[arguments.length - 1];
+    names = Array.prototype.slice.call(arguments, 0, -1);
+  }
+  
   var instructionMaker = function(codePointer, interpreter) {
     var instructions = {};
     for(var i = 0; i < names.length; i++) {
@@ -99,7 +75,11 @@ Interpreter.MethodFactory.prototype
         results[name] = instructions[name](interpreter);
       });
       
-      return results;
+      if(interpretation) {
+        return interpretation.call(interpreter, results);
+      } else {
+        return results;
+      }
     };
     
     return instruction;
