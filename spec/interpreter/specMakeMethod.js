@@ -78,7 +78,8 @@ describe("Interpreter.MethodFactory().makeMethod(instructionMaker)" +
     expect(interpreter.method.bind(interpreter)).toThrow();
   });
   
-  it("calls the result of instructionMaker with interpreter and returns the result", function() {
+  it("calls the result of instructionMaker with interpreter and returns " +
+  "the result", function() {
     var instruction = jasmine.createSpy("instruction").and
     .returnValue("result");
     var instructionMaker = function() {
@@ -90,6 +91,9 @@ describe("Interpreter.MethodFactory().makeMethod(instructionMaker)" +
     expect(interpreter.method()).toEqual("result");
     expect(instruction).toHaveBeenCalledWith(interpreter);
   });
+  
+  it("logs a warning if an interpreter is called as a function (this bound " +
+  "to global)");
   
   it("if code is a CodePointer, calls backup on that codePointer before " +
   "instructionMaker is called, and calls restore with the result iff " +
