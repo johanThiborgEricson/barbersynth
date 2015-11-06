@@ -62,33 +62,43 @@ function LilyPondInterpreter() {
   LilyPondInterpreter.prototype.accidentals = methodFactory
   .nonTerminalAlternative("flat", "sharp", "noAccidental");
   
+  // TODO: make function fraction (n, m) => [n, m] with methods.
   LilyPondInterpreter.prototype.reciprocalLength = methodFactory
   .terminal(/(128|64|32|16|8|4|2|1)/, function(lengthString){
     var numerator = 1;
     var denominator = Number(lengthString);
-    this.lengthFraction = [numerator, denominator];
+    return [numerator, denominator];
   });
   
   LilyPondInterpreter.prototype.unspecifiedLength = methodFactory
   .terminal(/()/, function() {
-    if(!this.lengthFraction) {
-      this.lengthFraction = [1, 4];
+    if(this.lengthFraction){ 
+      return this.lengthFraction;
+    } else {
+      return [1, 4];
     }
   });
   
   LilyPondInterpreter.prototype.dots = methodFactory
   .terminal(/(\.+)/, function(dotsString) {
     var dotCount = dotsString.length;
-    this.lengthFraction[0] *= 2 * Math.pow(2, dotCount) - 1;
-    this.lengthFraction[1] *= Math.pow(2, dotCount);
+    var numerator = 2 * Math.pow(2, dotCount) - 1;
+    var denominator = Math.pow(2, dotCount);
+    return [numerator, denominator];
   });
   
   // TODO: write nonTerminalQuestionMark as a shorthand for this.
   LilyPondInterpreter.prototype.possiblyDots = methodFactory
   .nonTerminalAlternative("dots", "nothing");
   
+  // TODO: write fraction().multiply(fraction())
   LilyPondInterpreter.prototype.possiblyDottedLength = methodFactory
-  .nonTerminalSequence("reciprocalLength", "possiblyDots");
+  .nonTerminalSequence("reciprocalLength", "possiblyDots", 
+  function(args) {
+    var numerator = args.reciprocalLength[0] * args.possiblyDots[0];
+    var denominator = args.reciprocalLength[1] * args.possiblyDots[1];
+    return [numerator, denominator];
+  });
   
   LilyPondInterpreter.prototype.noteLength = methodFactory
   .nonTerminalAlternative("possiblyDottedLength", "unspecifiedLength");

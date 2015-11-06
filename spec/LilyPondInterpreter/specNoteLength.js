@@ -14,37 +14,32 @@ describe("noteLength", function() {
     [[1, 1], [1, 2], [1, 4], [1, 8], [1, 16], [1, 32], [1, 64], [1, 128]];
     
     var actualls = powersOfTwo.map(function(powerOfTwo) {
-      interpreter.reciprocalLength(powerOfTwo);
-      return interpreter.lengthFraction;
+      return interpreter.reciprocalLength(powerOfTwo);
     });
     
     expect(actualls).toEqual(expecteds);
   });
   
   it("when called with an empty string, if lengthFraction is defined, " +
-  "does nothing", 
+  "returns it", 
   function() {
     interpreter.lengthFraction = "length fraction";
-    interpreter.noteLength("");
-    expect(interpreter.lengthFraction).toEqual("length fraction");
+    expect(interpreter.noteLength("")).toEqual("length fraction");
   });
   
   it("when called with an empty string, if lenghtFraction is undefined, " +
-  "sets lengthFraction to one quater", function() {
-    interpreter.noteLength("");
-    expect(interpreter.lengthFraction).toEqual([1, 4]);
+  "returns one quater", function() {
+    expect(interpreter.noteLength("")).toEqual([1, 4]);
   });
   
   it("when called with a power of two and a dot, returns the reciprocal " +
   "value of power times 3/2", function() {
-    interpreter.noteLength("2.");
-    expect(interpreter.lengthFraction).toEqual([3, 4]);
+    expect(interpreter.noteLength("2.")).toEqual([3, 4]);
   });
   
   it("when called with a power of two and two dots, returns the reciprocal " +
   "value of power times 7/4", function() {
-    interpreter.noteLength("2..");
-    expect(interpreter.lengthFraction).toEqual([7, 8]);
+    expect(interpreter.noteLength("2..")).toEqual([7, 8]);
   });
   
 });
