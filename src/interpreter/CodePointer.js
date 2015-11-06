@@ -6,6 +6,7 @@ function CodePointer(code) {
     var unparsedCode = code.slice(pointer);
     var match = token.exec(unparsedCode);
     if(!match || match.index !== 0) {
+      this.reportParseError(token);
       return null;
     }
     
@@ -29,20 +30,44 @@ function CodePointer(code) {
 }
 
 CodePointer.prototype
-.reason = {
+.parseErrorDescription = {
   actuallCode: {
     length: Infinity,
   }
 };
 
-// FIXME: shouldn't this be parse error?
 CodePointer.prototype
-.reportParseFail = function(identifier) {
+.reportParseError = function(token) {
+  var stripedToken = token.toString().slice(1, -1);
+  var tokenAlternatives = stripedToken;
   var currentUnparsed = this.getUnparsed();
-  if(currentUnparsed.length <= this.reason.actuallCode.length) {
-    this.reason = {
-      expectedCode: identifier,
-      actuallCode: this.getUnparsed(),
-    };
+  var currentLength = currentUnparsed.length;
+  var previousLength = this.parseErrorDescription.actuallCode.length;
+  
+  if(currentLength > previousLength) {
+    return;
   }
+  
+  if(currentLength < previousLength) {
+    this.parseErrorDescription.expectedAlternatives = undefined;
+  }
+  
+  if(this.parseErrorDescription.expectedAlternatives) {
+    tokenAlternatives = 
+    this.parseErrorDescription.expectedAlternatives + "|" + stripedToken;
+  }
+  
+  this.parseErrorDescription = {
+    expectedAlternatives: tokenAlternatives,
+    actuallCode: currentUnparsed,
+  };
+
 };
+
+CodePointer.prototype
+.getParseErrorDescription = function() {
+  return "Expected /^" + this.parseErrorDescription.expectedAlternatives + 
+  "/ to match '" + this.parseErrorDescription.actuallCode + "'.";
+};
+  
+

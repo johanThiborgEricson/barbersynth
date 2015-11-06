@@ -53,13 +53,10 @@ describe("Interpreter.MethodFactory().terminal(token, interpretation)" +
     expect(stolenThis).toBe(interpreter);
   });
   
-  it("returns null and calls codePointer.reportParseError with token if " + 
-  "the result of parse is null", function() {
+  it("returns null if the result of parse is null", function() {
     interpreter.method = methodFactory.terminal("token", "interpretation");
     spyOn(codePointer, "parse").and.returnValue(null);
-    spyOn(codePointer, "reportParseFail");
     expect(interpreter.method(codePointer)).toBe(null);
-    expect(codePointer.reportParseFail).toHaveBeenCalledWith("token");
   });
   
 });
