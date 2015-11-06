@@ -1,5 +1,28 @@
 describe("octavation", function() {
-  it("when called with , decreases natural by 7 and tone by 12", function() {
+  
+  var interpreter;
+  
+  beforeEach(function() {
+    interpreter = LilyPondInterpreter();
+  });
+  
+  it("returns one less per comma", function() {
+    expect(interpreter.octavation(",")).toBe(-1);
+    expect(interpreter.octavation(",,")).toBe(-2);
+    expect(interpreter.octavation(",,,")).toBe(-3);
+  });
+  
+  it("returns one more per apostrophe", function() {
+    expect(interpreter.octavation("'")).toBe(1);
+    expect(interpreter.octavation("''")).toBe(2);
+    expect(interpreter.octavation("'''")).toBe(3);
+  });
+  
+  it("returns zero for the empty string", function() {
+    expect(interpreter.octavation("")).toBe(0);
+  });
+  
+  xit("when called with , decreases natural by 7 and tone by 12", function() {
     var interpreter = LilyPondInterpreter();
     interpreter.natural = 3;
     interpreter.tone = 5;
@@ -8,7 +31,7 @@ describe("octavation", function() {
     expect(interpreter.tone).toBe(-7);
   });
   
-  it("when called with ,, decreases natural by 14 and tone by 24", function() {
+  xit("when called with ,, decreases natural by 14 and tone by 24", function() {
     var interpreter = LilyPondInterpreter();
     interpreter.natural = 7;
     interpreter.tone = 12;
@@ -17,7 +40,7 @@ describe("octavation", function() {
     expect(interpreter.tone).toBe(-12);
   });
   
-  it("when called with ' increases natural by 14 and tone by 24", function() {
+  xit("when called with ' increases natural by 14 and tone by 24", function() {
     var interpreter = LilyPondInterpreter();
     interpreter.natural = -4;
     interpreter.tone = -7;
@@ -26,7 +49,7 @@ describe("octavation", function() {
     expect(interpreter.tone).toBe(5);
   });
   
-  it("when called with '' increases natural by 14 and tone by 24", function() {
+  xit("when called with '' increases natural by 14 and tone by 24", function() {
     var interpreter = LilyPondInterpreter();
     interpreter.natural = -7;
     interpreter.tone = -12;
@@ -35,7 +58,7 @@ describe("octavation", function() {
     expect(interpreter.tone).toBe(12);
   });
   
-  it("does nothing, successfully, when called with an empty string", 
+  xit("does nothing, successfully, when called with an empty string", 
   function() {
     var interpreter = LilyPondInterpreter();
     interpreter.natural = 0;

@@ -11,22 +11,23 @@ function LilyPondInterpreter() {
   .terminal(/([a-g])/, function(naturalName) {
     var minusA = naturalName.charCodeAt(0) - "a".charCodeAt(0);
     var lilyPondIndex = (minusA + 5) % 7;
-    this.natural = lilyPondIndex - 12;
-    this.tone = this.natural2tone(this.natural);
+    return lilyPondIndex - 12;
   });
   
   LilyPondInterpreter.prototype.octavationDown = methodFactory
   .terminal(/(,+)/, function(commaString) {
-    var commaCount = commaString.length;
-    this.natural -= 7 * commaCount;
-    this.tone -= 12 * commaCount;
+    return -commaString.length;
   });
   
   LilyPondInterpreter.prototype.octavationUp = methodFactory
   .terminal(/('+)/, function(apostrofeString) {
-    var apostrofeCount = apostrofeString.length;
-    this.natural += 7 * apostrofeCount;
-    this.tone += 12 * apostrofeCount;
+    return apostrofeString.length;
+  });
+  
+  // TODO: make terminalEmptyString(interpretation)
+  LilyPondInterpreter.prototype.noOctavation = methodFactory
+  .terminal(/(?:)/, function() {
+    return 0;
   });
   
   // TODO: move this to Interpreter
@@ -34,7 +35,7 @@ function LilyPondInterpreter() {
   .terminal(/()/, function() {});
   
   LilyPondInterpreter.prototype.octavation = methodFactory
-  .nonTerminalAlternative("octavationDown", "octavationUp", "nothing");
+  .nonTerminalAlternative("octavationDown", "octavationUp", "noOctavation");
   
   LilyPondInterpreter.prototype.natural2tone = function(natural) {
     var aMinorScaleTone = ((natural % 7) + 7) % 7;
@@ -45,18 +46,21 @@ function LilyPondInterpreter() {
   
   LilyPondInterpreter.prototype.flat = methodFactory
   .terminal(/((?:es)+)/, function(esesString) {
-    var esesCount = esesString.length / 2;
-    this.tone -= esesCount;
+    return -(esesString.length / 2);
   });
   
   LilyPondInterpreter.prototype.sharp = methodFactory
   .terminal(/((?:is)+)/, function(isesString) {
-    var isesCount = isesString.length / 2;
-    this.tone += isesCount;
+    return isesString.length / 2;
+  });
+  
+  LilyPondInterpreter.prototype.noAccidental = methodFactory
+  .terminal(/(?:)/, function() {
+    return 0;
   });
   
   LilyPondInterpreter.prototype.accidentals = methodFactory
-  .nonTerminalAlternative("flat", "sharp", "nothing");
+  .nonTerminalAlternative("flat", "sharp", "noAccidental");
   
   LilyPondInterpreter.prototype.reciprocalLength = methodFactory
   .terminal(/(128|64|32|16|8|4|2|1)/, function(lengthString){
