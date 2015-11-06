@@ -35,6 +35,7 @@ CodePointer.prototype
   }
 };
 
+// FIXME: shouldn't this be parse error?
 CodePointer.prototype
 .reportParseFail = function(identifier) {
   var currentUnparsed = this.getUnparsed();

@@ -37,6 +37,7 @@ Interpreter.MethodFactory.prototype
   var instructionMaker = function(codePointer, interpreter) {
     var lexeme = codePointer.parse(token);
     if(!lexeme) {
+      codePointer.reportParseFail(token);
       return null;
     }
     
