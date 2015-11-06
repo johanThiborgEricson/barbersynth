@@ -72,11 +72,7 @@ function LilyPondInterpreter() {
   
   LilyPondInterpreter.prototype.unspecifiedLength = methodFactory
   .terminal(/(?:)/, function() {
-    if(this.lengthFraction){ 
-      return this.lengthFraction;
-    } else {
-      return [1, 4];
-    }
+    return this.lengthFraction || [1, 4];
   });
   
   LilyPondInterpreter.prototype.dots = methodFactory
