@@ -35,14 +35,6 @@ function LilyPondInterpreter() {
     "octavationDown", "octavationUp", "noOctavation");
   
   LilyPondInterpreter.prototype
-  .natural2tone = function(natural) {
-    var aMinorScaleTone = ((natural % 7) + 7) % 7;
-    var octave = (natural - aMinorScaleTone) / 7;
-    var aMinorTones = [0, 2, 3, 5, 7, 8, 10];
-    return octave * 12 + aMinorTones[aMinorScaleTone];
-  };
-  
-  LilyPondInterpreter.prototype
   .flat = methodFactory.terminal(/((?:es)+)/, function(esesString) {
     return -(esesString.length / 2);
   });
@@ -106,7 +98,25 @@ function LilyPondInterpreter() {
   LilyPondInterpreter.prototype
   .noteLength = methodFactory.nonTerminalAlternative(
     "possiblyDottedLength", "unspecifiedLength");
-
+  
+  LilyPondInterpreter.prototype
+  .natural2tone = function(natural) {
+    var aMinorScaleTone = ((natural % 7) + 7) % 7;
+    var octave = (natural - aMinorScaleTone) / 7;
+    var aMinorTones = [0, 2, 3, 5, 7, 8, 10];
+    return octave * 12 + aMinorTones[aMinorScaleTone];
+  };
+  
+  LilyPondInterpreter.prototype
+  .absoluteNote = methodFactory.nonTerminalSequence("absoluteNatural",  
+  function(args) {
+    var tone = this.natural2tone(args.absoluteNatural);
+    return {
+      tone: tone,
+    };
+    
+  });
+  
 })();
   
 
