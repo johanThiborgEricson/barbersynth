@@ -14,7 +14,7 @@ describe("noteLength", function() {
     [[1, 1], [1, 2], [1, 4], [1, 8], [1, 16], [1, 32], [1, 64], [1, 128]];
     
     var actualls = powersOfTwo.map(function(powerOfTwo) {
-      return interpreter.reciprocalLength(powerOfTwo);
+      return interpreter.noteLength(powerOfTwo);
     });
     
     expect(actualls).toEqual(expecteds);

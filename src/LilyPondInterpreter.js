@@ -71,7 +71,7 @@ function LilyPondInterpreter() {
   });
   
   LilyPondInterpreter.prototype.unspecifiedLength = methodFactory
-  .terminal(/()/, function() {
+  .terminal(/(?:)/, function() {
     if(this.lengthFraction){ 
       return this.lengthFraction;
     } else {
@@ -87,9 +87,13 @@ function LilyPondInterpreter() {
     return [numerator, denominator];
   });
   
-  // TODO: write nonTerminalQuestionMark as a shorthand for this.
+  LilyPondInterpreter.prototype.noDots = methodFactory
+  .terminal(/(?:)/, function(dotsString) {
+    return [1, 1];
+  });
+  
   LilyPondInterpreter.prototype.possiblyDots = methodFactory
-  .nonTerminalAlternative("dots", "nothing");
+  .nonTerminalAlternative("dots", "noDots");
   
   // TODO: write fraction().multiply(fraction())
   LilyPondInterpreter.prototype.possiblyDottedLength = methodFactory
