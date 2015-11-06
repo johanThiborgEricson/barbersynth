@@ -27,3 +27,21 @@ function CodePointer(code) {
   
   return that;
 }
+
+CodePointer.prototype
+.reason = {
+  actuallCode: {
+    length: Infinity,
+  }
+};
+
+CodePointer.prototype
+.reportParseFail = function(identifier) {
+  var currentUnparsed = this.getUnparsed();
+  if(currentUnparsed.length <= this.reason.actuallCode.length) {
+    this.reason = {
+      expectedCode: identifier,
+      actuallCode: this.getUnparsed(),
+    };
+  }
+};
