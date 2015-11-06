@@ -87,9 +87,9 @@ function LilyPondInterpreter() {
   LilyPondInterpreter.prototype
   .possiblyDottedLength = methodFactory.nonTerminalSequence(
     "reciprocalLength", "possiblyDots", 
-  function(args) {
-    var numerator = args.reciprocalLength[0] * args.possiblyDots[0];
-    var denominator = args.reciprocalLength[1] * args.possiblyDots[1];
+  function(reciprocalLength, possiblyDots) {
+    var numerator = reciprocalLength[0] * possiblyDots[0];
+    var denominator = reciprocalLength[1] * possiblyDots[1];
     var lengthFraction = [numerator, denominator];
     this.lengthFraction = lengthFraction;
     return lengthFraction;
@@ -109,8 +109,8 @@ function LilyPondInterpreter() {
   
   LilyPondInterpreter.prototype
   .absoluteNote = methodFactory.nonTerminalSequence("absoluteNatural",  
-  function(args) {
-    var tone = this.natural2tone(args.absoluteNatural);
+  function(absoluteNatural) {
+    var tone = this.natural2tone(absoluteNatural);
     return {
       tone: tone,
     };

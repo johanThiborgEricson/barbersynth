@@ -84,15 +84,18 @@ Interpreter.MethodFactory.prototype
     }
 
     var instruction = function(interpreter) {
-      var results = {};
+      var resultsArray = [];
+      var resultsObject = {};
       names.map(function(name) {
-        results[name] = instructions[name](interpreter);
+        var result = instructions[name](interpreter);
+        resultsArray.push(result);
+        resultsObject[name] = result;
       });
       
       if(interpretation) {
-        return interpretation.call(interpreter, results);
+        return interpretation.apply(interpreter, resultsArray);
       } else {
-        return results;
+        return resultsObject;
       }
     };
     

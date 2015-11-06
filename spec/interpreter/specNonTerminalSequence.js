@@ -119,10 +119,10 @@ function() {
       var codePointer = CodePointer();
       var sequenceInstruction = interpreter.sequence(codePointer);
       sequenceInstruction(interpreter);
-      expect(interpretation).toHaveBeenCalledWith({
-        name1: "instruction result 1",
-        nameN: "instruction result n",
-      });
+      expect(interpretation).toHaveBeenCalledWith(
+        "instruction result 1", 
+        "instruction result n"
+      );
     });
     
     // TODO this test is confusing. Add one name before interpretation.
