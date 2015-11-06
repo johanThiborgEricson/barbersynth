@@ -51,8 +51,12 @@ Interpreter.MethodFactory.prototype
     return instruction;
   };
   
-  var terminal = this.makeMethod(instructionMaker);
-  return terminal;
+  return this.makeMethod(instructionMaker);
+};
+
+Interpreter.MethodFactory.prototype
+.terminalEmptyString = function(interpretation){
+  return this.terminal(/(?:)/, interpretation);
 };
 
 Interpreter.MethodFactory.prototype
