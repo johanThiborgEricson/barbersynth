@@ -26,7 +26,7 @@ function LilyPondInterpreter() {
   
   // TODO: make terminalEmptyString(interpretation)
   LilyPondInterpreter.prototype
-  .noOctavation = methodFactory.terminal(/(?:)/, function() {
+  .noOctavation = methodFactory.terminalEmptyString(function() {
     return 0;
   });
   
@@ -53,7 +53,7 @@ function LilyPondInterpreter() {
   });
   
   LilyPondInterpreter.prototype
-  .noAccidental = methodFactory.terminal(/(?:)/, function() {
+  .noAccidental = methodFactory.terminalEmptyString(function() {
     return 0;
   });
   
@@ -71,7 +71,7 @@ function LilyPondInterpreter() {
   });
   
   LilyPondInterpreter.prototype
-  .unspecifiedLength = methodFactory.terminal(/(?:)/, function() {
+  .unspecifiedLength = methodFactory.terminalEmptyString(function() {
     return this.lengthFraction || [1, 4];
   });
   
@@ -84,7 +84,7 @@ function LilyPondInterpreter() {
   });
   
   LilyPondInterpreter.prototype
-  .noDots = methodFactory.terminal(/(?:)/, function(dotsString) {
+  .noDots = methodFactory.terminalEmptyString(function(dotsString) {
     return [1, 1];
   });
   
