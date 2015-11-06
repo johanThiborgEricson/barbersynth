@@ -101,7 +101,9 @@ function LilyPondInterpreter() {
   function(args) {
     var numerator = args.reciprocalLength[0] * args.possiblyDots[0];
     var denominator = args.reciprocalLength[1] * args.possiblyDots[1];
-    return [numerator, denominator];
+    var lengthFraction = [numerator, denominator];
+    this.lengthFraction = lengthFraction;
+    return lengthFraction;
   });
   
   LilyPondInterpreter.prototype.noteLength = methodFactory

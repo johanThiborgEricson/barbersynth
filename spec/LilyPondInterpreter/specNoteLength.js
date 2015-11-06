@@ -42,4 +42,9 @@ describe("noteLength", function() {
     expect(interpreter.noteLength("2..")).toEqual([7, 8]);
   });
   
+  it("saves the last value to lenghtFraction", function() {
+    interpreter.noteLength("2.");
+    expect(interpreter.lengthFraction).toEqual([3, 4]);
+  });
+  
 });
