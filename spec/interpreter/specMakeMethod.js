@@ -118,6 +118,48 @@ describe("Interpreter.MethodFactory().makeMethod(instructionMaker)" +
     expect(codePointer.restore).toHaveBeenCalledWith("backup");
   });
   
+  it("throws the text returned by codePointer.getParseErrorDescription if " +
+  "instructionMaker returns null", function() {
+    var failInstructionMaker = function() {
+      return null;
+    };
+    
+    function ParseErrorDescriptionCodePointer() {
+      var codePointer = CodePointer();
+      spyOn(codePointer, "getParseErrorDescription").and
+      .returnValue("parse error description");
+      return codePointer;
+    }
+    
+    
+    methodFactory.CodePointer = ParseErrorDescriptionCodePointer;
+    interpreter.parseFail = methodFactory.makeMethod(failInstructionMaker);
+    
+    expect(interpreter.parseFail.bind(interpreter, ""))
+    .toThrowError("parse error description");
+  });
+  
+  it("throws helpful message plus the text returned by " +
+  "codePointer.getUnparsed if it is non-empty", function() {
+    var instructionMaker = function() {
+      return function() {};
+    };
+    
+    function TrailingCodeCodePointer() {
+      var codePointer = CodePointer();
+      spyOn(codePointer, "getUnparsed").and
+      .returnValue("trailing code");
+      return codePointer;
+    }
+    
+    
+    methodFactory.CodePointer = TrailingCodeCodePointer;
+    interpreter.cantParseAll = methodFactory.makeMethod(instructionMaker);
+    
+    expect(interpreter.cantParseAll.bind(interpreter, ""))
+    .toThrowError("Trailing code: 'trailing code'.");
+  });
+  
   it("logs a warning if an interpreter is called as a function (this bound " +
   "to global)");
   

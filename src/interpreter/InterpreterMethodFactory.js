@@ -22,8 +22,12 @@ Interpreter.MethodFactory.prototype
     
     var codePointer = methodFactory.CodePointer(code);
     var instruction = instructionMaker(codePointer, this);
-    if(!instruction || codePointer.getUnparsed() !== "") {
-      throw new Error();
+    if(!instruction) {
+      throw new Error(codePointer.getParseErrorDescription());
+    }
+    
+    if(codePointer.getUnparsed() !== "") {
+      throw new Error("Trailing code: '" + codePointer.getUnparsed() + "'.");
     }
     
     return instruction(this);
