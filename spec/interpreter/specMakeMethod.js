@@ -160,7 +160,20 @@ describe("Interpreter.MethodFactory().makeMethod(instructionMaker)" +
     .toThrowError("Trailing code: 'trailing code'.");
   });
   
-  it("logs a warning if an interpreter is called as a function (this bound " +
-  "to global)");
+  // this works if the user uses "use strict". My IDE complains about this test
+  // (quite rightfully), so I commented it out.
+  xit("calls instructionMaker with this bound to undefined if the returned " +
+  "method is called like a function", function() {
+    // "use strict";
+    var stolenThis;
+    function thisThief() {
+      stolenThis = this;
+    }
+    
+    var justFunction = methodFactory.makeMethod(thisThief);
+    var codePointer = CodePointer();
+    justFunction(codePointer);
+    expect(stolenThis).toBe(undefined);
+  });
   
 });

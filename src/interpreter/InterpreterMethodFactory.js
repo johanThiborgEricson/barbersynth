@@ -1,4 +1,5 @@
 Interpreter.MethodFactory = function() {
+  "use strict";
   var that = Object.create(Interpreter.MethodFactory.prototype);
   
   that.CodePointer = CodePointer;
@@ -8,6 +9,7 @@ Interpreter.MethodFactory = function() {
 
 Interpreter.MethodFactory.prototype
 .makeMethod = function(instructionMaker) {
+  "use strict";
   var methodFactory = this;
   var method = function(code) {
     if(code instanceof CodePointer) {
@@ -38,6 +40,7 @@ Interpreter.MethodFactory.prototype
 
 Interpreter.MethodFactory.prototype
 .terminal = function(token, interpretation){
+  "use strict";
   var instructionMaker = function(codePointer, interpreter) {
     var lexeme = codePointer.parse(token);
     if(!lexeme) {
@@ -56,11 +59,13 @@ Interpreter.MethodFactory.prototype
 
 Interpreter.MethodFactory.prototype
 .terminalEmptyString = function(interpretation){
+  "use strict";
   return this.terminal(/(?:)/, interpretation);
 };
 
 Interpreter.MethodFactory.prototype
 .nonTerminalSequence = function() {
+  "use strict";
   var names;
   var interpretation;
   
@@ -107,6 +112,7 @@ Interpreter.MethodFactory.prototype
 
 Interpreter.MethodFactory.prototype
 .nonTerminalAlternative = function() {
+  "use strict";
   var alternatives = Array.prototype.slice.call(arguments);
   var instructionMaker = function(codePointer, interpreter) {
     var parseSuccess = false;
@@ -123,6 +129,7 @@ Interpreter.MethodFactory.prototype
 
 Interpreter.MethodFactory.prototype
 .nonTerminalAsterisk = function(name, interpretation) {
+  "use strict";
   var instructionMaker = function(codePointer, interpreter) {
     var maybeInstruction = true;
     var instructions = [];
