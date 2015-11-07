@@ -2,19 +2,29 @@ describe("AbsoluteNote", function() {
   
   var interpreter;
   var mf = Interpreter.MethodFactory();
+  var Note;
+  
+  // TODO: wait for legacy IE to start supporting arrow functions...
+  var justReturn = function(value){
+    return function() {
+      return value;
+    };
+  };
   
   beforeEach(function() {
-    interpreter = LilyPondInterpreter();
+    Note = jasmine.createSpy("Note").and.returnValue("note object");
+    interpreter = LilyPondInterpreter(Note);
+    interpreter.absoluteTone = mf
+    .terminalEmptyString(justReturn("absolute tone"));
+    interpreter.noteLength = mf
+    .terminalEmptyString(justReturn("note length"));
   });
   
-  it("calls natural2tone with the result of absoluteNatural and", function() {
-    spyOn(interpreter, "natural2tone");
-    interpreter.absoluteNatural = mf.terminalEmptyString(function() {
-      return "absolute natural";
-    });
-    
-    interpreter.absoluteNote("");
-    expect(interpreter.natural2tone).toHaveBeenCalledWith("absolute natural");
+  it("calls Note with absoluteTone and noteLength as arguments and returns " +
+  "the result", function() {
+    interpreter.noteLength = mf.terminalEmptyString(justReturn("note length"));
+    expect(interpreter.absoluteNote("")).toEqual("note object");
+    expect(Note).toHaveBeenCalledWith("absolute tone", "note length");
   });
   
 });

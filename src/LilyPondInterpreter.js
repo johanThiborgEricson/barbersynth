@@ -1,5 +1,7 @@
-function LilyPondInterpreter() {
+function LilyPondInterpreter(Note) {
   var that = Object.create(LilyPondInterpreter.prototype);
+  
+  that.Note = Note;
 
   return that;
 }
@@ -108,13 +110,21 @@ function LilyPondInterpreter() {
   };
   
   LilyPondInterpreter.prototype
-  .absoluteNote = methodFactory.nonTerminalSequence("absoluteNatural",  
-  function(absoluteNatural) {
+  .absoluteTone = methodFactory.nonTerminalSequence(
+    "absoluteNatural", "accidentals", "octavation",
+  function(absoluteNatural, accidentals, octavation) {
     var tone = this.natural2tone(absoluteNatural);
-    return {
-      tone: tone,
-    };
-    
+    tone += accidentals;
+    tone += 12 * octavation;
+    this.lastNatural = 7 * octavation + absoluteNatural;
+    return tone;
+  });
+  
+  LilyPondInterpreter.prototype
+  .absoluteNote = methodFactory.nonTerminalSequence(
+    "absoluteTone", "noteLength",
+  function(absoluteTone, noteLength) {
+    return this.Note(absoluteTone, noteLength);
   });
   
 })();
