@@ -127,6 +127,36 @@ function LilyPondInterpreter(Note) {
     return this.Note(absoluteTone, noteLength);
   });
   
+  LilyPondInterpreter.prototype
+  .octaveSpaceRound = function(lastNatural, scaleNumber) {
+    var fractionalOctavesFromScaleNumber = (lastNatural - scaleNumber) / 7;
+    var roundedOctavesFromScaleNumber = 
+        Math.round(fractionalOctavesFromScaleNumber);
+    return scaleNumber + 7 * roundedOctavesFromScaleNumber;
+  };
+  
+  LilyPondInterpreter.prototype
+  .moduloMagic = function(lastNatural, scaleNumber) {
+    var longStep = scaleNumber - lastNatural;
+    var shortestStep = ((((longStep + 3)%7)+7)%7) - 3;
+    return lastNatural + shortestStep;
+  };
+  
+  LilyPondInterpreter.prototype
+  .relativeNatural = methodFactory.terminal(/([a-g])/, function(naturalName) {
+    var scaleNumber = naturalName.charCodeAt(0) - "a".charCodeAt(0);
+    var redundant1 = this.octaveSpaceRound(this.lastNatural, scaleNumber);
+    var redundant2 = this.moduloMagic(this.lastNatural, scaleNumber);
+    if(redundant1 !== redundant2) {
+      throw new Error("relative natural failed for lastNatural = " +
+      this.lastNatural + " and naturalName = '" + naturalName + "'. " +
+      "octaveSpaceRound said " + redundant1 + " and moduloMagic said " 
+      + redundant2 + ".");
+    }
+    
+    return redundant1;
+  });
+  
 })();
   
 
