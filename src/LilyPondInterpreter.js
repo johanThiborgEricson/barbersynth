@@ -162,6 +162,20 @@ function LilyPondInterpreter(Note) {
     return tone;
   };
   
+  LilyPondInterpreter.prototype
+  .relativeTone = methodFactory.nonTerminalSequence(
+    "relativeNatural", "accidentals", "octavation",
+  function(relativeNatural, accidentals, octavation) {
+    return this.toneHelper(relativeNatural, accidentals, octavation);
+  });
+  
+  LilyPondInterpreter.prototype
+  .relativeNote = methodFactory.nonTerminalSequence(
+    "relativeTone", "noteLength",
+  function(relativeTone, noteLength) {
+    return this.Note(relativeTone, noteLength);
+  });
+  
 })();
   
 
