@@ -1,13 +1,13 @@
-Interpreter.MethodFactory = function() {
+InterpreterMethodFactory = function() {
   "use strict";
-  var that = Object.create(Interpreter.MethodFactory.prototype);
+  var that = Object.create(InterpreterMethodFactory.prototype);
   
   that.CodePointer = CodePointer;
   
   return that;
 };
 
-Interpreter.MethodFactory.prototype
+InterpreterMethodFactory.prototype
 .makeMethod = function(instructionMaker) {
   "use strict";
   var methodFactory = this;
@@ -38,7 +38,7 @@ Interpreter.MethodFactory.prototype
   return method;
 };
 
-Interpreter.MethodFactory.prototype
+InterpreterMethodFactory.prototype
 .terminal = function(token, interpretation){
   "use strict";
   var instructionMaker = function(codePointer, interpreter) {
@@ -57,13 +57,13 @@ Interpreter.MethodFactory.prototype
   return this.makeMethod(instructionMaker);
 };
 
-Interpreter.MethodFactory.prototype
+InterpreterMethodFactory.prototype
 .terminalEmptyString = function(interpretation){
   "use strict";
   return this.terminal(/(?:)/, interpretation);
 };
 
-Interpreter.MethodFactory.prototype
+InterpreterMethodFactory.prototype
 .nonTerminalSequence = function() {
   "use strict";
   var names;
@@ -110,7 +110,7 @@ Interpreter.MethodFactory.prototype
   return this.makeMethod(instructionMaker);
 };
 
-Interpreter.MethodFactory.prototype
+InterpreterMethodFactory.prototype
 .nonTerminalAlternative = function() {
   "use strict";
   var alternatives = Array.prototype.slice.call(arguments);
@@ -127,7 +127,7 @@ Interpreter.MethodFactory.prototype
   return this.makeMethod(instructionMaker);
 };
 
-Interpreter.MethodFactory.prototype
+InterpreterMethodFactory.prototype
 .nonTerminalAsterisk = function(name, interpretation) {
   "use strict";
   var instructionMaker = function(codePointer, interpreter) {

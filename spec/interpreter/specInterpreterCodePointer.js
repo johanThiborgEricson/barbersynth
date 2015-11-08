@@ -1,6 +1,6 @@
-describe("Interpreter.MethodFactory().CodePointer()", function() {
+describe("InterpreterMethodFactory().CodePointer()", function() {
   it("exists", function () {
-    var mf = Interpreter.MethodFactory();
+    var mf = InterpreterMethodFactory();
     expect(mf.CodePointer).toBeDefined();
   });
   

@@ -2,7 +2,7 @@ describe("Interpreter.MethodFactory()" +
 ".nonTerminalAsterisk(name, optional interpretation)" + 
 ".call(interpreter, CodePointer(lexeme1 + ... + lexemeN))", 
 function() {
-  var methodFactory = Interpreter.MethodFactory();
+  var methodFactory = InterpreterMethodFactory();
   var interpreter;
   var noop;
   

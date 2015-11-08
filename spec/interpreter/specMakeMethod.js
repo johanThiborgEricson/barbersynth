@@ -1,12 +1,12 @@
-describe("Interpreter.MethodFactory().makeMethod(instructionMaker)" + 
+describe("InterpreterMethodFactory().makeMethod(instructionMaker)" + 
 ".call(interpreter, code)", function() {
   var CodePointer;
   var interpreter;
   var methodFactory;
 
   beforeEach(function() {
-    interpreter = Interpreter();
-    methodFactory = Interpreter.MethodFactory();
+    interpreter = {};
+    methodFactory = InterpreterMethodFactory();
     methodFactory.CodePointer = jasmine.createSpy("interpreter.CodePointer").and
     .returnValue(StubCodePointer(""));
     CodePointer = jasmine.createSpy("CodePointer").and

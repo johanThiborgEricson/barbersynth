@@ -2,7 +2,7 @@ describe("Interpreter.MethodFactory()" +
 ".nonTerminalSequence(name1, ... , nameN, optional interpretation)" + 
 ".call(interpreter, CodePointer(lexeme1 + ... + lexemeN))(interpreter)", 
 function() {
-  var methodFactory = Interpreter.MethodFactory();
+  var methodFactory = InterpreterMethodFactory();
   var interpreter;
   var noop;
   

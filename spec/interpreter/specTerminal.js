@@ -18,8 +18,8 @@ describe("Interpreter.MethodFactory().terminal(token, interpretation)" +
   beforeEach(function() {
     codePointer = StubCodePointer();
     codePointer.reportParseFail = function() {};
-    methodFactory = Interpreter.MethodFactory();
-    interpreter = Interpreter();
+    methodFactory = InterpreterMethodFactory();
+    interpreter = {};
   });
   
   it("calls codePointer.parse with token", function() {

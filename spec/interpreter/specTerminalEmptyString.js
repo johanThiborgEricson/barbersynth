@@ -3,7 +3,7 @@ function() {
   
   it("calls this.terminal with /(?:)/ and interpretation and returns the " +
   "result", function() {
-    var methodFactory = Interpreter.MethodFactory();
+    var methodFactory = InterpreterMethodFactory();
     spyOn(methodFactory, "terminal").and.returnValue("result");
     expect(methodFactory.terminalEmptyString("interpretation"))
     .toEqual("result");

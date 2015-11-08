@@ -1,7 +1,7 @@
 describe("AbsoluteNote", function() {
   
   var interpreter;
-  var mf = Interpreter.MethodFactory();
+  var mf = InterpreterMethodFactory();
   var Note;
   
   // TODO: wait for legacy IE to start supporting arrow functions...

@@ -11,7 +11,7 @@ describe("Interpreter.MethodFactory()" +
       return null;
     };
     interpreter = {};
-    methodFactory = Interpreter.MethodFactory();
+    methodFactory = InterpreterMethodFactory();
   });
   
   it("if k = m = 1, calls name1 with codePointer and returns the result " +
