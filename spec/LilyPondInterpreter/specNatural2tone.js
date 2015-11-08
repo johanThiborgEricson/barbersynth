@@ -18,7 +18,7 @@ describe("natural2tone", function() {
     expect(interpreter.natural2tone(8)).toBe(14);
   });
   
-  it("when called with a number < 0, returns tones from a higher octave", 
+  it("when called with a number < 0, returns tones from a lower octave", 
   function() {
     expect(interpreter.natural2tone(-1)).toBe(-2);
   });
