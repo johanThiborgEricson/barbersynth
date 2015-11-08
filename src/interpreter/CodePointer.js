@@ -2,7 +2,12 @@ function CodePointer(code) {
   var that = Object.create(CodePointer.prototype);
   that._code = code;
   that._pointer = 0;
-
+  that.parseErrorDescription = {
+    actuallCode: {
+      length: Infinity,
+    }
+  };
+  
   return that;
 }
 
@@ -32,13 +37,6 @@ CodePointer.prototype
 CodePointer.prototype
 .getUnparsed = function() {
   return this._code.slice(this._pointer);
-};
-  
-CodePointer.prototype
-.parseErrorDescription = {
-  actuallCode: {
-    length: Infinity,
-  }
 };
 
 CodePointer.prototype
