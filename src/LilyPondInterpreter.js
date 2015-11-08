@@ -27,7 +27,6 @@ function LilyPondInterpreter(Note) {
     return apostrofeString.length;
   });
   
-  // TODO: make terminalEmptyString(interpretation)
   LilyPondInterpreter.prototype
   .noOctavation = methodFactory.terminalEmptyString(function() {
     return 0;
