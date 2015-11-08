@@ -110,16 +110,11 @@ function LilyPondInterpreter(Note) {
   };
   
   LilyPondInterpreter.prototype
-  .absoluteTone = methodFactory.nonTerminalSequence(
-    "absoluteNatural", "accidentals", "octavation",
-  function(absoluteNatural, accidentals, octavation) {
-    return this.toneHelper(absoluteNatural, accidentals, octavation);
-  });
-  
-  LilyPondInterpreter.prototype
   .absoluteNote = methodFactory.nonTerminalSequence(
-    "absoluteTone", "noteLength",
-  function(absoluteTone, noteLength) {
+    "absoluteNatural", "accidentals", "octavation", "noteLength",
+  function(absoluteNatural, accidentals, octavation, noteLength) {
+    var absoluteTone = 
+        this.toneHelper(absoluteNatural, accidentals, octavation);
     return this.Note(absoluteTone, noteLength);
   });
   
@@ -163,16 +158,11 @@ function LilyPondInterpreter(Note) {
   };
   
   LilyPondInterpreter.prototype
-  .relativeTone = methodFactory.nonTerminalSequence(
-    "relativeNatural", "accidentals", "octavation",
-  function(relativeNatural, accidentals, octavation) {
-    return this.toneHelper(relativeNatural, accidentals, octavation);
-  });
-  
-  LilyPondInterpreter.prototype
   .relativeNote = methodFactory.nonTerminalSequence(
-    "relativeTone", "noteLength",
-  function(relativeTone, noteLength) {
+    "relativeNatural", "accidentals", "octavation", "noteLength",
+  function(relativeNatural, accidentals, octavation, noteLength) {
+    var relativeTone = 
+        this.toneHelper(relativeNatural, accidentals, octavation);
     return this.Note(relativeTone, noteLength);
   });
   

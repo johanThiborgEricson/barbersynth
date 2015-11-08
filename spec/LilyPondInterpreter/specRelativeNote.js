@@ -14,17 +14,30 @@ describe("RelativeNote", function() {
   beforeEach(function() {
     Note = jasmine.createSpy("Note").and.returnValue("note object");
     interpreter = LilyPondInterpreter(Note);
-    interpreter.relativeTone = mf
-    .terminalEmptyString(justReturn("relative tone"));
+
+    interpreter.relativeNatural = mf
+    .terminalEmptyString(justReturn("relative natural"));
+    interpreter.accidentals = mf.terminalEmptyString(justReturn("accidentals"));
+    interpreter.octavation = mf.terminalEmptyString(justReturn("octavation"));
+    
     interpreter.noteLength = mf
     .terminalEmptyString(justReturn("note length"));
   });
   
-  it("calls Note with relativeTone and noteLength as arguments and returns " +
-  "the result", function() {
+  it("calls toneHelper with relativeNatural, accidentals and octavation", 
+  function() {
+    spyOn(interpreter, "toneHelper");
+    interpreter.relativeNote("");
+    expect(interpreter.toneHelper)
+    .toHaveBeenCalledWith("relative natural", "accidentals", "octavation");
+  });
+  
+  it("calls Note with the result of tone helper and noteLength as arguments " +
+  "and returns the result", function() {
+    spyOn(interpreter, "toneHelper").and.returnValue("tone helper");
     interpreter.noteLength = mf.terminalEmptyString(justReturn("note length"));
     expect(interpreter.relativeNote("")).toEqual("note object");
-    expect(Note).toHaveBeenCalledWith("relative tone", "note length");
+    expect(Note).toHaveBeenCalledWith("tone helper", "note length");
   });
   
 });
