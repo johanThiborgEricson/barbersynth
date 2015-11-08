@@ -85,17 +85,19 @@ function LilyPondInterpreter(Note) {
   LilyPondInterpreter.prototype
   .possiblyDots = methodFactory.nonTerminalAlternative("dots", "noDots");
   
-  // TODO: write fraction().multiply(fraction())
-  LilyPondInterpreter.prototype
-  .possiblyDottedLength = methodFactory.nonTerminalSequence(
-    "reciprocalLength", "possiblyDots", 
+  var possiblyDottedLengthInterpretation = 
   function(reciprocalLength, possiblyDots) {
     var numerator = reciprocalLength[0] * possiblyDots[0];
     var denominator = reciprocalLength[1] * possiblyDots[1];
     var lengthFraction = [numerator, denominator];
     this.lengthFraction = lengthFraction;
     return lengthFraction;
-  });
+  };
+  
+  // TODO: write fraction().multiply(fraction())
+  LilyPondInterpreter.prototype
+  .possiblyDottedLength = methodFactory.nonTerminalSequence(
+    "reciprocalLength", "possiblyDots", possiblyDottedLengthInterpretation);
   
   LilyPondInterpreter.prototype
   .noteLength = methodFactory.nonTerminalAlternative(
@@ -109,14 +111,16 @@ function LilyPondInterpreter(Note) {
     return octave * 12 + aMinorTones[aMinorScaleTone];
   };
   
-  LilyPondInterpreter.prototype
-  .absoluteNote = methodFactory.nonTerminalSequence(
-    "absoluteNatural", "accidentals", "octavation", "noteLength",
+  var absouluteNoteInterpretation =
   function(absoluteNatural, accidentals, octavation, noteLength) {
     var absoluteTone = 
         this.toneHelper(absoluteNatural, accidentals, octavation);
     return this.Note(absoluteTone, noteLength);
-  });
+  };
+  
+  LilyPondInterpreter.prototype
+  .absoluteNote = methodFactory.nonTerminalSequence("absoluteNatural", 
+    "accidentals", "octavation", "noteLength", absouluteNoteInterpretation);
   
   LilyPondInterpreter.prototype
   .octaveSpaceRound = function(lastNatural, scaleNumber) {
@@ -157,14 +161,16 @@ function LilyPondInterpreter(Note) {
     return tone;
   };
   
-  LilyPondInterpreter.prototype
-  .relativeNote = methodFactory.nonTerminalSequence(
-    "relativeNatural", "accidentals", "octavation", "noteLength",
+  var relativeNoteInterpretation = 
   function(relativeNatural, accidentals, octavation, noteLength) {
     var relativeTone = 
         this.toneHelper(relativeNatural, accidentals, octavation);
     return this.Note(relativeTone, noteLength);
-  });
+  };
+  
+  LilyPondInterpreter.prototype
+  .relativeNote = methodFactory.nonTerminalSequence("relativeNatural", 
+  "accidentals", "octavation", "noteLength", relativeNoteInterpretation);
   
 })();
   
