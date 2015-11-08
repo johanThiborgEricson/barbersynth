@@ -1,6 +1,7 @@
 function LilyPondInterpreter(Note) {
   var that = Object.create(LilyPondInterpreter.prototype);
   
+  // TODO: write this class.
   that.Note = Note;
 
   return that;
