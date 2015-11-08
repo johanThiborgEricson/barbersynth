@@ -58,7 +58,7 @@ function LilyPondInterpreter(Note) {
   // TODO: make function fraction (n, m) => [n, m] with methods.
   LilyPondInterpreter.prototype.
   reciprocalLength = methodFactory.terminal(/(128|64|32|16|8|4|2|1)/, 
-  function(lengthString){
+  function(lengthString) {
     var numerator = 1;
     var denominator = Number(lengthString);
     return [numerator, denominator];
