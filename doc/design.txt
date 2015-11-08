@@ -1,3 +1,0 @@
-regexp input of many voices and order them chronologicaly as events with timestamp in time value units, voice-number and tone.
-make an array of (objects with duration in time value units and arrays with currently playing tones, one for each voice) one for each unique timestamp. 
-for each object, compute basetone and partials and schedule each voice to change frequecy at a time appropriate to duration
