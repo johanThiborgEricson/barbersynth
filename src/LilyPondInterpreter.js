@@ -34,7 +34,7 @@ function LilyPondInterpreter(Note) {
   
   LilyPondInterpreter.prototype
   .octavation = methodFactory.nonTerminalAlternative(
-    "octavationDown", "octavationUp", "noOctavation");
+      "octavationDown", "octavationUp", "noOctavation");
   
   LilyPondInterpreter.prototype
   .flat = methodFactory.terminal(/((?:es)+)/, function(esesString) {
