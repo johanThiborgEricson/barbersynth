@@ -113,11 +113,7 @@ function LilyPondInterpreter(Note) {
   .absoluteTone = methodFactory.nonTerminalSequence(
     "absoluteNatural", "accidentals", "octavation",
   function(absoluteNatural, accidentals, octavation) {
-    var tone = this.natural2tone(absoluteNatural);
-    tone += accidentals;
-    tone += 12 * octavation;
-    this.lastNatural = 7 * octavation + absoluteNatural;
-    return tone;
+    return this.toneHelper(absoluteNatural, accidentals, octavation);
   });
   
   LilyPondInterpreter.prototype
@@ -156,6 +152,15 @@ function LilyPondInterpreter(Note) {
     
     return redundant1;
   });
+  
+  LilyPondInterpreter.prototype
+  .toneHelper = function(natural, accidentals, octavation) {
+    var tone = this.natural2tone(natural);
+    tone += accidentals;
+    tone += 12 * octavation;
+    this.lastNatural = 7 * octavation + natural;
+    return tone;
+  };
   
 })();
   

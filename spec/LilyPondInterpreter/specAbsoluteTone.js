@@ -10,51 +10,21 @@ describe("AbsoluteTone", function() {
     };
   };
   
-  var returnsZero = mf.terminalEmptyString(function() {
-    return 0;
-  });
-  
   beforeEach(function() {
     interpreter = LilyPondInterpreter();
-    interpreter.absoluteNatural = mf.terminalEmptyString(function() {});
-    interpreter.natural2tone = function() {
-      return 0;
-    };
-    
-    interpreter.accidentals = returnsZero;
-    interpreter.octavation = returnsZero;
   });
   
-  it("calls natural2tone with the result of absoluteNatural", function() {
-    spyOn(interpreter, "natural2tone");
+  it("calls toneHelper with absoluteNatural, accidentals and octavation and " +
+  "returns the result", function() {
     interpreter.absoluteNatural = mf
     .terminalEmptyString(justReturn("absolute natural"));
-    interpreter.absoluteTone("");
-    expect(interpreter.natural2tone).toHaveBeenCalledWith("absolute natural");
-  });
-  
-  it("calls the Tone-constructor with the result of natural2tone, if " +
-  "accidentals and octavation returnes zero", function() {
-    interpreter.natural2tone = justReturn(-12);
-    expect(interpreter.absoluteTone("")).toBe(-12);
-  });
-  
-  it("adds accidentals to tone", function() {
-    interpreter.accidentals = mf.terminalEmptyString(justReturn(1));
-    expect(interpreter.absoluteTone("")).toBe(1);
-  });
-  
-  it("adds 12 times octavation to tone", function() {
-    interpreter.octavation = mf.terminalEmptyString(justReturn(1)); 
-    expect(interpreter.absoluteTone("")).toBe(12);
-  });
-  
-  it("adds 7 times octavation to absoluteNatural and stores it in lastNatural", 
-  function() {
-    interpreter.absoluteNatural = mf.terminalEmptyString(justReturn(-1));
-    interpreter.octavation = mf.terminalEmptyString(justReturn(1)); 
-    interpreter.absoluteTone("");
-    expect(interpreter.lastNatural).toBe(6);
+    interpreter.accidentals = mf.terminalEmptyString(justReturn("accidentals"));
+    interpreter.octavation = mf.terminalEmptyString(justReturn("octavation"));
+    
+    spyOn(interpreter, "toneHelper").and.returnValue("tone helper");
+    expect(interpreter.absoluteTone("")).toEqual("tone helper");
+    expect(interpreter.toneHelper)
+    .toHaveBeenCalledWith("absolute natural", "accidentals", "octavation");
   });
   
 });
