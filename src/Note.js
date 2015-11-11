@@ -1,10 +1,22 @@
-function Note() {
+function Note(tone) {
   var that = Object.create(Note.prototype);
+  
+  that._tone = tone;
   
   return that;
 }
 
 Note.prototype
-.hasStarted = function(time) {
+.hasEnded = function(time) {
+  
+};
+
+Note.prototype
+.toneMin = function() {
+  
+};
+
+Note.prototype
+.getSubPartial = function(n) {
   
 };

@@ -2,16 +2,19 @@ function Voice(notes) {
   var that = Object.create(Voice.prototype);
   
   that._notes = notes;
-  that._pointer = 0;
+  that._startTime = Fraction(0, 1);
   
   return that;
 }
 
 Voice.prototype
 .advanceTime = function(time) {
-  if(this._notes[this._pointer + 1].hasStarted(time)) {
-    this._pointer++;
+  
+  // TODO: replace [0] and shift with reverse, peek and pop.
+  if(this._notes[0].hasEnded(this._startTime, time)) {
+    this._notes.shift();
+    this._startTime = time;
   }
   
-  return this._notes[this._pointer];
+  return this._notes[0];
 };
