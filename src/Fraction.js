@@ -46,3 +46,8 @@ Fraction.prototype
 .reduceInplace = function() {
   
 };
+
+Fraction.prototype
+.min = function() {
+  
+};

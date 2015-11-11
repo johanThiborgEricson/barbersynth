@@ -20,6 +20,6 @@ Voice.prototype
 };
 
 Voice.prototype
-.nextNoteStartMin = function() {
-  
+.nextNoteStartMin = function(fraction) {
+  return this._startTime.min(fraction);
 };
