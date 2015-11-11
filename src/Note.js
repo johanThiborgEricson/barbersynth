@@ -20,3 +20,8 @@ Note.prototype
 .getSubPartial = function(n) {
   
 };
+
+Note.prototype
+.nearestPartial = function() {
+  
+};

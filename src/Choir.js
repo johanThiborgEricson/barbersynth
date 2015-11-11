@@ -13,14 +13,26 @@ Choir.prototype
     return voice.advanceTime(that._time);
   });
   
-  var frequencies = this.getFrequencies(chord);
+  var lowestNote = this.lowest(chord);
+  var frequencies = this.getFrequencies(chord, lowestNote);
   this.playFrequencies(frequencies);
 };
 
 Choir.prototype
-.getFrequencies = function(notes) {
-  var lowestNote = this.lowest(notes);
-  lowestNote.getSubPartial(1);
+.getFrequencies = function(notes, lowestNote) {
+  var i = 1;
+  var partials = null;
+  while(!partials) {
+    var suggestedF0 = lowestNote.getSubPartial(i++);
+    partials = this.nearestPartialsOrNull(suggestedF0, notes);
+  }
+  
+  return partials;
+};
+
+Choir.prototype
+.nearestPartialsOrNull = function() {
+  
 };
 
 Choir.prototype
