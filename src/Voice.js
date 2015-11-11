@@ -18,3 +18,8 @@ Voice.prototype
   
   return this._notes[0];
 };
+
+Voice.prototype
+.nextNoteStartMin = function() {
+  
+};

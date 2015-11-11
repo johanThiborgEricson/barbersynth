@@ -54,4 +54,41 @@ describe("Choire(voices).advanceCord(f0suggestor)", function() {
     expect(choir.playFrequencies).toHaveBeenCalledWith("frequencies");
   });
   
+  it("(_time is set to Fraction(0, 1) in constructor)", function() {
+    expect(Choir()._time).toEqual(Fraction(0, 1));
+  });
+  
+  it("calls nextNoteStartMin on voices[0] with Fraction(Infinity, 1)", 
+  function() {
+    var voice0 = Voice();
+    spyOn(voice0, "nextNoteStartMin");
+    spyOn(voice0, "advanceTime");
+    var choir = Choir([voice0]);
+    spyOn(choir, "lowest").and.returnValue("lowest note");
+    spyOn(choir, "getFrequencies");
+    choir.advanceChord();
+    expect(voice0.nextNoteStartMin)
+    .toHaveBeenCalledWith(Fraction(Infinity, 1));
+  });
+  
+  it("calls nextNoteStartMin on voices[1] with the result of voices[0]" +
+  "nextNoteStartMin, and so on, and sets _start to the result", 
+  function() {
+    var voice0 = Voice();
+    spyOn(voice0, "nextNoteStartMin").and.returnValue("next note start 0");
+    spyOn(voice0, "advanceTime");
+    var voice1 = Voice();
+    spyOn(voice1, "nextNoteStartMin").and.returnValue("next note start 1");
+    spyOn(voice1, "advanceTime");
+    var choir = Choir([voice0, voice1]);
+    spyOn(choir, "lowest").and.returnValue("lowest note");
+    spyOn(choir, "getFrequencies");
+    
+    choir.advanceChord();
+    
+    expect(voice1.nextNoteStartMin)
+    .toHaveBeenCalledWith("next note start 0");
+    expect(choir._time).toEqual("next note start 1");
+  });
+  
 });

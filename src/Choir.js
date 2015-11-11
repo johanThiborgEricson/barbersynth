@@ -2,6 +2,7 @@ function Choir(voices) {
   var that = Object.create(Choir.prototype);
   
   that._voices = voices;
+  that._time = Fraction(0, 1);
   
   return that;
 }
@@ -15,6 +16,10 @@ Choir.prototype
   
   var lowestNote = this.lowest(chord);
   var frequencies = this.getFrequencies(chord, lowestNote);
+  this._time = this._voices.reduce(function(minTime, voice){
+    return voice.nextNoteStartMin(minTime);
+  }, Fraction(Infinity, 1));
+  
   this.playFrequencies(frequencies);
 };
 
