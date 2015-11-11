@@ -48,4 +48,19 @@ describe("relativeNatural", function() {
     expect(interpreter.relativeNatural("b")).toEqual("redundant");
   });
   
+  it("doesn't throw when lastNatural is any natural on a grand piano and the" +
+  "parsed value is any natural name", function() {
+    var naturalNames = ["a", "b", "c", "d", "e", "f", "g"];
+    var acceptanceTest = function() {
+      naturalNames.map(function(naturalName) {
+        for(var lastNatural = -28; lastNatural <= 23; lastNatural++) {
+          interpreter.lastNatural = lastNatural;
+          interpreter.relativeNatural(naturalName);
+        }
+      });
+    };
+    
+    expect(acceptanceTest).not.toThrow();
+  });
+  
 });
