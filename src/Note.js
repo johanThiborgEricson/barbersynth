@@ -7,7 +7,7 @@ function Note(tone) {
 }
 
 Note.prototype
-.hasEnded = function(time) {
+.hasEnded = function(startTime, time) {
   
 };
 
