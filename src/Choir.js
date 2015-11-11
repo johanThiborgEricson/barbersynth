@@ -31,8 +31,16 @@ Choir.prototype
 };
 
 Choir.prototype
-.nearestPartialsOrNull = function() {
+.nearestPartialsOrNull = function(suggestedF0, notes) {
+  var partials = notes.map(function(note) {
+    return note.nearestPartial(suggestedF0);
+  });
   
+  var nullFound = partials.reduce(function(nullFound, partial) {
+    return nullFound || (partial === null);
+  }, false);
+  
+  return nullFound ? null : partials;
 };
 
 Choir.prototype
