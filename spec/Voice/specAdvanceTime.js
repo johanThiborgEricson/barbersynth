@@ -1,12 +1,12 @@
 describe("Voice(notes).advanceTime(time)", function() {
   
   // TODO: move this functionallity to Voice.start()
-  it("(initially, _startTime is Fraction(0, 1))", function() {
+  xit("(initially, _startTime is Fraction(0, 1))", function() {
     var voice = Voice();
     expect(voice._startTime).toEqual(Fraction(0, 1));
   });
   
-  it("calls notes[0].hasEnded with _startTime and time", function() {
+  xit("calls notes[0].hasEnded with _startTime and time", function() {
     var note0 = Note();
     spyOn(note0, "hasEnded");
     var voice = Voice([note0]);
@@ -15,14 +15,14 @@ describe("Voice(notes).advanceTime(time)", function() {
     expect(note0.hasEnded).toHaveBeenCalledWith("start time", "time");
   });
   
-  it("returns notes[0] if notes[0].hasEnded returns false", function() {
+  xit("returns notes[0] if notes[0].hasEnded returns false", function() {
     var note0 = Note();
     spyOn(note0, "hasEnded").and.returnValue(false);
     var voice = Voice([note0]);
     expect(voice.advanceTime()).toBe(note0);
   });
   
-  it("if notes[0].hasEnded returns true, removes notes[0] from _notes, sets " +
+  xit("if notes[0].hasEnded returns true, removes notes[0] from _notes, sets " +
   "_startTime to time and returns notes[1]", 
   function() {
     var note0 = Note();
