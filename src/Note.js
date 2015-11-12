@@ -25,3 +25,8 @@ Note.prototype
 .nearestPartial = function() {
   
 };
+
+Note.prototype
+.addTime = function() {
+  
+};

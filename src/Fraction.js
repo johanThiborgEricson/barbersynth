@@ -51,3 +51,8 @@ Fraction.prototype
 .min = function() {
   
 };
+
+Fraction.prototype
+.lessThan = function() {
+  
+};
