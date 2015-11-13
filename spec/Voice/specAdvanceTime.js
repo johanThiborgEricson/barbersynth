@@ -5,6 +5,11 @@ describe("Voice(notes).advanceTime(time, playing)", function() {
     expect(voice._nextNoteStart).toEqual(Fraction(0, 1));
   });
   
+  it("(initially, _singing is Note.nullObjectStart)", function() {
+    var voice = Voice([]);
+    expect(voice._singing).toBe(Note.nullObjectStart);
+  });
+  
   it("calls lessThan on time with _nextNoteStart", function() {
     var time = Fraction();
     spyOn(time, "lessThan").and.returnValue(true);
@@ -14,21 +19,24 @@ describe("Voice(notes).advanceTime(time, playing)", function() {
     expect(time.lessThan).toHaveBeenCalledWith("next note start");
   });
   
-  it("returns playing if lessThan returns true", function() {
+  it("returns _singing if lessThan returns true", function() {
     var time = Fraction();
     spyOn(time, "lessThan").and.returnValue(true);
     var voice = Voice([]);
-    expect(voice.advanceTime(time, "playing")).toEqual("playing");
+    voice._singing = "singing";
+    expect(voice.advanceTime(time)).toEqual("singing");
   });
   
-  it("returns notes[0] and removes it from _unsungNotes if lessThan returns " +
-  "false", function() {
+  it("returns notes[0] , sets _singing to it, and removes it from " +
+  "_unsungNotes if lessThan returns false", function() {
     var time = Fraction();
     spyOn(time, "lessThan").and.returnValue(false);
     var note0 = Note();
     var voice = Voice([note0]);
-    expect(voice.advanceTime(time, "playing")).toBe(note0);
-    expect(voice._unsungNotes.indexOf("note 0")).toBe(-1);
+    expect(voice._unsungNotes.indexOf(note0)).toBe(0);
+    expect(voice.advanceTime(time)).toBe(note0);
+    expect(voice._unsungNotes.indexOf(note0)).toBe(-1);
+    expect(voice._singing).toBe(note0);
   });
   
   it("doesn't affect notes", 
@@ -42,8 +50,8 @@ describe("Voice(notes).advanceTime(time, playing)", function() {
     expect(notes[0]).toBe(note0);
   });
   
-  it("calls addTime on notes[0] with _nextNoteStart and sets _nextNoteStart to the result if " +
-  "lessThan returns false", function() {
+  it("calls addTime on notes[0] with _nextNoteStart and sets _nextNoteStart " +
+  "to the result if lessThan returns false", function() {
     var note0 = Note();
     spyOn(note0, "addTime").and.returnValue("time sum");
     var time = Fraction();

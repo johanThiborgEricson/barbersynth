@@ -6,6 +6,8 @@ function Note(tone) {
   return that;
 }
 
+Note.nullObjectStart = Note();
+
 Note.prototype
 .hasEnded = function(startTime, time) {
   
