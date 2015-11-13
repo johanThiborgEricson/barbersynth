@@ -1,17 +1,17 @@
 describe("Voice(notes).advanceTime(time, playing)", function() {
   
-  it("(initially, _time is Fraction(0, 1))", function() {
+  it("(initially, _nextNoteStart is Fraction(0, 1))", function() {
     var voice = Voice([]);
-    expect(voice._time).toEqual(Fraction(0, 1));
+    expect(voice._nextNoteStart).toEqual(Fraction(0, 1));
   });
   
-  it("calls lessThan on time with _time", function() {
+  it("calls lessThan on time with _nextNoteStart", function() {
     var time = Fraction();
     spyOn(time, "lessThan").and.returnValue(true);
     var voice = Voice([]);
-    voice._time = "voice time";
+    voice._nextNoteStart = "next note start";
     voice.advanceTime(time);
-    expect(time.lessThan).toHaveBeenCalledWith("voice time");
+    expect(time.lessThan).toHaveBeenCalledWith("next note start");
   });
   
   it("returns playing if lessThan returns true", function() {
@@ -42,19 +42,19 @@ describe("Voice(notes).advanceTime(time, playing)", function() {
     expect(notes[0]).toBe(note0);
   });
   
-  it("calls addTime on notes[0] with _time and sets _time to the result if " +
+  it("calls addTime on notes[0] with _nextNoteStart and sets _nextNoteStart to the result if " +
   "lessThan returns false", function() {
     var note0 = Note();
     spyOn(note0, "addTime").and.returnValue("time sum");
     var time = Fraction();
     spyOn(time, "lessThan").and.returnValue(false);
     var voice = Voice([note0]);
-    voice._time = "_time";
+    voice._nextNoteStart = "next note start";
     
     voice.advanceTime(time, "playing");
     
-    expect(note0.addTime).toHaveBeenCalledWith("_time");
-    expect(voice._time).toEqual("time sum");
+    expect(note0.addTime).toHaveBeenCalledWith("next note start");
+    expect(voice._nextNoteStart).toEqual("time sum");
   });
   
 });
