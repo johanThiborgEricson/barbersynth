@@ -1,7 +1,7 @@
 function Voice(notes) {
   var that = Object.create(Voice.prototype);
   
-  that._unsungNotes = notes;
+  that._unsungNotes = notes.slice();
   that._time = Fraction(0, 1);
   
   return that;

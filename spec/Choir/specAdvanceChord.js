@@ -3,9 +3,9 @@ describe("Choire(voices).advanceCord(f0suggestor)", function() {
   it("calls advanceTime on all voices with argument _time and " +
   "returns an array of the results", 
   function() {
-    var voice0 = Voice();
+    var voice0 = Voice([]);
     spyOn(voice0, "advanceTime");
-    var voice1 = Voice();
+    var voice1 = Voice([]);
     spyOn(voice1, "advanceTime");
     var choir = Choir([voice0, voice1]);
     choir._time = "time";
@@ -18,9 +18,9 @@ describe("Choire(voices).advanceCord(f0suggestor)", function() {
   });
   
   it("calls lowest with an array of the results of advanceTime", function() {
-    var voice0 = Voice();
+    var voice0 = Voice([]);
     spyOn(voice0, "advanceTime").and.returnValue("note 0");
-    var voice1 = Voice();
+    var voice1 = Voice([]);
     spyOn(voice1, "advanceTime").and.returnValue("note 1");
     var choir = Choir([voice0, voice1]);
     spyOn(choir, "lowest");
@@ -33,9 +33,9 @@ describe("Choire(voices).advanceCord(f0suggestor)", function() {
   it("calls getFrequecies with an array of the results of advanceTime and " +
   "the result of lowest", 
   function() {
-    var voice0 = Voice();
+    var voice0 = Voice([]);
     spyOn(voice0, "advanceTime").and.returnValue("note 0");
-    var voice1 = Voice();
+    var voice1 = Voice([]);
     spyOn(voice1, "advanceTime").and.returnValue("note 1");
     var choir = Choir([voice0, voice1]);
     spyOn(choir, "lowest").and.returnValue("lowest note");
@@ -60,7 +60,7 @@ describe("Choire(voices).advanceCord(f0suggestor)", function() {
   
   it("calls nextNoteStartMin on voices[0] with Fraction(Infinity, 1)", 
   function() {
-    var voice0 = Voice();
+    var voice0 = Voice([]);
     spyOn(voice0, "nextNoteStartMin");
     spyOn(voice0, "advanceTime");
     var choir = Choir([voice0]);
@@ -74,10 +74,10 @@ describe("Choire(voices).advanceCord(f0suggestor)", function() {
   it("calls nextNoteStartMin on voices[1] with the result of voices[0]" +
   "nextNoteStartMin, and so on, and sets _start to the result", 
   function() {
-    var voice0 = Voice();
+    var voice0 = Voice([]);
     spyOn(voice0, "nextNoteStartMin").and.returnValue("next note start 0");
     spyOn(voice0, "advanceTime");
-    var voice1 = Voice();
+    var voice1 = Voice([]);
     spyOn(voice1, "nextNoteStartMin").and.returnValue("next note start 1");
     spyOn(voice1, "advanceTime");
     var choir = Choir([voice0, voice1]);

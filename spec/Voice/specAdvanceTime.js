@@ -31,7 +31,7 @@ describe("Voice(notes).advanceTime(time, playing)", function() {
     expect(voice._unsungNotes.indexOf("note 0")).toBe(-1);
   });
   
-  xit("doesn't affect notes", 
+  it("doesn't affect notes", 
   function() {
     var note0 = Note();
     var notes = [note0];
