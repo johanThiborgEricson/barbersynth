@@ -1,11 +1,11 @@
 describe("Voice().nextNoteStartMin(fraction)", function() {
-  xit("calls min on _startTime with fraction and returns the result", 
+  it("calls min on _startTime with fraction and returns the result", 
   function() {
-    var voice = Voice();
-    spyOn(voice._startTime, "min").and.returnValue("start time min");
+    var voice = Voice([]);
+    spyOn(voice._nextNoteStart, "min").and.returnValue("next note start min");
     
-    expect(voice.nextNoteStartMin("fraction")).toEqual("start time min");
+    expect(voice.nextNoteStartMin("fraction")).toEqual("next note start min");
     
-    expect(voice._startTime.min).toHaveBeenCalledWith("fraction");
+    expect(voice._nextNoteStart.min).toHaveBeenCalledWith("fraction");
   });
 });
