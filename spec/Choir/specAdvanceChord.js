@@ -1,4 +1,4 @@
-describe("Choire(voices).advanceCord(f0suggestor)", function() {
+describe("Choire(voices).advanceCord()", function() {
   
   it("calls advanceTime on all voices with argument _time and " +
   "returns an array of the results", 
