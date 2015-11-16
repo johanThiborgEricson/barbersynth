@@ -9,11 +9,6 @@ function Note(tone) {
 Note.nullObjectStart = Note();
 
 Note.prototype
-.hasEnded = function(startTime, time) {
-  
-};
-
-Note.prototype
 .toneMin = function() {
   
 };
