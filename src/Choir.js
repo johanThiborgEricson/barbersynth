@@ -16,8 +16,6 @@ Choir.prototype
     return voice.advanceTime(nextNoteStartMin);
   });
   
-  this._time = nextNoteStartMin;
-  
   var lowestNote = this.lowest(chord);
   var frequencies = this.getFrequencies(chord, lowestNote);
   this.playFrequencies(frequencies);

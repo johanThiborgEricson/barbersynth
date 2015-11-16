@@ -14,7 +14,7 @@ describe("Choire(voices).advanceCord()", function() {
   });
   
   it("calls nextNoteStartMin on voices[1] with the result of voices[0]" +
-  "nextNoteStartMin, and so on, and sets _start to the result", 
+  "nextNoteStartMin, and so on", 
   function() {
     var voice0 = Voice([]);
     spyOn(voice0, "nextNoteStartMin").and.returnValue("next note start 0");
@@ -30,7 +30,6 @@ describe("Choire(voices).advanceCord()", function() {
     
     expect(voice1.nextNoteStartMin)
     .toHaveBeenCalledWith("next note start 0");
-    expect(choir._time).toEqual("next note start 1");
   });
   
   it("calls advanceTime on all voices with the result of calling " +
