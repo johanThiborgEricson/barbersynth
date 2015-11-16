@@ -8,14 +8,15 @@ function Choir(voices) {
 
 Choir.prototype
 .advanceChord = function() {
-  this._time = this._voices.reduce(function(minTime, voice){
+  var nextNoteStartMin = this._voices.reduce(function(minTime, voice){
     return voice.nextNoteStartMin(minTime);
   }, Fraction(Infinity, 1));
   
-  var that = this;
   var chord = this._voices.map(function(voice) {
-    return voice.advanceTime(that._time);
+    return voice.advanceTime(nextNoteStartMin);
   });
+  
+  this._time = nextNoteStartMin;
   
   var lowestNote = this.lowest(chord);
   var frequencies = this.getFrequencies(chord, lowestNote);
