@@ -2,8 +2,7 @@ function Choir(voices) {
   var that = Object.create(Choir.prototype);
   
   that._voices = voices;
-  that._time = Fraction(0, 1);
-  
+
   return that;
 }
 

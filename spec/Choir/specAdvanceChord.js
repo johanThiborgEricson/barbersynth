@@ -54,10 +54,6 @@ describe("Choire(voices).advanceCord(f0suggestor)", function() {
     expect(choir.playFrequencies).toHaveBeenCalledWith("frequencies");
   });
   
-  it("(_time is set to Fraction(0, 1) in constructor)", function() {
-    expect(Choir()._time).toEqual(Fraction(0, 1));
-  });
-  
   it("calls nextNoteStartMin on voices[0] with Fraction(Infinity, 1)", 
   function() {
     var voice0 = Voice([]);
