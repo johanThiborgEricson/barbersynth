@@ -15,7 +15,14 @@ Note.prototype
 
 Note.prototype
 .getSubPartial = function(n) {
+  var step;
+  if(n < 16) {
+    step = Math.round(12 * (Math.log(n) / Math.log(2)));
+  } else {
+    step = 48 - 16 + n; // 12 * (Math.log(16) / Math.log(2)) = 48
+  }
   
+  return this._tone - step;
 };
 
 Note.prototype
