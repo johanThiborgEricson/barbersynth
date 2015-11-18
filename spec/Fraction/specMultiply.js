@@ -18,4 +18,12 @@ describe("Fraction(n1, d1).multiply([n2, d2])", function() {
     expect(fraction.multiply([9, 4])).toEqual(Fraction(3, 2));
   });
   
+  it("can handle numbers close to one", function() {
+    var large = Number.MAX_VALUE;
+    var notSoLarge = large * (1 - Math.pow(2, -52));
+    expect(large).not.toBe(notSoLarge);
+    var fraction = Fraction(large, notSoLarge);
+    expect(fraction.multiply([notSoLarge, large])).toEqual(Fraction(1, 1));
+  });
+  
 });
