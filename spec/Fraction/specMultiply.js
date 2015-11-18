@@ -1,21 +1,21 @@
 describe("Fraction(n1, d1).multiply([n2, d2])", function() {
   
-  it("calls reduceAgainst twice, first with ([n1, d1], 0, [n2, d2], 1) and " +
-  "then with ([n1, d1], 1, [n2, d2], 0)", function() {
-    var fraction = Fraction(2, 3);
-    spyOn(fraction, "reduceAgainst").and.returnValue([]);
-    fraction.multiply([5, 7]);
-    expect(fraction.reduceAgainst).toHaveBeenCalledWith(0, [5, 7], 1);
-    expect(fraction.reduceAgainst).toHaveBeenCalledWith(1, [5, 7], 0);
+  it("calls greatestCommonDivisor twice, first with n1 and d2 and then with " +
+  "n2 and d1", function() {
+    var fraction = Fraction("n1", "d1");
+    spyOn(fraction, "greatestCommonDivisor");
+    fraction.multiply(["n2", "d2"]);
+    expect(fraction.greatestCommonDivisor).toHaveBeenCalledWith("n1", "d2");
+    expect(fraction.greatestCommonDivisor).toHaveBeenCalledWith("n2", "d1");
   });
   
-  it("returns a new Fraction equal to the result of multiplying the " +
-  "elements of the results of reduceAgainst", function() {
-    var fraction = Fraction();
-    spyOn(fraction, "reduceAgainst").and.returnValues([2, 3], [5, 7]);
-    var actuall = fraction.multiply();
-    expect(actuall).toEqual(Fraction(10, 21));
-    expect(actuall).not.toBe(fraction);
+  it("returns Fraction(n1 * n1 / gcd1 / gcd2, d1 * d2 / gcd1 / gcd2) where " +
+  "gcd1 is the result of calling greatestCommonDivisor with n1 and d2 and " +
+  "gcd2 is the result of calling greatestCommonDivisor with n2 and d1", 
+  function() {
+    var fraction = Fraction(2, 3);
+    spyOn(fraction, "greatestCommonDivisor").and.returnValues(2, 3);
+    expect(fraction.multiply([9, 4])).toEqual(Fraction(3, 2));
   });
   
 });

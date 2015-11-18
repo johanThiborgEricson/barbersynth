@@ -30,22 +30,11 @@ Fraction.prototype
 
 Fraction.prototype
 .multiply = function(factor) {
-  var crossFactor1 = this.reduceAgainst(0, factor, 1);
-  var crossFactor2 = this.reduceAgainst(1, factor, 0);
-  var numerator = crossFactor1[0] * crossFactor2[0];
-  var denominator = crossFactor1[1] * crossFactor2[1];
+  var gcd1 = this.greatestCommonDivisor(this[0], factor[1]);
+  var gcd2 = this.greatestCommonDivisor(factor[0], this[1]);
+  var numerator = (this[0] / gcd1) * (factor[0] / gcd2);
+  var denominator = (factor[1] / gcd1) * (this[1] / gcd2);
   return Fraction(numerator, denominator);
-};
-
-Fraction.prototype
-.reduceAgainst = function(thisIndex, other, otherIndex) {
-  var thisValue = this[thisIndex];
-  var otherValue = other[otherIndex];
-  var gcd = this.greatestCommonDivisor(thisValue, otherValue);
-  var result = [];
-  result[thisIndex] = thisValue / gcd;
-  result[otherIndex] = otherValue / gcd;
-  return Fraction(result[0], result[1]);
 };
 
 Fraction.prototype
