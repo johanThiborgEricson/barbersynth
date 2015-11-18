@@ -2,12 +2,9 @@ function Fraction(numerator, denominator) {
   var that = Object.create(Fraction.prototype);
   that[0] = numerator;
   that[1] = denominator;
-  
+
   return that;
 }
-
-Fraction.prototype
-.Fraction = Fraction;
 
 Fraction.prototype
 .add = function(term) {
@@ -33,18 +30,22 @@ Fraction.prototype
 
 Fraction.prototype
 .multiply = function(factor) {
-  var crossReduce1 = [this[0], factor[1]];
-  var crossReduce2 = [factor[0], this[1]];
-  this.reduceInplace(crossReduce1);
-  this.reduceInplace(crossReduce2);
-  var numerator = crossReduce1[0] * crossReduce2[0];
-  var denominator = crossReduce1[1] * crossReduce2[1];
-  return this.Fraction(numerator, denominator);
+  var crossFactor1 = this.reduceAgainst(0, factor, 1);
+  var crossFactor2 = this.reduceAgainst(1, factor, 0);
+  var numerator = crossFactor1[0] * crossFactor2[0];
+  var denominator = crossFactor1[1] * crossFactor2[1];
+  return Fraction(numerator, denominator);
 };
 
 Fraction.prototype
-.reduceInplace = function() {
-  
+.reduceAgainst = function(thisIndex, other, otherIndex) {
+  var thisValue = this[thisIndex];
+  var otherValue = other[otherIndex];
+  var gcd = this.greatestCommonDivisor(thisValue, otherValue);
+  var result = [];
+  result[thisIndex] = thisValue / gcd;
+  result[otherIndex] = otherValue / gcd;
+  return Fraction(result[0], result[1]);
 };
 
 Fraction.prototype

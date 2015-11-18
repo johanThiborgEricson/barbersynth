@@ -1,36 +1,21 @@
 describe("Fraction(n1, d1).multiply([n2, d2])", function() {
   
-  it("calls reduceInplace with [n1, d2] and [n2, d1]", function() {
-    var fraction = Fraction(1, 2);
-    spyOn(fraction, "reduceInplace");
-    fraction.multiply([3, 4]);
-    expect(fraction.reduceInplace).toHaveBeenCalledWith([1, 4]);
-    expect(fraction.reduceInplace).toHaveBeenCalledWith([3, 2]);
+  it("calls reduceAgainst twice, first with ([n1, d1], 0, [n2, d2], 1) and " +
+  "then with ([n1, d1], 1, [n2, d2], 0)", function() {
+    var fraction = Fraction(2, 3);
+    spyOn(fraction, "reduceAgainst").and.returnValue([]);
+    fraction.multiply([5, 7]);
+    expect(fraction.reduceAgainst).toHaveBeenCalledWith(0, [5, 7], 1);
+    expect(fraction.reduceAgainst).toHaveBeenCalledWith(1, [5, 7], 0);
   });
   
-  it("multiplies values set by reduceInplace element-wise and makes a new " +
-  "Fraction of the products", function() {
+  it("returns a new Fraction equal to the result of multiplying the " +
+  "elements of the results of reduceAgainst", function() {
     var fraction = Fraction();
-    fraction.reduceInplace = (function() {
-      var i = 0;
-      var numerators = [2, 5];
-      var denominators = [3, 7];
-      return function(fraction) {
-        fraction[0] = numerators[i];
-        fraction[1] = denominators[i];
-        i++;
-      };
-    })();
-    
-    spyOn(fraction, "Fraction");
-    fraction.multiply([]);
-    expect(fraction.Fraction).toHaveBeenCalledWith(10, 21);
-  });
-  
-  it("returns the result of Fraction", function() {
-    var fraction = Fraction();
-    spyOn(fraction, "Fraction").and.returnValue("fraction");
-    expect(fraction.multiply([])).toEqual("fraction");
+    spyOn(fraction, "reduceAgainst").and.returnValues([2, 3], [5, 7]);
+    var actuall = fraction.multiply();
+    expect(actuall).toEqual(Fraction(10, 21));
+    expect(actuall).not.toBe(fraction);
   });
   
 });
