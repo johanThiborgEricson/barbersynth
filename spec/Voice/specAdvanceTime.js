@@ -32,6 +32,7 @@ describe("Voice(notes).advanceTime(time, playing)", function() {
     var time = Fraction();
     spyOn(time, "lessThan").and.returnValue(false);
     var note0 = Note();
+    spyOn(note0, "addTime");
     var voice = Voice([note0]);
     expect(voice._unsungNotes.indexOf(note0)).toBe(0);
     expect(voice.advanceTime(time)).toBe(note0);
@@ -42,6 +43,7 @@ describe("Voice(notes).advanceTime(time, playing)", function() {
   it("doesn't affect notes", 
   function() {
     var note0 = Note();
+    spyOn(note0, "addTime");
     var notes = [note0];
     var time = Fraction();
     spyOn(time, "lessThan").and.returnValue(false);

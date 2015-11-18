@@ -1,8 +1,9 @@
-function Note(tone) {
+function Note(tone, duration) {
   var that = Object.create(Note.prototype);
   
   that._tone = tone;
-
+  that._duration = duration;
+  
   return that;
 }
 
@@ -40,6 +41,6 @@ Note.prototype
 };
 
 Note.prototype
-.addTime = function() {
-  
+.addTime = function(time) {
+  return time.add(this._duration);
 };
