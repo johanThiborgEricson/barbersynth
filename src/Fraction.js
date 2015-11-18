@@ -38,8 +38,8 @@ Fraction.prototype
 };
 
 Fraction.prototype
-.min = function() {
-  
+.min = function(other) {
+  return this.lessThan(other) ? this : other;
 };
 
 Fraction.prototype
