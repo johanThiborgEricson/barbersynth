@@ -61,12 +61,12 @@ function LilyPondInterpreter(Note) {
   function(lengthString) {
     var numerator = 1;
     var denominator = Number(lengthString);
-    return [numerator, denominator];
+    return Fraction(numerator, denominator);
   });
   
   LilyPondInterpreter.prototype
   .unspecifiedLength = methodFactory.terminalEmptyString(function() {
-    return this.lengthFraction || [1, 4];
+    return this.lengthFraction || Fraction(1, 4);
   });
   
   LilyPondInterpreter.prototype
@@ -74,12 +74,12 @@ function LilyPondInterpreter(Note) {
     var dotCount = dotsString.length;
     var numerator = 2 * Math.pow(2, dotCount) - 1;
     var denominator = Math.pow(2, dotCount);
-    return [numerator, denominator];
+    return Fraction(numerator, denominator);
   });
   
   LilyPondInterpreter.prototype
   .noDots = methodFactory.terminalEmptyString(function(dotsString) {
-    return [1, 1];
+    return Fraction(1, 1);
   });
   
   LilyPondInterpreter.prototype
@@ -87,14 +87,10 @@ function LilyPondInterpreter(Note) {
   
   var possiblyDottedLengthInterpretation = 
   function(reciprocalLength, possiblyDots) {
-    var numerator = reciprocalLength[0] * possiblyDots[0];
-    var denominator = reciprocalLength[1] * possiblyDots[1];
-    var lengthFraction = [numerator, denominator];
-    this.lengthFraction = lengthFraction;
-    return lengthFraction;
+    this.lengthFraction = reciprocalLength.multiply(possiblyDots);
+    return this.lengthFraction;
   };
   
-  // TODO: write fraction().multiply(fraction())
   LilyPondInterpreter.prototype
   .possiblyDottedLength = methodFactory.nonTerminalSequence(
     "reciprocalLength", "possiblyDots", possiblyDottedLengthInterpretation);
