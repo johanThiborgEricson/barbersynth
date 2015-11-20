@@ -55,13 +55,10 @@ function LilyPondInterpreter(Note) {
   .accidentals = methodFactory.nonTerminalAlternative(
     "flat", "sharp", "noAccidental");
   
-  // TODO: make function fraction (n, m) => [n, m] with methods.
   LilyPondInterpreter.prototype.
   reciprocalLength = methodFactory.terminal(/(128|64|32|16|8|4|2|1)/, 
   function(lengthString) {
-    var numerator = 1;
-    var denominator = Number(lengthString);
-    return Fraction(numerator, denominator);
+    return Fraction(1, Number(lengthString));
   });
   
   LilyPondInterpreter.prototype
