@@ -10,8 +10,8 @@ function Note(tone, duration) {
 Note.nullObjectStart = Note();
 
 Note.prototype
-.toneMin = function() {
-  
+.toneMin = function(other) {
+  return this._tone < other._tone ? this : other;
 };
 
 Note.prototype
