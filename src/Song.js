@@ -34,3 +34,8 @@ Song.prototype
   
   this._radio.addEventListener("click", {handleEvent:handleEvent});
 };
+
+Song.prototype
+.appendRadio = function (titleForm) {
+  titleForm.appendChild(this._radio);
+};
