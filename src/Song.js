@@ -16,3 +16,21 @@ function Song(theTitle, lilyPonds) {
   
   return that;
 }
+
+Song.prototype
+.connectRadioEventListener = function(lilyPondsForm) {
+  var that = this;
+  
+  var handleEvent = function() {
+    while(lilyPondsForm.firstChild) {
+      lilyPondsForm.removeChild(lilyPondsForm.firstChild);
+    }
+    
+    that._lilyPonds.map(function(lilyPond) {
+      lilyPondsForm.appendChild(lilyPond);
+    });
+    
+  };
+  
+  this._radio.addEventListener("click", {handleEvent:handleEvent});
+};
