@@ -21,14 +21,12 @@ describe("Song().connectRadioEventHandler(lilyPondsForm) puts an event-" +
     expect(song._lilyPonds).toBeDefined();
     song._lilyPonds = [input1, input2];
     var lilyPondsForm = document.createElement("FORM");
-    spyOn(lilyPondsForm, "appendChild");
-    
+
     song.connectRadioEventListener(lilyPondsForm);
     song._radio.dispatchEvent(new MouseEvent("click"));
-    expect(lilyPondsForm.appendChild).toHaveBeenCalledWith(input1);
     
-    // jasmine refuses to let me test this... implementing anyway...
-    expect(lilyPondsForm.appendChild).toHaveBeenCalledWith(input2);
+    expect(lilyPondsForm.firstChild).toBe(input1);
+    expect(lilyPondsForm.lastChild).toBe(input2);
   });
   
 });
