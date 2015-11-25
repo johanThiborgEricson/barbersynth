@@ -19,20 +19,18 @@ function Song(theTitle, lilyPonds) {
 
 Song.prototype
 .connectRadioEventListener = function(lilyPondsForm) {
-  var that = this;
-  
-  var handleEvent = function() {
+  this.handleEvent = function() {
     while(lilyPondsForm.firstChild) {
       lilyPondsForm.removeChild(lilyPondsForm.firstChild);
     }
     
-    that._lilyPonds.map(function(lilyPond) {
+    this._lilyPonds.map(function(lilyPond) {
       lilyPondsForm.appendChild(lilyPond);
     });
     
   };
   
-  this._radio.addEventListener("click", {handleEvent:handleEvent});
+  this._radio.addEventListener("click", this);
 };
 
 Song.prototype
