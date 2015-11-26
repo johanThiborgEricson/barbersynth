@@ -11,7 +11,7 @@ BarberSynthGui.prototype
   var elem = document.createElement("DIV");
   
   var lilyPondsForm = this.createLilyPondsForm();
-  var songSelectionForm = this.createSongSelectionForm(lilyPondsForm, songs);
+  var songSelectionForm = this.createSongSelectionForm(songs, lilyPondsForm);
   elem.appendChild(songSelectionForm);
   elem.appendChild(lilyPondsForm);
   
