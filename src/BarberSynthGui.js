@@ -7,10 +7,15 @@ function BarberSynthGui() {
 BarberSynthGui.prototype.methodStorage = {};
 
 BarberSynthGui.prototype
-.createBarberSynthElement = function(songs) {
-  var that = document.createElement("DIV");
+.createMainElement = function(songs) {
+  var elem = document.createElement("DIV");
   
-  return that;
+  var lilyPondsForm = this.createLilyPondsForm();
+  var songSelectionForm = this.createSongSelectionForm(lilyPondsForm, songs);
+  elem.appendChild(songSelectionForm);
+  elem.appendChild(lilyPondsForm);
+  
+  return elem;
 };
 
 BarberSynthGui.prototype.methodStorage
@@ -39,4 +44,18 @@ BarberSynthGui.prototype
   });
   
   return that;
+};
+
+BarberSynthGui.prototype
+.createSongSelectionForm = function() {
+  var elem = document.createElement("FORM");
+  
+  return elem;
+};
+
+BarberSynthGui.prototype
+.createLilyPondsForm = function() {
+  var elem = document.createElement("FORM");
+  
+  return elem;
 };
