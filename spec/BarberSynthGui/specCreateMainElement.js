@@ -1,7 +1,7 @@
 describe("BarberSynthGui().createMainElement(songs)", function() {
   
   var barberSynthGui;
-  
+  var elem = document.createElement("A");
   beforeEach(function() {
     barberSynthGui = BarberSynthGui();
   });
@@ -10,7 +10,7 @@ describe("BarberSynthGui().createMainElement(songs)", function() {
   "songs and the result", function() {
     var lilyPondsForm = document.createTextNode("lily ponds form");
     spyOn(barberSynthGui, "createLilyPondsForm").and.returnValue(lilyPondsForm);
-    spyOn(barberSynthGui, "createSongSelectionForm").and.callThrough();
+    spyOn(barberSynthGui, "createSongSelectionForm").and.returnValue(elem);
     
     barberSynthGui.createMainElement("songs");
     

@@ -47,8 +47,20 @@ BarberSynthGui.prototype
 };
 
 BarberSynthGui.prototype
-.createSongSelectionForm = function() {
+.createSongSelectionFragment = function() {
+  
+};
+
+BarberSynthGui.prototype
+.createSongSelectionForm = function(songs, lilyPondsForm) {
   var elem = document.createElement("FORM");
+  var that = this;
+  
+  songs.map(function(song) {
+    var fragment = that.createSongSelectionFragment(
+        song[0], song[1], lilyPondsForm);
+    elem.appendChild(fragment);
+  });
   
   return elem;
 };
