@@ -27,7 +27,7 @@ BarberSynthGui.prototype.methodStorage
 };
 
 BarberSynthGui.prototype
-.createSongSelectorElement = function(lilyPonds, lilyPondsForm) {
+.createSongSelectionElement = function(lilyPonds, lilyPondsForm) {
   var that = document.createElement("INPUT");
   
   that._lilyPondsForm = lilyPondsForm;
