@@ -1,8 +1,8 @@
-describe("relativeNatural", function() {
+describe("(new LilyPondInterpreter()).relativeNatural", function() {
   
   var interpreter;
   beforeEach(function() {
-    interpreter = LilyPondInterpreter();
+    interpreter = new LilyPondInterpreter();
   });
   
   it("calls moduloMagic and octaveSpaceRound with lastNatural and the parsed" +

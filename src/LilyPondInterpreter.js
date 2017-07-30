@@ -1,9 +1,5 @@
 function LilyPondInterpreter(Note) {
-  var that = Object.create(LilyPondInterpreter.prototype);
-  
-  that.Note = Note;
-
-  return that;
+  this.Note = Note;
 }
 
 (function() {
@@ -26,6 +22,7 @@ function LilyPondInterpreter(Note) {
     return apostrofeString.length;
   });
   
+  // TODO: implement terminalJustReturn(0) as a shorthand for this
   LilyPondInterpreter.prototype
   .noOctavation = methodFactory.terminalEmptyString(function() {
     return 0;
@@ -57,12 +54,12 @@ function LilyPondInterpreter(Note) {
   LilyPondInterpreter.prototype.
   reciprocalLength = methodFactory.terminal(/(128|64|32|16|8|4|2|1)/, 
   function(lengthString) {
-    return Fraction(1, Number(lengthString));
+    return new Fraction(1, Number(lengthString));
   });
   
   LilyPondInterpreter.prototype
   .unspecifiedLength = methodFactory.terminalEmptyString(function() {
-    return this.lengthFraction || Fraction(1, 4);
+    return this.lengthFraction || new Fraction(1, 4);
   });
   
   LilyPondInterpreter.prototype
@@ -70,12 +67,12 @@ function LilyPondInterpreter(Note) {
     var dotCount = dotsString.length;
     var numerator = 2 * Math.pow(2, dotCount) - 1;
     var denominator = Math.pow(2, dotCount);
-    return Fraction(numerator, denominator);
+    return new Fraction(numerator, denominator);
   });
   
   LilyPondInterpreter.prototype
-  .noDots = methodFactory.terminalEmptyString(function(dotsString) {
-    return Fraction(1, 1);
+  .noDots = methodFactory.terminalEmptyString(function() {
+    return new Fraction(1, 1);
   });
   
   LilyPondInterpreter.prototype
@@ -107,7 +104,7 @@ function LilyPondInterpreter(Note) {
   function(absoluteNatural, accidentals, octavation, noteLength) {
     var absoluteTone = 
         this.toneHelper(absoluteNatural, accidentals, octavation);
-    return this.Note(absoluteTone, noteLength);
+    return new (this.Note)(absoluteTone, noteLength);
   };
   
   LilyPondInterpreter.prototype
@@ -157,12 +154,36 @@ function LilyPondInterpreter(Note) {
   function(relativeNatural, accidentals, octavation, noteLength) {
     var relativeTone = 
         this.toneHelper(relativeNatural, accidentals, octavation);
-    return this.Note(relativeTone, noteLength);
+    return new (this.Note)(relativeTone, noteLength);
   };
   
   LilyPondInterpreter.prototype
   .relativeNote = methodFactory.nonTerminalSequence("relativeNatural", 
   "accidentals", "octavation", "noteLength", relativeNoteInterpretation);
+  
+  LilyPondInterpreter.prototype
+  .spacePlus = methodFactory.terminalSkip(/\s+/);
+  
+  LilyPondInterpreter.prototype
+  .spaceAsterisk = methodFactory.terminalSkip(/\s*/);
+  
+  // TODO: give asterisk ability to skip regexp.
+  LilyPondInterpreter.prototype
+  .spaceAndRelative = methodFactory.nonTerminalSequence("spacePlus", 
+  "relativeNote", function(spacePlus, relativeNote) {
+    return relativeNote;
+  });
+  
+  LilyPondInterpreter.prototype
+  .relativeNotes = methodFactory.nonTerminalAsterisk("spaceAndRelative");
+  
+  LilyPondInterpreter.prototype
+  .melody = methodFactory.nonTerminalSequence("spaceAsterisk", "absoluteNote", 
+  "relativeNotes", "spaceAsterisk", 
+  function(sa1, absoluteNote, relativeNotes, sa2) {
+    relativeNotes.unshift(absoluteNote);
+    return relativeNotes;
+  });
   
 })();
   

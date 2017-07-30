@@ -64,6 +64,11 @@ InterpreterMethodFactory.prototype
 };
 
 InterpreterMethodFactory.prototype
+.terminalSkip = function(terminal) {
+  return this.terminal(terminal, function(){});
+};
+
+InterpreterMethodFactory.prototype
 .nonTerminalSequence = function() {
   "use strict";
   var names;

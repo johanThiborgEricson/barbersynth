@@ -1,6 +1,6 @@
-describe("natural2tone", function() {
+describe("(new LilyPondInterpreter()).natural2tone", function() {
   
-  var interpreter = LilyPondInterpreter();
+  var interpreter = new LilyPondInterpreter();
   
   it("when called with numbers 0 to 6, returns the tone numbers for the " + 
   "seven tones of the A minor scale above concert pitch A", function() {

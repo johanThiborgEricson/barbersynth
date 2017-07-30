@@ -1,9 +1,10 @@
-describe("ToneHelper(natural, accidentals, octavation)", function() {
+describe("(new LilyPondInterpreter()).ToneHelper(natural, accidentals, " +
+"octavation)", function() {
   
   var interpreter;
 
   beforeEach(function() {
-    interpreter = LilyPondInterpreter();
+    interpreter = new LilyPondInterpreter();
     interpreter.natural2tone = function() {
       return 0;
     };

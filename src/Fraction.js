@@ -1,9 +1,6 @@
 function Fraction(numerator, denominator) {
-  var that = Object.create(Fraction.prototype);
-  that[0] = numerator;
-  that[1] = denominator;
-
-  return that;
+  this[0] = numerator;
+  this[1] = denominator;
 }
 
 Fraction.prototype
@@ -12,7 +9,7 @@ Fraction.prototype
   var thatNumerator = this[0] * (term[1] / gcd);
   var termNumerator = term[0] * (this[1] / gcd);
   var commonDenominator = this[1] * (term[1] / gcd);
-  return Fraction(thatNumerator + termNumerator, commonDenominator);
+  return new Fraction(thatNumerator + termNumerator, commonDenominator);
 };
 
 Fraction.prototype
@@ -34,7 +31,7 @@ Fraction.prototype
   var gcd2 = this.greatestCommonDivisor(factor[0], this[1]);
   var numerator = (this[0] / gcd1) * (factor[0] / gcd2);
   var denominator = (factor[1] / gcd1) * (this[1] / gcd2);
-  return Fraction(numerator, denominator);
+  return new Fraction(numerator, denominator);
 };
 
 Fraction.prototype
@@ -43,6 +40,8 @@ Fraction.prototype
 };
 
 Fraction.prototype
-.lessThan = function() {
-  
+.lessThan = function(other) {
+  var negative = new Fraction(-other[0], other[1]);
+  var difference = this.add(negative);
+  return difference[0] < 0;
 };

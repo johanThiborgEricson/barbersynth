@@ -1,9 +1,9 @@
-describe("octavation", function() {
+describe("(new LilyPondInterpreter()).octavation", function() {
   
   var interpreter;
   
   beforeEach(function() {
-    interpreter = LilyPondInterpreter();
+    interpreter = new LilyPondInterpreter();
   });
   
   it("returns one less per comma", function() {

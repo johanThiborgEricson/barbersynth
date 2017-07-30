@@ -1,4 +1,4 @@
-describe("Interpreter.MethodFactory().terminal(token, interpretation)" + 
+describe("InterpreterMethodFactory().terminal(token, interpretation)" + 
 ".call(interpreter, codePointer)(interpreter)", function() {
   var codePointer;
   var methodFactory;

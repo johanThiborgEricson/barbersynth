@@ -19,7 +19,9 @@
   <script src="src/Voice.js"></script>
   <script src="src/Note.js"></script>
   <script src="src/Choir.js"></script>
-  <script src="src/BarberSynthGui.js"></script>
+  <script src="src/Player.js"></script>
+  <script src="src/Gui.js"></script>
+  <script src="src/barbersynth.js"></script>
 
   <!-- include spec files here... -->
   <script src="spec/Fraction/specAdd.js"></script>
@@ -52,20 +54,38 @@
   <script src="spec/Voice/specAdvanceTime.js"></script>
   <script src="spec/Choir/specAdvanceChord.js"></script>
   <script src="spec/Choir/specLowest.js"></script>
-  <script src="spec/Choir/specGetFrequencies.js"></script>
   <script src="spec/Choir/specNearestPartialsOrNull.js"></script>
+  <script src="spec/Choir/specFindClosePartials.js"></script>
   <script src="spec/Voice/specNextNoteStartTimeMin.js"></script>
-  <script src="spec/Note/specNearestPartial.js"></script>
+  <script src="spec/Note/specFindClosePartial.js"></script>
   <script src="spec/Note/specGetSubPartial.js"></script>
   <script src="spec/Fraction/specMin.js"></script>
   <script src="spec/Note/specAddTime.js"></script>
   <script src="spec/Note/specToneMin.js"></script>
-  <script src="spec/BarberSynthGui/specCreateSongSelectionElement.js"></script>
-  <script src="spec/BarberSynthGui/specCreateMainElement.js"></script>
-  <script src="spec/BarberSynthGui/specCreateSongSelectionForm.js"></script>
+  <script src="spec/LilyPondInterpreter/specMelody.js"></script>
+  <script src="spec/Choir/specAsPartials.js"></script>
+  <script src="spec/interpreter/specTerminalSkip.js"></script>
+  <script src="spec/gui/specAppendGui.js"></script>
+  <script src="spec/gui/specAddVoiceInput.js"></script>
+  <script src="spec/gui/specAddVoiceButton.js"></script>
+  <script src="spec/Player/specSetFrequencies.js"></script>
+  <script src="spec/Player/specPanic.js"></script>
+  <script src="spec/specBarbersynth.js"></script>
+  <script src="spec/Player/specPlayChord.js"></script>
+  <script src="spec/Player/specPlayChoir.js"></script>
+  <script src="spec/Player/specPrepareOscillators.js"></script>
+  <script src="spec/Player/specSetReferenceTime.js"></script>
+  <script src="spec/Player/specAsSeconds.js"></script>
+  <script src="spec/Player/specEndTime.js"></script>
+  <script src="spec/specIntegrationTest.js"></script>
+  <script src="spec/Fraction/specLessThan.js"></script>
+  <script src="spec/Player/specPlayer.js"></script>
+  <script src="spec/Note/specGetJustFrequency.js"></script>
+  <script src="spec/gui/specPlayJust.js"></script>
 
 </head>
 
 <body>
+  <iframe src="index.html"></iframe>
 </body>
 </html>

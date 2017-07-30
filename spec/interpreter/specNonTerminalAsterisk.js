@@ -1,4 +1,4 @@
-describe("Interpreter.MethodFactory()" +
+describe("InterpreterMethodFactory()" +
 ".nonTerminalAsterisk(name, optional interpretation)" + 
 ".call(interpreter, CodePointer(lexeme1 + ... + lexemeN))", 
 function() {

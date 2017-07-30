@@ -1,6 +1,7 @@
-describe("moduloMagicRelativeNatural(lastNatural, scaleNumber)", function() {
+describe("(new LilyPondInterpreter()).moduloMagicRelativeNatural(" +
+"lastNatural, scaleNumber)", function() {
   
-  var interpreter = LilyPondInterpreter();
+  var interpreter = new LilyPondInterpreter();
 
   describe("with scaleNumber - lastNatural =", function(){  
 

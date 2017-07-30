@@ -1,6 +1,7 @@
-describe("octaveSpaceRound(lastNatural, scaleNumber)", function() {
+describe("(new LilyPondInterpreter()).octaveSpaceRound(lastNatural, " +
+"scaleNumber)", function() {
   
-  var interpreter = LilyPondInterpreter();
+  var interpreter = new LilyPondInterpreter();
   
   it("with scaleNumber = 0 and lastNatural modulo 7 = 0, returns lastNatural",
   function() {

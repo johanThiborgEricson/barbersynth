@@ -1,0 +1,34 @@
+<html>
+  <head>
+    <title>Barbersynth</title>
+    <script>
+    var errorCallback = function(){};
+    
+    var printError = function(e) {
+      var row = document.createElement("p");
+      row.innerHTML = e.type;
+      while(document.body.firstChild) {
+        document.body.removeChild(document.body.firstChild);
+      }
+      document.body.appendChild(row);
+    };
+      
+    window.addEventListener('error', function(e) {
+      errorCallback = function(e) {
+        printerror(e);
+      }
+    }, true);
+    </script>
+    <script src="src/Gui.js"></script>
+    <script src="src/Player.js"></script>
+    <script src="src/barbersynth.js"></script>
+    <script src="src/interpreter/CodePointer.js"></script>
+    <script src="src/interpreter/InterpreterMethodFactory.js"></script>
+    <script src="src/LilyPondInterpreter.js"></script>
+    <script src="src/Note.js"></script>
+    <script src="src/Fraction.js"></script>
+    <script src="src/Voice.js"></script>
+    <script src="src/Choir.js"></script>
+  </head>
+  <body onLoad="try{(new Gui()).appendGui();} catch(e) {printError(e);} errorCallback();"></body>
+</html>

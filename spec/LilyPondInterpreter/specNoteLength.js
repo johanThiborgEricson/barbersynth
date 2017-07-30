@@ -1,9 +1,9 @@
-describe("noteLength", function() {
+describe("(new LilyPondInterpreter()).noteLength", function() {
   
   var interpreter;
   
   beforeEach(function() {
-    interpreter = LilyPondInterpreter();
+    interpreter = new LilyPondInterpreter();
   });
   
   it("when called with a power of 2 between 1 and 128, sets the denominator " + 
@@ -11,7 +11,7 @@ describe("noteLength", function() {
   function() {
     var powersOfTwo = [1, 2, 4, 8, 16, 32, 64, 128];
     var expecteds = powersOfTwo.map(function(powerOfTwo) {
-      return Fraction(1, powerOfTwo);
+      return new Fraction(1, powerOfTwo);
     });
     
     var actualls = powersOfTwo.map(function(powerOfTwo) {
@@ -30,22 +30,22 @@ describe("noteLength", function() {
   
   it("when called with an empty string, if lenghtFraction is undefined, " +
   "returns one quater", function() {
-    expect(interpreter.noteLength("")).toEqual(Fraction(1, 4));
+    expect(interpreter.noteLength("")).toEqual(new Fraction(1, 4));
   });
   
   it("when called with a power of two and a dot, returns the reciprocal " +
   "value of power times 3/2", function() {
-    expect(interpreter.noteLength("2.")).toEqual(Fraction(3, 4));
+    expect(interpreter.noteLength("2.")).toEqual(new Fraction(3, 4));
   });
   
   it("when called with a power of two and two dots, returns the reciprocal " +
   "value of power times 7/4", function() {
-    expect(interpreter.noteLength("2..")).toEqual(Fraction(7, 8));
+    expect(interpreter.noteLength("2..")).toEqual(new Fraction(7, 8));
   });
   
   it("saves the last value to lenghtFraction", function() {
     interpreter.noteLength("2.");
-    expect(interpreter.lengthFraction).toEqual(Fraction(3, 4));
+    expect(interpreter.lengthFraction).toEqual(new Fraction(3, 4));
   });
   
 });

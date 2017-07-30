@@ -1,13 +1,10 @@
 function Note(tone, duration) {
-  var that = Object.create(Note.prototype);
-  
-  that._tone = tone;
-  that._duration = duration;
-  
-  return that;
+  this._tone = tone;
+  this._duration = duration;
 }
 
 Note.nullObjectStart = Note();
+Note.nullObjectEnd = Note();
 
 Note.prototype
 .toneMin = function(other) {
@@ -27,8 +24,8 @@ Note.prototype
 };
 
 Note.prototype
-.nearestPartial = function(f0) {
-  var frequencyQuote = Math.pow(2, (this._tone - f0) / 12);
+.nearestPartial = function(fundamental) {
+  var frequencyQuote = Math.pow(2, (this._tone - fundamental) / 12);
   var partialBellow = Math.floor(frequencyQuote);
   var partialAbove = Math.ceil(frequencyQuote);
   var quoteDown = frequencyQuote / partialBellow;
@@ -41,6 +38,32 @@ Note.prototype
 };
 
 Note.prototype
+.findClosePartial = function(fundamental) {
+  var frequencyQuote = Math.pow(2, (this._tone - fundamental) / 12);
+  var partialBellow = Math.floor(frequencyQuote);
+  var partialAbove = Math.ceil(frequencyQuote);
+  var quoteDown = frequencyQuote / partialBellow;
+  var quoteUp = partialAbove / frequencyQuote;
+  var closePartialFound = false;
+  if(quoteDown > Math.pow(2, 1 / 24) && quoteUp > Math.pow(2, 1 / 24)) {
+    // this shouldn't be necessary...
+    this.fundamental = undefined;
+    this.partial = undefined;
+  } else {
+    closePartialFound = true;
+    this.fundamental = fundamental;
+    this.partial = quoteDown < quoteUp ? partialBellow : partialAbove;
+  }
+  
+  return closePartialFound;
+};
+
+Note.prototype
 .addTime = function(time) {
   return time.add(this._duration);
+};
+
+Note.prototype
+.getJustFrequency = function(concertPitchFrequency) {
+  return concertPitchFrequency*this.partial*Math.pow(2, this.fundamental/12);
 };

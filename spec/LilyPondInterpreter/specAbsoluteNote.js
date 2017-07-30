@@ -1,4 +1,4 @@
-describe("AbsoluteNote", function() {
+describe("(new LilyPondInterpreter()).AbsoluteNote", function() {
   
   var interpreter;
   var mf = InterpreterMethodFactory();
@@ -12,8 +12,8 @@ describe("AbsoluteNote", function() {
   };
   
   beforeEach(function() {
-    Note = jasmine.createSpy("Note").and.returnValue("note object");
-    interpreter = LilyPondInterpreter(Note);
+    Note = jasmine.createSpy("Note").and.returnValue({note: "object"});
+    interpreter = new LilyPondInterpreter(Note);
 
     interpreter.absoluteNatural = mf
     .terminalEmptyString(justReturn("absolute natural"));
@@ -36,7 +36,7 @@ describe("AbsoluteNote", function() {
   "and returns the result", function() {
     spyOn(interpreter, "toneHelper").and.returnValue("tone helper");
     interpreter.noteLength = mf.terminalEmptyString(justReturn("note length"));
-    expect(interpreter.absoluteNote("")).toEqual("note object");
+    expect(interpreter.absoluteNote("")).toEqual({note: "object"});
     expect(Note).toHaveBeenCalledWith("tone helper", "note length");
   });
   

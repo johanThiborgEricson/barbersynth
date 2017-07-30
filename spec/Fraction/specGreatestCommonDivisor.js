@@ -1,7 +1,7 @@
-describe("Fraction().greatestCommonDivisor(a, b)", function() {
+describe("(new Fraction()).greatestCommonDivisor(a, b)", function() {
   var fraction;
   beforeEach(function() {
-    fraction = Fraction();
+    fraction = new Fraction();
   });
   
   it("calls _orderedGcd with (a, b) if a < b", function() {
@@ -31,13 +31,13 @@ describe("Fraction().greatestCommonDivisor(a, b)", function() {
   
 });
 
-describe("Fraction()._orderedGcd(a, b), a <= b", function() {
+describe("(new Fraction())._orderedGcd(a, b), a <= b", function() {
   var gcd;
   var fraction;
   
   beforeEach(function() {
-    gcd = Fraction([1, 1]).greatestCommonDivisor;
-    fraction = Fraction();
+    gcd = new Fraction([1, 1]).greatestCommonDivisor;
+    fraction = new Fraction();
   });
   
   it("returns a if a divides b", function() {

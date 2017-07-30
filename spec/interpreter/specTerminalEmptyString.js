@@ -1,4 +1,4 @@
-describe("Interpreter.MethodFactory().terminalEmptyString(interpretation)",
+describe("InterpreterMethodFactory().terminalEmptyString(interpretation)",
 function() {
   
   it("calls this.terminal with /(?:)/ and interpretation and returns the " +

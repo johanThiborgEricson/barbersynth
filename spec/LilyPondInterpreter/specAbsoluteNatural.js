@@ -1,9 +1,10 @@
-describe("absoluteNatural(naturalName)", function() {
+describe("(new LilyPondInterpreter()).absoluteNatural(naturalName)", 
+function() {
   
   var interpreter;
   
   beforeEach(function() {
-    interpreter = LilyPondInterpreter();
+    interpreter = new LilyPondInterpreter();
   });
   
   it("returns {natural} as the natural with naturalName in the " + 

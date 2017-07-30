@@ -1,9 +1,9 @@
-describe("accidentals", function() {
+describe("(new LilyPondInterpreter()).accidentals", function() {
   
   var interpreter;
   
   beforeEach(function() {
-    interpreter = LilyPondInterpreter();
+    interpreter = new LilyPondInterpreter();
     interpreter.tone = 0;
   });
   
