@@ -73,7 +73,7 @@ InterpreterMethodFactory.prototype
   "use strict";
   var names;
   var interpretation;
-  
+
   if(typeof arguments[arguments.length - 1] === "string") {
     names = Array.prototype.slice.call(arguments);
   } else {
@@ -82,25 +82,36 @@ InterpreterMethodFactory.prototype
   }
   
   var instructionMaker = function(codePointer, interpreter) {
-    var instructions = {};
+    var instructions = [];
+    var stringNames = [];
     for(var i = 0; i < names.length; i++) {
       var name = names[i];
-      var maybeInstruction = interpreter[name](codePointer);
-      if(!maybeInstruction) {
-        return null;
+      if(name instanceof RegExp) {
+        var parsingIsSuccessful = codePointer.parse(name);
+        if(!parsingIsSuccessful) {
+          return null;
+        }
+      } else { // name instanceof String
+        stringNames.push(name);
+        var maybeInstruction = interpreter[name](codePointer);
+        if(!maybeInstruction) {
+          return null;
+        }
+        
+        instructions.push(maybeInstruction);
       }
       
-      instructions[name] = maybeInstruction;
     }
 
     var instruction = function(interpreter) {
       var resultsArray = [];
       var resultsObject = {};
-      names.map(function(name) {
-        var result = instructions[name](interpreter);
+      for(var i = 0; i < stringNames.length; i++) {
+        var name = stringNames[i];
+        var result = instructions[i](interpreter);
         resultsArray.push(result);
         resultsObject[name] = result;
-      });
+      }
       
       if(interpretation) {
         return interpretation.apply(interpreter, resultsArray);
@@ -155,6 +166,41 @@ InterpreterMethodFactory.prototype
       } else {
         return results;
       }
+    };
+    
+    return instruction;
+  };
+  
+  return this.makeMethod(instructionMaker);
+};
+
+InterpreterMethodFactory.prototype
+.nonTerminalQuestionMark = function(name, defaultReturnValue) {
+  var instructionMaker = function(codePointer, interpreter) {
+    var maybeInstruction = interpreter[name](codePointer);
+    var instruction = function(interpreter) {
+      var result;
+      if(maybeInstruction) {
+        result = maybeInstruction(interpreter);
+      } else {
+        result = defaultReturnValue;
+      }
+      
+      return result;
+    };
+    
+    return instruction;
+  };
+  
+  return this.makeMethod(instructionMaker);
+};
+
+InterpreterMethodFactory.prototype
+.deferredExecution = function(name) {
+  var instructionMaker = function(codePointer, interpreter) {
+    var instructionToDeferre = interpreter[name](codePointer);
+    var instruction = function(interpreter) {
+      return instructionToDeferre;
     };
     
     return instruction;
