@@ -71,12 +71,7 @@ function LilyPondInterpreter(Note) {
   });
   
   LilyPondInterpreter.prototype
-  .noDots = methodFactory.terminalEmptyString(function() {
-    return new Fraction(1, 1);
-  });
-  
-  LilyPondInterpreter.prototype
-  .possiblyDots = methodFactory.nonTerminalAlternative("dots", "noDots");
+  .possiblyDots = methodFactory.nonTerminalQuestionMark("dots", new Fraction(1, 1));
   
   var possiblyDottedLengthInterpretation = 
   function(reciprocalLength, possiblyDots) {
@@ -162,15 +157,8 @@ function LilyPondInterpreter(Note) {
   "accidentals", "octavation", "noteLength", relativeNoteInterpretation);
   
   LilyPondInterpreter.prototype
-  .spacePlus = methodFactory.terminalSkip(/\s+/);
-  
-  LilyPondInterpreter.prototype
-  .spaceAsterisk = methodFactory.terminalSkip(/\s*/);
-  
-  // TODO: give asterisk ability to skip regexp.
-  LilyPondInterpreter.prototype
-  .spaceAndRelative = methodFactory.nonTerminalSequence("spacePlus", 
-  "relativeNote", function(spacePlus, relativeNote) {
+  .spaceAndRelative = methodFactory.nonTerminalSequence(/\s+/, 
+  "relativeNote", function(relativeNote) {
     return relativeNote;
   });
   
@@ -178,9 +166,9 @@ function LilyPondInterpreter(Note) {
   .relativeNotes = methodFactory.nonTerminalAsterisk("spaceAndRelative");
   
   LilyPondInterpreter.prototype
-  .melody = methodFactory.nonTerminalSequence("spaceAsterisk", "absoluteNote", 
-  "relativeNotes", "spaceAsterisk", 
-  function(sa1, absoluteNote, relativeNotes, sa2) {
+  .melody = methodFactory.nonTerminalSequence(/\s*/, "absoluteNote", 
+  "relativeNotes", /\s*/, 
+  function(absoluteNote, relativeNotes) {
     relativeNotes.unshift(absoluteNote);
     return relativeNotes;
   });

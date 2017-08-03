@@ -1,1 +1,2 @@
 Use Semantics! as a library.
+Write tests for whistleblower printing errors to gui.
