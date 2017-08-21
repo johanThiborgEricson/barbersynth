@@ -7,12 +7,12 @@ describe("(new LilyPondInterpreter()).melody(prefix + absolute + s + " +
   beforeEach(function() {
     interpreter = new LilyPondInterpreter();
     expect(interpreter.absoluteNote).toBeDefined();
-    interpreter.absoluteNote = methodFactory.terminal(/absolute/, function() {
+    interpreter.absoluteNote = methodFactory.atom(/absolute/, function() {
       return "absolute note";
     });
     
     expect(interpreter.relativeNote).toBeDefined();
-    interpreter.relativeNote = methodFactory.terminal(/relative(\d)/, 
+    interpreter.relativeNote = methodFactory.atom(/relative(\d)/, 
     function(digit) {
       return "relative note " + digit;
     });

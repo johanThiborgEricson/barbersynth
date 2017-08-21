@@ -6,64 +6,63 @@ function LilyPondInterpreter(Note) {
   var methodFactory = InterpreterMethodFactory();
   
   LilyPondInterpreter.prototype
-  .absoluteNatural = methodFactory.terminal(/([a-g])/, function(naturalName) {
+  .absoluteNatural = methodFactory.atom(/[a-g]/, function(naturalName) {
     var minusA = naturalName.charCodeAt(0) - "a".charCodeAt(0);
     var lilyPondIndex = (minusA + 5) % 7;
     return lilyPondIndex - 12;
   });
   
   LilyPondInterpreter.prototype
-  .octavationDown = methodFactory.terminal(/(,+)/, function(commaString) {
+  .octavationDown = methodFactory.atom(/,+/, function(commaString) {
     return -commaString.length;
   });
   
   LilyPondInterpreter.prototype
-  .octavationUp = methodFactory.terminal(/('+)/, function(apostrofeString) {
+  .octavationUp = methodFactory.atom(/'+/, function(apostrofeString) {
     return apostrofeString.length;
   });
   
   // TODO: implement terminalJustReturn(0) as a shorthand for this
   LilyPondInterpreter.prototype
-  .noOctavation = methodFactory.terminalEmptyString(function() {
+  .noOctavation = methodFactory.empty(function() {
     return 0;
   });
   
   LilyPondInterpreter.prototype
-  .octavation = methodFactory.nonTerminalAlternative(
+  .octavation = methodFactory.or(
       "octavationDown", "octavationUp", "noOctavation");
   
   LilyPondInterpreter.prototype
-  .flat = methodFactory.terminal(/((?:es)+)/, function(esesString) {
+  .flat = methodFactory.atom(/(?:es)+/, function(esesString) {
     return -(esesString.length / 2);
   });
   
   LilyPondInterpreter.prototype
-  .sharp = methodFactory.terminal(/((?:is)+)/, function(isesString) {
+  .sharp = methodFactory.atom(/(?:is)+/, function(isesString) {
     return isesString.length / 2;
   });
   
   LilyPondInterpreter.prototype
-  .noAccidental = methodFactory.terminalEmptyString(function() {
+  .noAccidental = methodFactory.empty(function() {
     return 0;
   });
   
   LilyPondInterpreter.prototype
-  .accidentals = methodFactory.nonTerminalAlternative(
-    "flat", "sharp", "noAccidental");
+  .accidentals = methodFactory.or("flat", "sharp", "noAccidental");
   
   LilyPondInterpreter.prototype.
-  reciprocalLength = methodFactory.terminal(/(128|64|32|16|8|4|2|1)/, 
+  reciprocalLength = methodFactory.atom(/128|64|32|16|8|4|2|1/, 
   function(lengthString) {
     return new Fraction(1, Number(lengthString));
   });
   
   LilyPondInterpreter.prototype
-  .unspecifiedLength = methodFactory.terminalEmptyString(function() {
+  .unspecifiedLength = methodFactory.empty(function() {
     return this.lengthFraction || new Fraction(1, 4);
   });
   
   LilyPondInterpreter.prototype
-  .dots = methodFactory.terminal(/(\.+)/, function(dotsString) {
+  .dots = methodFactory.atom(/\.+/, function(dotsString) {
     var dotCount = dotsString.length;
     var numerator = 2 * Math.pow(2, dotCount) - 1;
     var denominator = Math.pow(2, dotCount);
@@ -71,7 +70,7 @@ function LilyPondInterpreter(Note) {
   });
   
   LilyPondInterpreter.prototype
-  .possiblyDots = methodFactory.nonTerminalQuestionMark("dots", new Fraction(1, 1));
+  .possiblyDots = methodFactory.opt("dots", new Fraction(1, 1));
   
   var possiblyDottedLengthInterpretation = 
   function(reciprocalLength, possiblyDots) {
@@ -80,11 +79,11 @@ function LilyPondInterpreter(Note) {
   };
   
   LilyPondInterpreter.prototype
-  .possiblyDottedLength = methodFactory.nonTerminalSequence(
+  .possiblyDottedLength = methodFactory.group(
     "reciprocalLength", "possiblyDots", possiblyDottedLengthInterpretation);
   
   LilyPondInterpreter.prototype
-  .noteLength = methodFactory.nonTerminalAlternative(
+  .noteLength = methodFactory.or(
     "possiblyDottedLength", "unspecifiedLength");
   
   LilyPondInterpreter.prototype
@@ -103,7 +102,7 @@ function LilyPondInterpreter(Note) {
   };
   
   LilyPondInterpreter.prototype
-  .absoluteNote = methodFactory.nonTerminalSequence("absoluteNatural", 
+  .absoluteNote = methodFactory.group("absoluteNatural", 
     "accidentals", "octavation", "noteLength", absouluteNoteInterpretation);
   
   LilyPondInterpreter.prototype
@@ -122,7 +121,7 @@ function LilyPondInterpreter(Note) {
   };
   
   LilyPondInterpreter.prototype
-  .relativeNatural = methodFactory.terminal(/([a-g])/, function(naturalName) {
+  .relativeNatural = methodFactory.atom(/[a-g]/, function(naturalName) {
     var scaleNumber = naturalName.charCodeAt(0) - "a".charCodeAt(0);
     var redundant1 = this.octaveSpaceRound(this.lastNatural, scaleNumber);
     var redundant2 = this.moduloMagic(this.lastNatural, scaleNumber);
@@ -153,20 +152,20 @@ function LilyPondInterpreter(Note) {
   };
   
   LilyPondInterpreter.prototype
-  .relativeNote = methodFactory.nonTerminalSequence("relativeNatural", 
+  .relativeNote = methodFactory.group("relativeNatural", 
   "accidentals", "octavation", "noteLength", relativeNoteInterpretation);
   
   LilyPondInterpreter.prototype
-  .spaceAndRelative = methodFactory.nonTerminalSequence(/\s+/, 
+  .spaceAndRelative = methodFactory.group(/\s+/, 
   "relativeNote", function(relativeNote) {
     return relativeNote;
   });
   
   LilyPondInterpreter.prototype
-  .relativeNotes = methodFactory.nonTerminalAsterisk("spaceAndRelative");
+  .relativeNotes = methodFactory.star("spaceAndRelative");
   
   LilyPondInterpreter.prototype
-  .melody = methodFactory.nonTerminalSequence(/\s*/, "absoluteNote", 
+  .melody = methodFactory.group(/\s*/, "absoluteNote", 
   "relativeNotes", /\s*/, 
   function(absoluteNote, relativeNotes) {
     relativeNotes.unshift(absoluteNote);

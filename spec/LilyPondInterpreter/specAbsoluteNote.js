@@ -15,13 +15,11 @@ describe("(new LilyPondInterpreter()).AbsoluteNote", function() {
     Note = jasmine.createSpy("Note").and.returnValue({note: "object"});
     interpreter = new LilyPondInterpreter(Note);
 
-    interpreter.absoluteNatural = mf
-    .terminalEmptyString(justReturn("absolute natural"));
-    interpreter.accidentals = mf.terminalEmptyString(justReturn("accidentals"));
-    interpreter.octavation = mf.terminalEmptyString(justReturn("octavation"));
+    interpreter.absoluteNatural = mf.empty(justReturn("absolute natural"));
+    interpreter.accidentals = mf.empty(justReturn("accidentals"));
+    interpreter.octavation = mf.empty(justReturn("octavation"));
     
-    interpreter.noteLength = mf
-    .terminalEmptyString(justReturn("note length"));
+    interpreter.noteLength = mf.empty(justReturn("note length"));
   });
   
   it("calls toneHelper with absoluteNatural, accidentals and octavation", 
@@ -35,7 +33,7 @@ describe("(new LilyPondInterpreter()).AbsoluteNote", function() {
   it("calls Note with the result of tone helper and noteLength as arguments " +
   "and returns the result", function() {
     spyOn(interpreter, "toneHelper").and.returnValue("tone helper");
-    interpreter.noteLength = mf.terminalEmptyString(justReturn("note length"));
+    interpreter.noteLength = mf.empty(justReturn("note length"));
     expect(interpreter.absoluteNote("")).toEqual({note: "object"});
     expect(Note).toHaveBeenCalledWith("tone helper", "note length");
   });
