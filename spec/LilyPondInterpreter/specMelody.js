@@ -12,7 +12,8 @@ describe("(new LilyPondInterpreter()).melody(prefix + absolute + s + " +
     });
     
     expect(interpreter.relativeNote).toBeDefined();
-    interpreter.relativeNote = methodFactory.atom(/relative(\d)/, 
+    interpreter.digit = methodFactory.atom(/\d/);
+    interpreter.relativeNote = methodFactory.group(/relative/, "digit", 
     function(digit) {
       return "relative note " + digit;
     });

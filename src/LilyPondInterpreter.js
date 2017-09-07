@@ -33,12 +33,12 @@ function LilyPondInterpreter(Note) {
       "octavationDown", "octavationUp", "noOctavation");
   
   LilyPondInterpreter.prototype
-  .flat = methodFactory.atom(/(?:es)+/, function(esesString) {
+  .flat = methodFactory.atom(/(es)+/, function(esesString) {
     return -(esesString.length / 2);
   });
   
   LilyPondInterpreter.prototype
-  .sharp = methodFactory.atom(/(?:is)+/, function(isesString) {
+  .sharp = methodFactory.atom(/(is)+/, function(isesString) {
     return isesString.length / 2;
   });
   
