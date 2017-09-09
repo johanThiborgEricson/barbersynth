@@ -70,7 +70,9 @@ function LilyPondInterpreter(Note) {
   });
   
   LilyPondInterpreter.prototype
-  .possiblyDots = methodFactory.opt("dots", new Fraction(1, 1));
+  .possiblyDots = methodFactory.opt("dots", function() {
+    return new Fraction(1, 1);
+  });
   
   var possiblyDottedLengthInterpretation = 
   function(reciprocalLength, possiblyDots) {
