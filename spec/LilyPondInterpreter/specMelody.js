@@ -2,7 +2,7 @@ describe("(new LilyPondInterpreter()).melody(prefix + absolute + s + " +
 "relative1 + ... + s + relativeN + postfix", function() {
   
   var interpreter;
-  var methodFactory = InterpreterMethodFactory();
+  var methodFactory = new InterpreterMethodFactory();
   
   beforeEach(function() {
     interpreter = new LilyPondInterpreter();

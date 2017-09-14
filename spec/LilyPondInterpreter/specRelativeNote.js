@@ -1,7 +1,7 @@
 describe("(new LilyPondInterpreter()).RelativeNote", function() {
   
   var interpreter;
-  var mf = InterpreterMethodFactory();
+  var mf = new InterpreterMethodFactory();
   var Note;
   
   // TODO: wait for legacy IE to start supporting arrow functions...

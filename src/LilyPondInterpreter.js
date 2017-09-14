@@ -3,7 +3,7 @@ function LilyPondInterpreter(Note) {
 }
 
 (function() {
-  var methodFactory = InterpreterMethodFactory();
+  var methodFactory = new InterpreterMethodFactory();
   
   LilyPondInterpreter.prototype
   .absoluteNatural = methodFactory.atom(/[a-g]/, function(naturalName) {
